@@ -10,6 +10,7 @@ public class Zombie extends Character {
     public int hitRange = Constant.ZOMBIERANGE;
     public final float hitCooldown = Constant.ZOMBIEHITCOOLDOWN;
 
+
     public Zombie(Sprite sprite, Vector2 zombieSpawn, Level currentLevel) {
         super(sprite, zombieSpawn, currentLevel);
         this.speed = Constant.ZOMBIESPEED;
@@ -30,17 +31,19 @@ public class Zombie extends Character {
         //move according to velocity
         super.update(delta);
 
-        // update velocity to move towards player
-        // Vector2.scl scales the vector
-        velocity = getDirNormVector(player.getCenter()).scl(speed);
+        if (player.canBeSeen) {
+            // update velocity to move towards player
+            // Vector2.scl scales the vector
+            velocity = getDirNormVector(player.getCenter()).scl(speed);
 
-        // update direction to face the player
-        direction = getDirectionTo(player.getCenter());
+            // update direction to face the player
+            direction = getDirectionTo(player.getCenter());
 
-        if (health <= 0) {
-            currentLevel.zombiesRemaining--;
-            currentLevel.aliveZombies.remove(this);
-            this.getTexture().dispose();
+            if (health <= 0) {
+                currentLevel.zombiesRemaining--;
+                currentLevel.aliveZombies.remove(this);
+                this.getTexture().dispose();
+            }
         }
     }
 }

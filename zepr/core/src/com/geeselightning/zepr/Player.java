@@ -18,6 +18,7 @@ public class Player extends Character {
     float speedMult;
     String playertype;
     public boolean isImmune;
+    public boolean canBeSeen = true;
 
 
     private Player(Sprite sprite, Vector2 playerSpawn) {
