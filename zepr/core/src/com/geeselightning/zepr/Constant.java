@@ -20,6 +20,9 @@ public final class Constant {
     public static final float SPORTYHPMULT = 1;
     public static final float SPORTYDMGMULT = 1;
     public static final float SPORTYSPEEDMULT = 1.5f;
+    public static final float ARTSYHPMULT = 1;
+    public static final float ARTSYDMGMULT = 1.5f;
+    public static final float ARTSYSPEEDMULT = 1;
     public static final int HEALUP = 30;
     public static final int SPEEDUP = 50;
     public static final float SPEEDUPTIME = 10;

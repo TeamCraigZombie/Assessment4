@@ -60,6 +60,11 @@ public class Player extends Character {
             HPMult = Constant.SPORTYHPMULT;
             speedMult = Constant.SPORTYSPEEDMULT;
         }
+        else if (playertype == "Artsy"){
+            dmgMult = Constant.ARTSYDMGMULT;
+            HPMult = Constant.ARTSYHPMULT;
+            speedMult = Constant.ARTSYSPEEDMULT;
+        }
         else if (playertype == null){
             dmgMult =1;
             HPMult = 1;
@@ -74,10 +79,15 @@ public class Player extends Character {
             mainTexture = new Texture("player01.png");
             attackTexture = new Texture("player01_attack.png");
             this.setTexture(mainTexture);
-        } else {
+        } else if (playertype == "sporty") {
             // playertype == sporty
             mainTexture = new Texture("player02.png");
             attackTexture = new Texture("player02_attack.png");
+            this.setTexture(mainTexture);
+        }
+        else {
+        	mainTexture = new Texture("player03.png");
+            attackTexture = new Texture("player03_attack.png");
             this.setTexture(mainTexture);
         }
     }
