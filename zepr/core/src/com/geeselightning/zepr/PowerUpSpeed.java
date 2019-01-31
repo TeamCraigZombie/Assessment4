@@ -13,14 +13,14 @@ public class PowerUpSpeed extends PowerUp {
     @Override
     public void activate() {
         super.activate();
-        super.player.speed += Constant.SPEEDUP;
+        Level.getPlayer().speed += Constant.SPEEDUP;
         this.getTexture().dispose();
     }
 
     @Override
     public void deactivate() {
         super.deactivate();
-        super.player.speed -= Constant.SPEEDUP;
+        Level.getPlayer().speed -= Constant.SPEEDUP;
     }
 
     @Override

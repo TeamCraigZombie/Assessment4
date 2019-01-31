@@ -22,7 +22,6 @@ public class SelectLevelScreen implements Screen {
     private Label characterDescription;
     private int stageLink = -1;
     private boolean playerSet = false;
-    Player player = Player.getInstance();
 
     public SelectLevelScreen(Zepr zepr) {
 
@@ -180,7 +179,7 @@ public class SelectLevelScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 characterDescription.setText(nerdyDescription);
-                player.setType("nerdy");
+                Player.setType("nerdy");
                 playerSet = true;
             }
         });
@@ -188,7 +187,7 @@ public class SelectLevelScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 characterDescription.setText(sportyDescription);
-                player.setType("sporty");
+                Player.setType("sporty");
                 playerSet = true;
             }
         });
@@ -196,7 +195,7 @@ public class SelectLevelScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 characterDescription.setText(ArtsyDescription);
-                player.setType("Artsy");
+                Player.setType("Artsy");
                 playerSet = true;
             }
         });

@@ -1,42 +1,40 @@
 package com.geeselightning.zepr;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Character {
 
-    private static final Player instance = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
     int attackDamage = Constant.PLAYERDMG;
     int hitRange = Constant.PLAYERRANGE;
     final float hitCooldown =  Constant.PLAYERHITCOOLDOWN;
     Texture mainTexture;
     Texture attackTexture;
-    boolean attack = false;
+    public boolean attack = false;
     float HPMult;
     float dmgMult;
     float speedMult;
-    String playertype;
+    static String playertype;
     public boolean isImmune;
+    private static Level level;
     public boolean canBeSeen = true;
 
 
-    private Player(Sprite sprite, Vector2 playerSpawn) {
-        super(sprite, playerSpawn, null);
+    public Player(Sprite sprite, Vector2 playerSpawn) {
+        super(sprite, playerSpawn, level);
+    }
+    
+    public static void setLevel(Level currentLevel) {
+    	level = currentLevel;
     }
 
-    public static Player getInstance(){
-        return instance;
+    public static void setType(String playertype){
+        Player.playertype = playertype;
     }
-
-    public void setType(String playertype){
-        this.playertype = playertype;
-    }
-
-    public String getType() {
-        return playertype;
-    }
-
 
     public void attack(Zombie zombie, float delta) {
         if (canHitGlobal(zombie, hitRange) && hitRefresh > hitCooldown) {
@@ -48,8 +46,7 @@ public class Player extends Character {
     }
 
     public void respawn(Vector2 playerSpawn, Level level){
-        setX(playerSpawn.x);
-        setY(playerSpawn.y);
+        setPosition(playerSpawn.x, playerSpawn.y);
         if (playertype == "nerdy"){
             dmgMult = Constant.NERDYDMGMULT;
             HPMult = Constant.NERDYHPMULT;
@@ -93,12 +90,13 @@ public class Player extends Character {
     }
 
     @Override
-    public void update(float delta) {
-        super.update(delta);
+    public void update() {
+        super.update();
+        
+        control();
 
         // Update the direction the player is facing.
         direction = getDirectionTo(currentLevel.getMouseWorldCoordinates());
-
 
         // When you die, end the level.
         if (health <= 0) {
@@ -107,13 +105,27 @@ public class Player extends Character {
 
         // Gives the player the attack texture for 0.1s after an attack.
         //if (hitRefresh <= 0.1 && getTexture() != attackTexture) {
-        if (attack) {
-            this.setTexture(attackTexture);
-        } else {
+        if (attack)
+            setTexture(attackTexture);
+        else 
         // Changes the texture back to the main one after 0.1s.
         //if (hitRefresh > 0.1 && getTexture() == attackTexture) {
-            this.setTexture(mainTexture);
-        }
+            setTexture(mainTexture);
+    }
+    
+    public void control() {	
+    	   	
+    	Vector2 playerPosition = body.getPosition();
+    	
+    	if (Gdx.input.isKeyPressed(Keys.W))
+			body.applyLinearImpulse(new Vector2(0, speedMult), playerPosition, true);
+		else if (Gdx.input.isKeyPressed(Keys.S))
+			body.applyLinearImpulse(new Vector2(0, -speedMult), playerPosition, true);
+
+		if (Gdx.input.isKeyPressed(Keys.A))
+			body.applyLinearImpulse(new Vector2(-speedMult, 0), playerPosition, true);
+		else if (Gdx.input.isKeyPressed(Keys.D))
+			body.applyLinearImpulse(new Vector2(speedMult, 0), playerPosition, true);
     }
 
     @Override

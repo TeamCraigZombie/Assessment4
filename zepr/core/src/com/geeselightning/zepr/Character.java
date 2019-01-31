@@ -1,11 +1,13 @@
 package com.geeselightning.zepr;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import static java.lang.Math.abs;
 
 public class Character extends Sprite {
@@ -18,16 +20,32 @@ public class Character extends Sprite {
     Level currentLevel;
     // All characters start ready to hit.
     float hitRefresh = 2;
+    protected Body body;
+    private static BodyDef characterBodyDef = new BodyDef() {{ type = BodyDef.BodyType.DynamicBody; }};
 
     public Character(Sprite sprite, Vector2 spawn, Level currentLevel) {
         super(sprite);
-        setX(spawn.x);
-        setY(spawn.y);
         this.currentLevel = currentLevel;
+        GenerateBodyFromSprite(sprite);
+        body.setTransform(spawn.x / Level.physicsDensity, spawn.y / Level.physicsDensity, 0);
+        body.setFixedRotation(true);
+        body.setLinearDamping(50.f);
     }
+    
+    private void GenerateBodyFromSprite(Sprite sprite) {
 
-    public double getDirection() {
-        return direction;
+    	body = currentLevel.getBox2DWorld().createBody(characterBodyDef);
+    	
+    	PolygonShape shape = new PolygonShape();
+    	shape.setAsBox(sprite.getWidth() / 2 / Level.physicsDensity,
+    			 sprite.getHeight() / 2 / Level.physicsDensity);
+    	
+    	FixtureDef fixtureDef = new FixtureDef();
+    	fixtureDef.shape = shape;
+    	fixtureDef.density = 1f;
+    	
+    	body.createFixture(fixtureDef);
+    	shape.dispose();
     }
 
     public double getHealth() {
@@ -50,13 +68,19 @@ public class Character extends Sprite {
 
     @Override
     public void draw(Batch batch) {
-        // Calls the update method of the character. To update its properties, i.e. position.
-        // The method is given the parameter delta so it can calculate the character new position.
-        update(Gdx.graphics.getDeltaTime());
+        
+     // Draw zombie health bars
+        int fillAmount = (int) (getHealth() / 100) * 30;
+        batch.setColor(Color.BLACK);
+        batch.draw(currentLevel.blank, getX(), getY()+32, 32, 3);
+        batch.setColor(Color.RED);
+        batch.draw(currentLevel.blank, getX()+1, getY()+33, fillAmount, 1);
+        batch.setColor(Color.WHITE);
+        
+        setRotation((float) Math.toDegrees(-direction));
 
         super.draw(batch);
 
-        setRotation((float) Math.toDegrees(- direction));
     }
 
     // hitRange has to be passed by the subclass from the canHit method.
@@ -96,57 +120,29 @@ public class Character extends Sprite {
     }
 
     /**
-     * Calculates a normailized vector that points torwards given coordinate.
+     * Calculates a normalised vector that points towards given physics coordinate.
      *
      * @param coordinate Vector2 representing the position of the object
      * @return normalised Vector2 that from this will point towards given coordinate
      */
     public Vector2 getDirNormVector(Vector2 coordinate) {
-        Vector2 charCenter = new Vector2(this.getX() + (getWidth() / 2),
-                this.getY() + (getHeight() / 2));
+        Vector2 charCenter = getPhysicsScaledPosition();
         // create vector that is the difference between character and the coordinate, and return it normalised
         Vector2 diffVector = new Vector2((coordinate.x - charCenter.x), (coordinate.y - charCenter.y));
         return diffVector.nor();
     }
 
+    public Vector2 getPhysicsScaledPosition() {
+        return body.getPosition().scl(Level.physicsDensity);
+    }
+
     /**
-     * This method updates all the characters properties.
-     *
-     * @param delta the time passed since the last frame (render() call)
+     * This method updates the character properties.
      */
-    public void update(float delta) {
-        // Update x, y position of character.
-        // New position is the old position plus the distance moved as a result of the velocity
-        float oldX = getX(), oldY = getY();
-
-        setX(getX() + velocity.x * delta);
-        setY(getY() + velocity.y * delta);
-
-        // Get all characters in the currentLevel
-        ArrayList<Character> otherCharacters = currentLevel.getCharacters();
-        // Remove this character otherwise it will collide with itself
-        otherCharacters.remove(this);
-
-        for (Character character : otherCharacters) {
-            if (collidesWith(character)) {
-                setX(oldX);
-                setY(oldY);
-            }
-        }
-
-        // List of all corners of sprite
-        ArrayList<Vector2> spriteVertices = new ArrayList<Vector2>(Arrays.asList(new Vector2(getX(), getY()),
-                new Vector2(getX() + getWidth(), getY()), new Vector2(getX(), getY() + getHeight()),
-                new Vector2(getX() + getWidth(), getY() + getHeight())));
-
-        // Make sure non of the corners goto a blocked region of the map
-        for (Vector2 vertex : spriteVertices) {
-            if (currentLevel.isBlocked(vertex.x, vertex.y)) {
-                setX(oldX);
-                setY(oldY);
-            }
-        }
-
+    public void update() {
+        // Update x, y position of character.     
+        Vector2 position = getPhysicsScaledPosition();
+        setPosition(position.x-getWidth()/2, position.y-getHeight()/2);
     }
 
     // Decreases health by value of dmg

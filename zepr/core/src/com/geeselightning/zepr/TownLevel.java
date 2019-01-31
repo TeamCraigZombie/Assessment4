@@ -25,8 +25,8 @@ public class TownLevel extends Level {
 
     @Override
     public void complete() {
-        if (parent.progress == parent.TOWN) {
-            parent.progress = parent.HALIFAX;
+        if (Zepr.progress == Zepr.TOWN) {
+        	Zepr.progress = Zepr.HALIFAX;
         }
         // The stage is being replayed
     }

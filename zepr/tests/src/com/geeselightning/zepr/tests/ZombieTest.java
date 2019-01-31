@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 @RunWith(GdxTestRunner.class)
 public class ZombieTest {
 
-    Player player = Player.getInstance();
+    Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
 
     @Test
     // Test 3.1.1

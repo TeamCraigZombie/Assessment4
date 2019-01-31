@@ -1,5 +1,8 @@
 package com.geeselightning.zepr.tests;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.geeselightning.zepr.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +15,7 @@ public class PowerUpTest {
     @Test
     // Test 4.1
     public void powerUpHealthAddsHPToPlayer() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         PowerUpHeal heal = new PowerUpHeal(null);
         player.takeDamage(50);
         double originalHealth = player.getHealth();
@@ -25,7 +28,7 @@ public class PowerUpTest {
     @Test
     // Test 4.2.1
     public void powerUpSpeedIncreasePlayersSpeed() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         PowerUpSpeed speed = new PowerUpSpeed(null);
         double originalSpeed = player.speed;
         speed.activate();
@@ -36,7 +39,7 @@ public class PowerUpTest {
     @Test
     // Test 4.2.2
     public void powerUpSpeedDeactivatesAfter10s() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         PowerUpSpeed speed = new PowerUpSpeed(null);
         double originalSpeed = player.speed;
         speed.activate();
@@ -47,7 +50,7 @@ public class PowerUpTest {
     @Test
     // Test 4.2.3
     public void powerUpSpeedDoesNotDeactiveBefore10s() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         PowerUpSpeed speed = new PowerUpSpeed(null);
         double originalSpeed = player.speed;
         speed.activate();
@@ -59,7 +62,7 @@ public class PowerUpTest {
     @Test
     // Test 4.2.3
     public void powerUpSpeedDeactivateMethodResetsPlayerSpeed() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         PowerUpSpeed speed = new PowerUpSpeed(null);
         double originalSpeed = player.speed;
         speed.activate();
@@ -72,7 +75,7 @@ public class PowerUpTest {
     @Test
     // Test 4.3.1
     public void playerCannotPickUpFarAwayPowerUp() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         PowerUpHeal powerup = new PowerUpHeal(null);
         powerup.setPosition(0,0);
         player.setPosition(100,100);
@@ -82,7 +85,7 @@ public class PowerUpTest {
     @Test
     //Test 4.3.2
     public void playerCanPickUpClosePowerUp() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         PowerUpHeal powerup = new PowerUpHeal(null);
         powerup.setPosition(0,0);
         player.setPosition(31,31);
@@ -92,7 +95,7 @@ public class PowerUpTest {
     @Test
     // Test 4.4.1
     public void powerUpImmunityStopsThePlayerTakingDamge() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         PowerUpImmunity immunity = new PowerUpImmunity(null);
         immunity.activate();
         double originalHealth = player.getHealth();
@@ -104,7 +107,7 @@ public class PowerUpTest {
     @Test
     // Test 4.4.2
     public void powerUpImmunityDeactivatesAfter5s() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         PowerUpImmunity immunity = new PowerUpImmunity(null);
         double originalHealth = player.getHealth();
         immunity.activate();
@@ -118,7 +121,7 @@ public class PowerUpTest {
     @Test
     // Test 4.4.3
     public void powerUpImmunityDeactivateMethodCancelsImmunity() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         PowerUpImmunity immunity = new PowerUpImmunity(null);
         double originalHealth = player.getHealth();
         immunity.activate();
