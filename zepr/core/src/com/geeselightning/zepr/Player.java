@@ -1,7 +1,6 @@
 package com.geeselightning.zepr;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -68,24 +67,24 @@ public class Player extends Character {
             speedMult = 1;
         }
         this.attackDamage = (int)(Constant.PLAYERDMG * dmgMult);
-        this.speed = (int)(Constant.PLAYERSPEED * speedMult);
+        this.speed = Constant.PLAYERSPEED * speedMult;
         this.health = (int)(HPMult * Constant.PLAYERMAXHP);
         this.currentLevel = level;
 
         if (playertype == "nerdy") {
             mainTexture = new Texture("player01.png");
             attackTexture = new Texture("player01_attack.png");
-            this.setTexture(mainTexture);
+            setTexture(mainTexture);
         } else if (playertype == "sporty") {
             // playertype == sporty
             mainTexture = new Texture("player02.png");
             attackTexture = new Texture("player02_attack.png");
-            this.setTexture(mainTexture);
+            setTexture(mainTexture);
         }
         else {
         	mainTexture = new Texture("player03.png");
             attackTexture = new Texture("player03_attack.png");
-            this.setTexture(mainTexture);
+            setTexture(mainTexture);
         }
     }
 
@@ -118,14 +117,14 @@ public class Player extends Character {
     	Vector2 playerPosition = body.getPosition();
     	
     	if (Gdx.input.isKeyPressed(Keys.W))
-			body.applyLinearImpulse(new Vector2(0, speedMult), playerPosition, true);
+			body.applyLinearImpulse(new Vector2(0, speed), playerPosition, true);
 		else if (Gdx.input.isKeyPressed(Keys.S))
-			body.applyLinearImpulse(new Vector2(0, -speedMult), playerPosition, true);
+			body.applyLinearImpulse(new Vector2(0, -speed), playerPosition, true);
 
 		if (Gdx.input.isKeyPressed(Keys.A))
-			body.applyLinearImpulse(new Vector2(-speedMult, 0), playerPosition, true);
+			body.applyLinearImpulse(new Vector2(-speed, 0), playerPosition, true);
 		else if (Gdx.input.isKeyPressed(Keys.D))
-			body.applyLinearImpulse(new Vector2(speedMult, 0), playerPosition, true);
+			body.applyLinearImpulse(new Vector2(speed, 0), playerPosition, true);
     }
 
     @Override

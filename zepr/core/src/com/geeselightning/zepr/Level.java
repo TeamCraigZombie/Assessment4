@@ -319,7 +319,7 @@ public class Level implements Screen {
                 // If stage is being replayed complete() will stop progress being incremented.
                 isPaused = true;
                 complete();
-                if (parent.progress == Zepr.COMPLETE)
+                if (Zepr.progress == Zepr.COMPLETE)
                     parent.setScreen(new TextScreen(parent, "Game completed."));
                 else
                     parent.setScreen(new TextScreen(parent, "Level completed."));

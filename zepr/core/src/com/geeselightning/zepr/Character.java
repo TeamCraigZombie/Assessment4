@@ -31,14 +31,16 @@ public class Character extends Sprite {
         body.setFixedRotation(true);
         body.setLinearDamping(50.f);
     }
-    
+
     private void GenerateBodyFromSprite(Sprite sprite) {
 
     	body = currentLevel.getBox2DWorld().createBody(characterBodyDef);
     	
+    	final float scale = 1.6f;
+    	
     	PolygonShape shape = new PolygonShape();
-    	shape.setAsBox(sprite.getWidth() / 2 / Level.physicsDensity,
-    			 sprite.getHeight() / 2 / Level.physicsDensity);
+    	shape.setAsBox(sprite.getWidth() / scale / 2 / Level.physicsDensity,
+    			 sprite.getHeight() / scale / 2 / Level.physicsDensity);
     	
     	FixtureDef fixtureDef = new FixtureDef();
     	fixtureDef.shape = shape;
@@ -160,6 +162,11 @@ public class Character extends Sprite {
     // Decreases health by value of dmg
     public void takeDamage(int dmg){
         health -= dmg;
+    }
+    
+    public void dispose() {
+    	getTexture().dispose();
+    	currentLevel.getBox2DWorld().destroyBody(body);
     }
 
 }

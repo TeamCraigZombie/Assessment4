@@ -144,7 +144,7 @@ public class SelectLevelScreen implements Screen {
             }
         });
 
-        if (parent.progress <= parent.TOWN) {
+        if (Zepr.progress <= Zepr.TOWN) {
             halifax.setColor(Color.DARK_GRAY);
             halifax.getLabel().setColor(Color.DARK_GRAY);
         } else {
@@ -158,7 +158,7 @@ public class SelectLevelScreen implements Screen {
             });
         }
 
-        if (parent.progress <= parent.HALIFAX) {
+        if (Zepr.progress <= Zepr.HALIFAX) {
             courtyard.setColor(Color.DARK_GRAY);
             courtyard.getLabel().setColor(Color.DARK_GRAY);
         } else {
