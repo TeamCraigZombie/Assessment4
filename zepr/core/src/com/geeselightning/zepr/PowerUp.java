@@ -3,11 +3,9 @@ package com.geeselightning.zepr;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 
 public class PowerUp extends Sprite {
 
-    Player player = Player.getInstance();
     public int type;
     Level currentLevel;
     public boolean active;
@@ -35,7 +33,7 @@ public class PowerUp extends Sprite {
     }
 
     public boolean overlapsPlayer(){
-        Rectangle rectanglePlayer = player.getBoundingRectangle();
+        Rectangle rectanglePlayer = Level.getPlayer().getBoundingRectangle();
         Rectangle rectanglePower = this.getBoundingRectangle();
         return rectanglePlayer.overlaps(rectanglePower);
     }

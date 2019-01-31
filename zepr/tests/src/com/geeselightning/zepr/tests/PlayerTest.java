@@ -1,5 +1,6 @@
 package com.geeselightning.zepr.tests;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.geeselightning.zepr.Constant;
@@ -15,7 +16,7 @@ public class PlayerTest {
     @Test
     // Test 2.1
     public void playerPositionResetsWhenRespawned() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         Vector2 originalPosition = new Vector2(player.getX(), player.getY());
         player.setPosition(10, 10);
         player.respawn(new Vector2(0, 0), null);
@@ -25,7 +26,7 @@ public class PlayerTest {
     @Test
     // Test 2.2.1
     public void playerDoesNoDamageToZombieWhenAtMaxRange() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
 
         Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y + Constant.PLAYERRANGE), null);
         double originalHealth = zombie.getHealth();
@@ -38,7 +39,7 @@ public class PlayerTest {
     @Test
     // Test 2.2.2
     public void playerDoesDamageToZombieWhenInRange() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
 
         Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y + Constant.PLAYERRANGE - 10), null);
         double originalHealth = zombie.getHealth();
@@ -51,7 +52,7 @@ public class PlayerTest {
     @Test
     //Test 2.2.3
     public void playerDoesNoDamageToZombieOutOfRange() {
-        Player player = Player.getInstance();
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
 
         Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y +100), null);
         double originalHealth = zombie.getHealth();
@@ -64,11 +65,11 @@ public class PlayerTest {
     @Test
     // Test 2.3.1
     public void playerTypesHaveDifferentHealth() {
-        Player player = Player.getInstance();
-        player.setType("nerdy");
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
+        Player.setType("nerdy");
         player.respawn(Constant.ORIGIN, null);
         double nerdyHealth = player.getHealth();
-        player.setType("sporty");
+        Player.setType("sporty");
         player.respawn(Constant.ORIGIN, null);
         assertNotEquals("Sporty and nerdy students should have a different amount of hit points.",
                 nerdyHealth, player.getHealth(), 0.1);
@@ -77,11 +78,11 @@ public class PlayerTest {
     @Test
     // Test 2.3.2
     public void playerTypesHaveDifferentSpeed() {
-        Player player = Player.getInstance();
-        player.setType("nerdy");
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
+        Player.setType("nerdy");
         player.respawn(Constant.ORIGIN, null);
         double nerdySpeed = player.speed;
-        player.setType("sporty");
+        Player.setType("sporty");
         player.respawn(Constant.ORIGIN, null);
         assertNotEquals("Sporty and nerdy students should have a different amount of hit points.",
                 nerdySpeed, player.speed);

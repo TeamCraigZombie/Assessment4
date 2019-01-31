@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="52" height="52" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="1">
+<map version="1.2" tiledversion="2018.11.14" orientation="orthogonal" renderorder="right-down" width="52" height="52" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="1">
  <tileset firstgid="1" source="interior.tsx"/>
  <tileset firstgid="1025" source="wood_tileset_3.tsx"/>
  <tileset firstgid="2049" source="floor_tileset.tsx"/>
- <layer id="1" name="Tile Layer 1" width="52" height="52">
+ <layer id="1" name="Background" width="52" height="52">
   <data encoding="csv">
 98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,
 98,257,258,257,258,257,258,257,258,257,258,257,258,257,258,257,258,3969,3970,3971,3972,3969,3970,3971,3972,3969,3970,3971,3972,3969,3970,3971,3972,3969,3970,3971,3972,3969,3970,3971,3972,3969,3970,3971,3972,3969,3970,3971,3972,3969,3970,98,
@@ -115,7 +115,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="collisionLayer" width="52" height="52">
+ <layer id="2" name="Foreground" width="52" height="52">
   <data encoding="csv">
 98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,
 98,387,388,387,388,387,388,387,388,387,388,389,390,389,390,201,202,0,0,0,0,0,0,515,516,517,518,0,0,0,0,0,0,0,0,3221226086,3221226085,3221226084,3221226083,0,0,0,0,0,0,0,0,0,0,29,30,98,
@@ -171,4 +171,5 @@
 98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98,98
 </data>
  </layer>
+ <objectgroup id="4" name="collisionLayer"/>
 </map>

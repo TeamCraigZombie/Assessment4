@@ -13,14 +13,14 @@ public class PowerUpInstaKill extends PowerUp {
     @Override
     public void activate() {
         super.activate();
-        super.player.attackDamage = Constant.ZOMBIEMAXHP; //make zombies one hit kill
+        Level.getPlayer().attackDamage = Constant.ZOMBIEMAXHP; //make zombies one hit kill
         this.getTexture().dispose();
     }
 
     @Override
     public void deactivate() {
         super.deactivate();
-        super.player.attackDamage = Constant.PLAYERDMG;
+        Level.getPlayer().attackDamage = Constant.PLAYERDMG;
     }
 
     @Override

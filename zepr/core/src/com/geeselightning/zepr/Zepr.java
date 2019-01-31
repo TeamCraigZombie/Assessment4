@@ -15,7 +15,7 @@ public class Zepr extends Game {
 	private SelectLevelScreen selectLevelScreen;
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
-	public int progress = 3;
+	public static int progress = 3;
 
 	public final static int MENU = 0;
 	public final static int STORY = 1;

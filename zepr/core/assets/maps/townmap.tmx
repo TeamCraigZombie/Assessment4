@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.2" tiledversion="2018.11.14" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="22">
  <tileset firstgid="1" source="dungeon tileset calciumtrice.tsx"/>
  <tileset firstgid="1051" source="Sidewalk_dark.tsx"/>
  <tileset firstgid="1115" source="wood_tileset_3.tsx"/>
  <tileset firstgid="2139" source="build_atlas.tsx"/>
- <layer id="1" name="Tile Layer 1" width="64" height="64">
+ <layer id="1" name="Background" width="64" height="64">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,1062,1063,1060,1061,0,
@@ -72,7 +72,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="collisionLayer" width="64" height="64">
+ <layer id="2" name="Foreground" width="64" height="64">
   <data encoding="csv">
 31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,
 31,1073745819,1073745820,1073745821,1073745822,1073745821,1073745822,1073745821,1073745822,1073745823,1073745824,2913,2914,2915,2916,2914,2915,2916,2917,2918,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2913,2914,2915,2916,2917,2916,2917,2914,2915,2916,2917,2918,31,
@@ -140,4 +140,40 @@
 31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31
 </data>
  </layer>
+ <objectgroup id="3" name="collisionLayer">
+  <object id="1" x="15" y="14" width="160" height="257"/>
+  <object id="3" x="174" y="12" width="143" height="97"/>
+  <object id="4" x="818" y="15" width="188" height="113"/>
+  <object id="5" x="881" y="127" width="125" height="158"/>
+  <object id="6" x="816" y="287" width="191" height="128"/>
+  <object id="7" x="16" y="752" width="127" height="255"/>
+  <object id="8" x="142" y="878" width="257" height="129"/>
+  <object id="9" x="655" y="880" width="193" height="127"/>
+  <object id="10" x="849" y="753" width="159" height="253"/>
+  <object id="11" x="-1" y="1" width="17" height="1023"/>
+  <object id="12" x="16" y="1008" width="1009" height="16"/>
+  <object id="13" x="1006" y="0" width="19" height="1024"/>
+  <object id="14" x="-3" y="0" width="1009" height="14"/>
+  <object id="15" x="355" y="326" width="54" height="54">
+   <ellipse/>
+  </object>
+  <object id="16" x="324" y="518" width="54" height="54">
+   <ellipse/>
+  </object>
+  <object id="17" x="421" y="424" width="54" height="54">
+   <ellipse/>
+  </object>
+  <object id="18" x="531" y="662" width="54" height="54">
+   <ellipse/>
+  </object>
+  <object id="19" x="677" y="488" width="54" height="54">
+   <ellipse/>
+  </object>
+  <object id="20" x="611" y="439" width="54" height="54">
+   <ellipse/>
+  </object>
+  <object id="21" x="628" y="310" width="54" height="54">
+   <ellipse/>
+  </object>
+ </objectgroup>
 </map>

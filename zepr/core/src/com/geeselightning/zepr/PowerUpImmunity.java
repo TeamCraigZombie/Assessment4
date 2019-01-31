@@ -13,14 +13,14 @@ public class PowerUpImmunity extends PowerUp {
     @Override
     public void activate() {
         super.activate();
-        super.player.isImmune = true;
+        Level.getPlayer().isImmune = true;
         this.getTexture().dispose();
     }
 
     @Override
     public void deactivate() {
         super.deactivate();
-        super.player.isImmune = false;
+        Level.getPlayer().isImmune = false;
     }
 
     @Override

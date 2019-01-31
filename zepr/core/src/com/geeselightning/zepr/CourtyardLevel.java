@@ -26,8 +26,8 @@ public class CourtyardLevel extends Level {
     @Override
     public void complete() {
         // Update progress
-        if (parent.progress == parent.COURTYARD) {
-            parent.progress = parent.COMPLETE;
+        if (Zepr.progress == Zepr.COURTYARD) {
+            Zepr.progress = Zepr.COMPLETE;
         }
         // The stage is being replayed
     }

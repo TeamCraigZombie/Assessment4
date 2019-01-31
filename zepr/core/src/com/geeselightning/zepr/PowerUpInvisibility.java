@@ -13,14 +13,14 @@ public class PowerUpInvisibility extends PowerUp {
     @Override
     public void activate() {
         super.activate();
-        super.player.canBeSeen = false; //player is undetectable for 5 seconds
+        Level.getPlayer().canBeSeen = false; //player is undetectable for 5 seconds
         this.getTexture().dispose();
     }
 
     @Override
     public void deactivate() {
         super.deactivate();
-        super.player.canBeSeen = true;
+        Level.getPlayer().canBeSeen = true;
     }
 
     @Override
