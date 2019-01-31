@@ -1,7 +1,8 @@
-package com.geeselightning.zepr;
+package com.geeselightning.zepr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.geeselightning.zepr.Zepr;
 
 public class LoadingScreen implements Screen {
 

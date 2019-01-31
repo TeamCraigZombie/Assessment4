@@ -1,11 +1,16 @@
 package com.geeselightning.zepr;
 
 import com.badlogic.gdx.Game;
+import com.geeselightning.zepr.screens.LoadingScreen;
+import com.geeselightning.zepr.screens.MenuScreen;
+import com.geeselightning.zepr.screens.SelectLevelScreen;
+import com.geeselightning.zepr.screens.StoryScreen;
 
 public class Zepr extends Game {
 
 	private LoadingScreen loadingScreen;
 	private MenuScreen menuScreen;
+	private StoryScreen storyScreen;
 	private Level level;
 	private SelectLevelScreen selectLevelScreen;
 
@@ -13,6 +18,7 @@ public class Zepr extends Game {
 	public int progress = 3;
 
 	public final static int MENU = 0;
+	public final static int STORY = 1;
 	public final static int SELECT = 2;
 	public final static int TOWN = 3;
 	public final static int HALIFAX = 4;
@@ -26,6 +32,10 @@ public class Zepr extends Game {
 				if (menuScreen == null) menuScreen = new MenuScreen(this);
 				this.setScreen(menuScreen);
 				break;
+            case STORY:
+                storyScreen = new StoryScreen(this);
+                this.setScreen(storyScreen);
+                break;
 			case SELECT:
 				selectLevelScreen = new SelectLevelScreen(this);
 				this.setScreen(selectLevelScreen);

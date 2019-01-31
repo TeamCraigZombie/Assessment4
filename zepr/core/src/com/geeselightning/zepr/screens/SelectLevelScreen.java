@@ -1,4 +1,4 @@
-package com.geeselightning.zepr;
+package com.geeselightning.zepr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.Color;
+import com.geeselightning.zepr.Player;
+import com.geeselightning.zepr.Zepr;
 
 public class SelectLevelScreen implements Screen {
 

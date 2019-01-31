@@ -1,4 +1,4 @@
-package com.geeselightning.zepr;
+package com.geeselightning.zepr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.geeselightning.zepr.Zepr;
 
 public class MenuScreen implements Screen {
 
