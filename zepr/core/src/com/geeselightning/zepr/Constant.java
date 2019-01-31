@@ -12,7 +12,7 @@ public final class Constant {
     public static final float ZOMBIESPEED = 0.02f;
     public static final int ZOMBIEMAXHP = 100;
     public static final int ZOMBIEDMG = 10;
-    public static final int ZOMBIERANGE = 30;
+    public static final int ZOMBIERANGE = 20;
     public static final float ZOMBIEHITCOOLDOWN = 1;
     public static final float NERDYHPMULT = 1.5f;
     public static final float NERDYDMGMULT = 1;
@@ -24,7 +24,7 @@ public final class Constant {
     public static final float ARTSYDMGMULT = 1.5f;
     public static final float ARTSYSPEEDMULT = 1;
     public static final int HEALUP = 30;
-    public static final int SPEEDUP = 50;
+    public static final float SPEEDUP = 0.1f;
     public static final float SPEEDUPTIME = 10;
     public static final float IMMUNITYTIME = 5;
     public static final float INSTAKILLTIME = 5;

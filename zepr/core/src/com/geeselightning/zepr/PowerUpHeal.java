@@ -22,13 +22,4 @@ public class PowerUpHeal extends PowerUp {
         	Level.getPlayer().health = (int)(Level.getPlayer().HPMult * Constant.PLAYERMAXHP);
         }
     }
-
-    @Override
-    public void update(float delta) {
-        if (active) {
-            super.deactivate();
-            this.getTexture().dispose();
-        }
-    }
-
 }

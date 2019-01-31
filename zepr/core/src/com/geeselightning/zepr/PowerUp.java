@@ -9,27 +9,27 @@ public class PowerUp extends Sprite {
     public int type;
     Level currentLevel;
     public boolean active;
+    public float timeRemaining;
 
     public PowerUp(int type, Texture texture, Level currentLevel) {
         super(new Sprite(texture));
         this.type = type;
         this.currentLevel = currentLevel;
-        if (currentLevel != null) {
+        if (currentLevel != null)
             // Tests pass a null currentLevel
             setPosition(currentLevel.powerSpawn.x, currentLevel.powerSpawn.y);
-        }
     }
 
     public void activate(){
         active = true;
+        this.getTexture().dispose();
     }
 
     public void deactivate(){
         active = false;
-        if (currentLevel != null) {
+        if (currentLevel != null)
             // Tests pass a null currentLevel
             currentLevel.currentPowerUp = null;
-        }
     }
 
     public boolean overlapsPlayer(){
@@ -38,6 +38,12 @@ public class PowerUp extends Sprite {
         return rectanglePlayer.overlaps(rectanglePower);
     }
 
-    public void update(float delta) {}
+    public void update(float delta) {
+        if (active) {
+            timeRemaining -= delta;
 
+            if (timeRemaining < 0)
+                deactivate();
+        }
+    }
 }

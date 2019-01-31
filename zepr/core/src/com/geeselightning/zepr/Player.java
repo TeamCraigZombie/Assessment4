@@ -39,53 +39,41 @@ public class Player extends Character {
         if (canHitGlobal(zombie, hitRange) && hitRefresh > hitCooldown) {
             zombie.takeDamage(attackDamage);
             hitRefresh = 0;
-        } else {
+        } else
             hitRefresh += delta;
-        }
     }
 
     public void respawn(Vector2 playerSpawn, Level level){
+
         setPosition(playerSpawn.x, playerSpawn.y);
-        if (playertype == "nerdy"){
+
+        if (playertype == "nerdy") {
             dmgMult = Constant.NERDYDMGMULT;
             HPMult = Constant.NERDYHPMULT;
             speedMult = Constant.NERDYSPEEDMULT;
-        }
-        else if (playertype == "sporty"){
+            mainTexture = new Texture("player01.png");
+            attackTexture = new Texture("player01_attack.png");
+        } else if (playertype == "sporty") {
             dmgMult = Constant.SPORTYDMGMULT;
             HPMult = Constant.SPORTYHPMULT;
             speedMult = Constant.SPORTYSPEEDMULT;
+            mainTexture = new Texture("player02.png");
+            attackTexture = new Texture("player02_attack.png");
         }
-        else if (playertype == "Artsy"){
+        else {
             dmgMult = Constant.ARTSYDMGMULT;
             HPMult = Constant.ARTSYHPMULT;
             speedMult = Constant.ARTSYSPEEDMULT;
+            mainTexture = new Texture("player03.png");
+            attackTexture = new Texture("player03_attack.png");
         }
-        else if (playertype == null){
-            dmgMult =1;
-            HPMult = 1;
-            speedMult = 1;
-        }
+
+        setTexture(mainTexture);
+
         this.attackDamage = (int)(Constant.PLAYERDMG * dmgMult);
         this.speed = Constant.PLAYERSPEED * speedMult;
         this.health = (int)(HPMult * Constant.PLAYERMAXHP);
         this.currentLevel = level;
-
-        if (playertype == "nerdy") {
-            mainTexture = new Texture("player01.png");
-            attackTexture = new Texture("player01_attack.png");
-            setTexture(mainTexture);
-        } else if (playertype == "sporty") {
-            // playertype == sporty
-            mainTexture = new Texture("player02.png");
-            attackTexture = new Texture("player02_attack.png");
-            setTexture(mainTexture);
-        }
-        else {
-        	mainTexture = new Texture("player03.png");
-            attackTexture = new Texture("player03_attack.png");
-            setTexture(mainTexture);
-        }
     }
 
     @Override
@@ -98,9 +86,8 @@ public class Player extends Character {
         direction = getDirectionTo(currentLevel.getMouseWorldCoordinates());
 
         // When you die, end the level.
-        if (health <= 0) {
+        if (health <= 0)
             currentLevel.gameOver();
-        }
 
         // Gives the player the attack texture for 0.1s after an attack.
         //if (hitRefresh <= 0.1 && getTexture() != attackTexture) {
@@ -129,10 +116,9 @@ public class Player extends Character {
 
     @Override
     public void takeDamage(int dmg){
-        if(!isImmune){
+        if(!isImmune)
             //If powerUpImmunity is activated
             health -= dmg;
-        }
     }
 
 }

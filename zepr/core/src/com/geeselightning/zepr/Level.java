@@ -41,7 +41,6 @@ public class Level implements Screen {
     private int currentWave = 1;
     public int zombiesRemaining; // the number of zombies left to kill to complete the wave
     public int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
-    private boolean pauseButton;
     Texture blank;
     Vector2 powerSpawn;
     PowerUp currentPowerUp = null;
@@ -56,14 +55,12 @@ public class Level implements Screen {
    
     	parent = zepr;
         this.zombieSpawnPoints = zombieSpawnPoints;
-        this.isPaused = false;
         this.blank = new Texture("blank.png");
         this.powerSpawn = powerSpawn;
         
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
         aliveZombies = new ArrayList<Zombie>();
         inputProcessor = new ZeprInputProcessor();
-        pauseButton = false;
         
         progressLabel = new Label("", skin);
         healthLabel = new Label("", skin);
@@ -172,35 +169,28 @@ public class Level implements Screen {
 
     @Override
     public void show() {
-        // Start the stage unpaused.
-        isPaused = false;
     }
 
     private void pauseGame() {
+        isPaused = true;
         // Input processor has to be changed back once unpaused.
         Gdx.input.setInputProcessor(stage);
 
         TextButton resume = new TextButton("Resume", skin);
         TextButton exit = new TextButton("Exit", skin);
 
-        if (!pauseButton) {
-
-            table.clear();
-            table.center();
-            table.add(resume).pad(10);
-            table.row();
-            table.add(exit);
-            pauseButton = true;
-        }
-
+        table.clear();
+        table.center();
+        table.add(resume).pad(10);
+        table.row();
+        table.add(exit);
         // Defining actions for the resume button.
         resume.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                isPaused = false;
                 // Change input processor back
                 Gdx.input.setInputProcessor(inputProcessor);
-                pauseButton = false;
+                resumeGame();
             }
         });
 
@@ -214,6 +204,7 @@ public class Level implements Screen {
     }
 
     private void resumeGame() {
+        isPaused = false;
         table.clear();
         table.top().left();
         table.add(progressLabel).pad(10);
@@ -229,56 +220,51 @@ public class Level implements Screen {
     	 // Clears the screen to black.
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-          	isPaused = !isPaused;
-          	
-          	if(isPaused) {
-                pauseGame();
-          	}
-          	else {
-                resumeGame();
-          	}
-        }   
-        
+
         if (!isPaused){
-    
+
             update(delta);
 
-            // Keep the player central in the screen.
-            camera.position.set(player.getCenter().x, player.getCenter().y, 0);
-            camera.update();
+            if (!isPaused) {
 
-            renderer.setView(camera);
-            renderer.render();
-                  
-            Batch batch = renderer.getBatch();
-            batch.begin();
+                // Keep the player central in the screen.
+                camera.position.set(player.getCenter().x, player.getCenter().y, 0);
+                camera.update();
 
-            player.draw(batch);
+                renderer.setView(camera);
+                renderer.render();
 
-      	    // Draw zombies
-            for (Zombie zombie : aliveZombies)
-                zombie.draw(batch);
-            
-            if (currentPowerUp != null) {
-                // Activate the powerup up if the player moves over it and it's not already active
-                // Only render the powerup if it is not active, otherwise it disappears
-                if(!currentPowerUp.active) {
-                    if (currentPowerUp.overlapsPlayer())
-                        currentPowerUp.activate();
-                    currentPowerUp.draw(batch);
+                Batch batch = renderer.getBatch();
+                batch.begin();
+
+                player.draw(batch);
+
+                // Draw zombies
+                for (Zombie zombie : aliveZombies)
+                    zombie.draw(batch);
+
+                if (currentPowerUp != null) {
+                    // Activate the powerup up if the player moves over it and it's not already active
+                    // Only render the powerup if it is not active, otherwise it disappears
+                    if (!currentPowerUp.active) {
+                        if (currentPowerUp.overlapsPlayer())
+                            currentPowerUp.activate();
+                        currentPowerUp.draw(batch);
+                    }
+                    currentPowerUp.update(delta);
                 }
-                currentPowerUp.update(delta);
-            }
 
-            batch.end();
-                    
-            debugRenderer.render(world, camera.combined.scl(physicsDensity));
+                batch.end();
+
+                debugRenderer.render(world, camera.combined.scl(physicsDensity));
+            }
         }
         
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE))
+            pauseGame();
     }
     
     public void update(float delta) {
@@ -377,8 +363,8 @@ public class Level implements Screen {
         debugRenderer.dispose();
         if (currentPowerUp != null)
             currentPowerUp.getTexture().dispose();
-        player.getTexture().dispose();
         for (Zombie zombie : aliveZombies)
-            zombie.getTexture().dispose();
+            zombie.dispose();
+        player.dispose();
     }
 }

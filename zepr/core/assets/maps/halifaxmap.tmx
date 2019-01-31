@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2018.11.14" orientation="orthogonal" renderorder="right-down" width="45" height="45" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="30">
+<map version="1.2" tiledversion="2018.11.14" orientation="orthogonal" renderorder="right-down" width="45" height="45" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="37">
  <tileset firstgid="1" source="dungeon tileset calciumtrice.tsx"/>
  <tileset firstgid="1051" source="interior.tsx"/>
  <layer id="1" name="Background" width="45" height="45">
@@ -117,26 +117,12 @@
   <object id="15" x="677" y="647" width="25" height="48"/>
   <object id="18" x="18" y="667" width="184" height="23"/>
   <object id="19" x="107" y="579" width="28" height="56"/>
-  <object id="21" x="96" y="157" width="34" height="26">
-   <ellipse/>
-  </object>
-  <object id="24" x="255" y="206" width="34" height="26">
-   <ellipse/>
-  </object>
-  <object id="25" x="431" y="110" width="34" height="26">
-   <ellipse/>
-  </object>
-  <object id="26" x="544" y="109" width="34" height="26">
-   <ellipse/>
-  </object>
-  <object id="27" x="623" y="110" width="34" height="26">
-   <ellipse/>
-  </object>
-  <object id="28" x="160" y="446" width="34" height="26">
-   <ellipse/>
-  </object>
-  <object id="29" x="335" y="381" width="34" height="26">
-   <ellipse/>
-  </object>
+  <object id="30" x="97" y="160" width="30" height="27"/>
+  <object id="31" x="258" y="207.5" width="30" height="27"/>
+  <object id="32" x="434" y="112.5" width="30" height="27"/>
+  <object id="33" x="545" y="111.5" width="30" height="27"/>
+  <object id="34" x="625" y="112.5" width="30" height="27"/>
+  <object id="35" x="337" y="381.5" width="30" height="27"/>
+  <object id="36" x="161" y="448.5" width="30" height="27"/>
  </objectgroup>
 </map>
