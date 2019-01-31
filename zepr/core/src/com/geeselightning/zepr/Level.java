@@ -99,7 +99,7 @@ public class Level implements Screen {
         camera = new OrthographicCamera();
 
         //reset player instance
-        player.respawn(playerSpawn, this);
+        player.respawn(playerSpawn);
 
         Gdx.input.setInputProcessor(inputProcessor);
 

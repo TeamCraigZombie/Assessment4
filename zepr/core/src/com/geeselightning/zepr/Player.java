@@ -25,27 +25,6 @@ public class Player extends Character {
 
     public Player(Sprite sprite, Vector2 playerSpawn) {
         super(sprite, playerSpawn, level);
-    }
-    
-    public static void setLevel(Level currentLevel) {
-    	level = currentLevel;
-    }
-
-    public static void setType(String playertype){
-        Player.playertype = playertype;
-    }
-
-    public void attack(Zombie zombie, float delta) {
-        if (canHitGlobal(zombie, hitRange) && hitRefresh > hitCooldown) {
-            zombie.takeDamage(attackDamage);
-            hitRefresh = 0;
-        } else
-            hitRefresh += delta;
-    }
-
-    public void respawn(Vector2 playerSpawn, Level level){
-
-        setPosition(playerSpawn.x, playerSpawn.y);
 
         if (playertype == "nerdy") {
             dmgMult = Constant.NERDYDMGMULT;
@@ -70,10 +49,31 @@ public class Player extends Character {
 
         setTexture(mainTexture);
 
-        this.attackDamage = (int)(Constant.PLAYERDMG * dmgMult);
-        this.speed = Constant.PLAYERSPEED * speedMult;
-        this.health = (int)(HPMult * Constant.PLAYERMAXHP);
-        this.currentLevel = level;
+        health = maxhealth = (int) HPMult * Constant.PLAYERMAXHP;
+        attackDamage = (int)(Constant.PLAYERDMG * dmgMult);
+        speed = Constant.PLAYERSPEED * speedMult;
+    }
+    
+    public static void setLevel(Level currentLevel) {
+    	level = currentLevel;
+    }
+
+    public static void setType(String playertype){
+        Player.playertype = playertype;
+    }
+
+    public void attack(Zombie zombie, float delta) {
+        if (canHitGlobal(zombie, hitRange) && hitRefresh > hitCooldown) {
+            zombie.takeDamage(attackDamage);
+            hitRefresh = 0;
+        } else
+            hitRefresh += delta;
+    }
+
+    public void respawn(Vector2 playerSpawn){
+
+        body.setTransform(playerSpawn.x / Level.physicsDensity, playerSpawn.y / Level.physicsDensity, 0);
+        health = maxhealth;
     }
 
     @Override

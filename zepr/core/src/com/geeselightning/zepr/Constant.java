@@ -5,13 +5,13 @@ import com.badlogic.gdx.math.Vector2;
 public final class Constant {
     public static final Vector2 ORIGIN = new Vector2(0, 0);
     public static final float PLAYERSPEED = 0.1f;
-    public static final int PLAYERMAXHP = 100;
-    public static final int PLAYERDMG = 20;
+    public static final int PLAYERMAXHP = 150;
+    public static final int PLAYERDMG = 15;
     public static final int PLAYERRANGE = 50;
     public static final float PLAYERHITCOOLDOWN = 0.2f;
     public static final float ZOMBIESPEED = 0.02f;
     public static final int ZOMBIEMAXHP = 100;
-    public static final int ZOMBIEDMG = 10;
+    public static final int ZOMBIEDMG = 8;
     public static final int ZOMBIERANGE = 20;
     public static final float ZOMBIEHITCOOLDOWN = 1;
     public static final float NERDYHPMULT = 1.5f;

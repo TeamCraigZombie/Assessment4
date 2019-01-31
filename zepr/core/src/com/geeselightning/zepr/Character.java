@@ -14,7 +14,8 @@ public class Character extends Sprite {
 
     Vector2 velocity = new Vector2(); // 2D vector
     public float speed;
-    int health = 100;
+    int health;
+    int maxhealth;
     // direction is a bearing in radians
     double direction = 0;
     Level currentLevel;
@@ -30,6 +31,8 @@ public class Character extends Sprite {
         body.setTransform(spawn.x / Level.physicsDensity, spawn.y / Level.physicsDensity, 0);
         body.setFixedRotation(true);
         body.setLinearDamping(50.f);
+
+        health = maxhealth = 100;
     }
 
     private void GenerateBodyFromSprite(Sprite sprite) {
@@ -70,19 +73,17 @@ public class Character extends Sprite {
 
     @Override
     public void draw(Batch batch) {
-        
-     // Draw zombie health bars
-        int fillAmount = (int) (getHealth() / 100) * 30;
+
+        // Draw health bar
+        final int fillAmount = health > 0 ? (int)(32 * (float)health/maxhealth) : 0;
         batch.setColor(Color.BLACK);
         batch.draw(currentLevel.blank, getX(), getY()+32, 32, 3);
         batch.setColor(Color.RED);
-        batch.draw(currentLevel.blank, getX()+1, getY()+33, fillAmount, 1);
+        batch.draw(currentLevel.blank, getX() + 1, getY() + 33, fillAmount, 1);
         batch.setColor(Color.WHITE);
-        
+
         setRotation((float) Math.toDegrees(-direction));
-
         super.draw(batch);
-
     }
 
     // hitRange has to be passed by the subclass from the canHit method.
