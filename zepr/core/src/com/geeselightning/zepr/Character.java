@@ -120,20 +120,32 @@ public class Character extends Sprite {
     }
 
     /**
-     * Calculates a normalised vector that points towards given physics coordinate.
+     * Calculates a normalised vector that points towards given coordinate.
      *
      * @param coordinate Vector2 representing the position of the object
      * @return normalised Vector2 that from this will point towards given coordinate
      */
     public Vector2 getDirNormVector(Vector2 coordinate) {
-        Vector2 charCenter = getPhysicsScaledPosition();
+        Vector2 charCenter = getCenter();
         // create vector that is the difference between character and the coordinate, and return it normalised
         Vector2 diffVector = new Vector2((coordinate.x - charCenter.x), (coordinate.y - charCenter.y));
         return diffVector.nor();
     }
 
-    public Vector2 getPhysicsScaledPosition() {
+    /**
+     * Gets the position in Box2D physics coordinates
+     * @return the position as Vector2
+     */
+    public Vector2 getPhysicsPosition() {
         return body.getPosition().scl(Level.physicsDensity);
+    }
+
+    /**
+     * Gets the position in pixel coordinates
+     * @return the position as Vector2
+     */
+    public Vector2 getPixelPosition() {
+        return new Vector2(getX(), getY());
     }
 
     /**
@@ -141,7 +153,7 @@ public class Character extends Sprite {
      */
     public void update() {
         // Update x, y position of character.     
-        Vector2 position = getPhysicsScaledPosition();
+        Vector2 position = getPhysicsPosition();
         setPosition(position.x-getWidth()/2, position.y-getHeight()/2);
     }
 

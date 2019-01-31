@@ -29,10 +29,7 @@ public class SelectLevelScreen implements Screen {
 
         // The stage is the controller which will react to inputs from the user.
         this.stage = new Stage(new ScreenViewport());
-    }
 
-    @Override
-    public void show() {
         // Send any input from the user to the stage.
         Gdx.input.setInputProcessor(stage);
 
@@ -204,11 +201,15 @@ public class SelectLevelScreen implements Screen {
         play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if ((stageLink != -1) && (playerSet == true)) {
+                if (stageLink != -1 && playerSet) {
                     parent.changeScreen(stageLink);
                 }
             }
         });
+    }
+
+    @Override
+    public void show() {
 
     }
 

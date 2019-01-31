@@ -32,10 +32,9 @@ public class Zombie extends Character {
         if (Level.getPlayer().canBeSeen) {
             // update velocity to move towards player
             // Vector2.scl scales the vector
-            velocity = getDirNormVector(Level.getPlayer().getPhysicsScaledPosition()).scl(speed);
-            System.out.println(velocity);
+            velocity = getDirNormVector(Level.getPlayer().getPixelPosition()).scl(speed);
             
-            body.applyLinearImpulse(body.getPosition().scl(1/Level.physicsDensity), velocity , true);
+            body.applyLinearImpulse(velocity, body.getPosition() , true);
 
             // update direction to face the player
             direction = getDirectionTo(Level.getPlayer().getCenter());
