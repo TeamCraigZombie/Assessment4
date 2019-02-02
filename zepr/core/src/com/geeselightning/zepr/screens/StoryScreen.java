@@ -35,41 +35,47 @@ public class StoryScreen implements Screen {
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
         table.setFillParent(true);
-        // table.setDebug(true); // Adds borders for the table.
+        //table.setDebug(true); // Adds borders for the table.
         stage.addActor(table);
 
         // Importing the necessary assets for the button textures.
         Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
 
         // Writing the story.
-        Label line1 = new Label( "Story goes here", skin, "subtitle");
-        line1.setWrap(true);
-        Label line2 = new Label("After a hard night of partying after the dreaded POPL exam,", skin, "subtitle");
-        line2.setWrap(true);
-        Label line3 = new Label("you wake up to find yourself in the middle of town," , skin, "subtitle");
-        line3.setWrap(true);
-        Label line4 = new Label("your friends nowhere to be found.", skin, "subtitle");
-        line4.setWrap(true);
+        Label line1 = new Label("After a hard night of partying following the dreaded POPL exam, you wake up\n" +
+                                     "to find yourself in the middle of town, your friends nowhere to be found.", skin);
+        Label line2 = new Label("As you try and recall how you ended up here, you hear a \n" +
+                                     "low rumbling sound coming from the alleyway near you.", skin);
+        Label line3 = new Label("A horde of decaying zombies suddenly appear from the alleyways,\n" +
+                                     "their clothes tattered, blood and bone sticking out of their bodies.", skin);
+        Label line4 = new Label("Not soon after, the zombies notice you and charge towards you, \n" +
+                                     "trampling over each other, their rumbles turning into screams and cries.\n" +
+                                     "But in the spur of the movement, you suddenly realize...\n", skin);
+        Label line5 = new Label("You forgot to hand in your SEPR Assessment!", skin, "subtitle");
+
         line1.setAlignment(Align.center);
         line2.setAlignment(Align.center);
         line3.setAlignment(Align.center);
         line4.setAlignment(Align.center);
+        line5.setAlignment(Align.center);
 
-        // Creating buttons.
+        // Creating continue button.
         TextButton cont = new TextButton("Continue", skin);
 
         // Adding content to the table (screen).
-        table.add(line1).colspan(3);
+        table.add(line1);
         table.row().pad(10, 40, 10, 40);
-        table.add(line2).colspan(3);
+        table.add(line2);
         table.row().pad(10, 40, 10, 40);
-        table.add(line3).colspan(3);
+        table.add(line3);
         table.row().pad(10, 40, 10, 40);
-        table.add(line4).colspan(3);
+        table.add(line4);
         table.row().pad(10, 40, 10, 40);
+        table.add(line5);
+        table.row().pad(10,40,10,40);
         table.add(cont);
 
-        // Defining actions for the start button.
+        // Defining actions for the continue button.
         cont.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

@@ -36,7 +36,7 @@ public class MenuScreen implements Screen {
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
         table.setFillParent(true);
-        // table.setDebug(true); // Adds borders for the table.
+        //table.setDebug(true); // Adds borders for the table.
         stage.addActor(table);
 
         // Importing the necessary assets for the button textures.
@@ -56,19 +56,19 @@ public class MenuScreen implements Screen {
         table.row().pad(10, 40, 10, 40);
         table.add(exit).fillX().uniformX();
 
+        // Defining actions for the start button.
+        start.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                parent.changeScreen(Zepr.STORY);
+            }
+        });
+
         // Defining actions for the exit button.
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.exit();
-            }
-        });
-
-        // Defining actions for the start button.
-        start.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Zepr.SELECT);
             }
         });
     }

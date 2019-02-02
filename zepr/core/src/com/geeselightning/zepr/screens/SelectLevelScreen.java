@@ -39,14 +39,14 @@ public class SelectLevelScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
 
         // Creating stage buttons.
-        final TextButton town = new TextButton("Town", skin);
-        TextButton halifax = new TextButton("Halifax", skin);
+        TextButton town      = new TextButton("Town", skin);
+        TextButton halifax   = new TextButton("Halifax", skin);
         TextButton courtyard = new TextButton("Courtyard", skin);
 
         // Creating character buttons.
-        TextButton nerdy = new TextButton("Nerdy",skin);
+        TextButton nerdy  = new TextButton("Nerdy",skin);
         TextButton sporty = new TextButton("Sporty",skin);
-        TextButton Artsy = new TextButton("Artsy",skin);
+        TextButton Artsy  = new TextButton("Artsy",skin);
 
         // Creating other buttons.
         TextButton play = new TextButton("Play", skin);
@@ -56,20 +56,20 @@ public class SelectLevelScreen implements Screen {
 
         // Creating stage descriptions.
         Label title = new Label("Choose a stage and character.", skin, "subtitle");
-        final String townDescription = "You wake up hungover in town to discover there is a zombie apocalypse.";
-        final String halifaxDescription = "You need to get your laptop with the work on it from your accomodation.";
+        final String townDescription      = "You wake up hungover in town to discover there is a zombie apocalypse.";
+        final String halifaxDescription   = "You need to get your laptop with the work on it from your accomodation.";
         final String courtyardDescription = "You should go to Courtyard and get some breakfast.";
-        final String lockedDescription = "This stage is locked until you complete the previous one.";
-        final String defaultDescription ="Select a stage from the buttons above.";
+        final String lockedDescription    = "This stage is locked until you complete the previous one.";
+        final String defaultDescription   = "Select a stage from the buttons above.";
         stageDescription = new Label(defaultDescription, skin);
         stageDescription.setWrap(true);
         stageDescription.setWidth(100);
         stageDescription.setAlignment(Align.center);
 
         // Creating character descriptions.
-        final String nerdyDescription = "Construct a mech suit for yourself so you can take more hits.";
+        final String nerdyDescription  = "Construct a mech suit for yourself so you can take more hits.";
         final String sportyDescription = "Work out so you run faster.";
-        final String ArtsyDescription = "Has extra Damage.";
+        final String ArtsyDescription  = "Has extra Damage.";
         final String defaultCharacterDescription = "Select a type of student from the buttons above.";
         characterDescription = new Label(defaultCharacterDescription,skin);
         characterDescription.setWrap(true);
@@ -79,7 +79,7 @@ public class SelectLevelScreen implements Screen {
         // Adding menu bar.
         Table menuBar = new Table();
         menuBar.setFillParent(true);
-        // menuBar.setDebug(true); // Adds borders for the table.
+        //menuBar.setDebug(true); // Adds borders for the table.
         stage.addActor(menuBar);
 
         menuBar.top().left();
@@ -91,7 +91,7 @@ public class SelectLevelScreen implements Screen {
         // Adding stage selector buttons.
         Table stageSelect = new Table();
         stageSelect.setFillParent(true);
-        // stageSelect.setDebug(true); // Adds borders for the table.
+        //stageSelect.setDebug(true); // Adds borders for the table.
         stage.addActor(stageSelect);
 
         stageSelect.center();
@@ -119,7 +119,7 @@ public class SelectLevelScreen implements Screen {
         // Adding play button at the bottom.
         Table bottomTable = new Table();
         bottomTable.setFillParent(true);
-        // bottomTable.setDebug(true); // Adds borders for the table.
+        //bottomTable.setDebug(true); // Adds borders for the table.
         stage.addActor(bottomTable);
 
         bottomTable.bottom();
@@ -173,7 +173,6 @@ public class SelectLevelScreen implements Screen {
         }
 
         //Defining actions for the nerdy button.
-
         nerdy.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -182,6 +181,7 @@ public class SelectLevelScreen implements Screen {
                 playerSet = true;
             }
         });
+        //Defining actions for the sporty button.
         sporty.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -190,6 +190,7 @@ public class SelectLevelScreen implements Screen {
                 playerSet = true;
             }
         });
+        //Defining actions for the artsy button.
         Artsy.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -222,7 +223,7 @@ public class SelectLevelScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Draws the stage.
-        this.stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        this.stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         this.stage.draw();
     }
 

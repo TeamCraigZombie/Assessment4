@@ -18,7 +18,7 @@ public class ZombieTest {
     @Test
     // Test 3.1.1
     public void zombieDoesNoDamageToPlayerWhenAtMaxRange() {
-        player.respawn(Constant.ORIGIN, null);
+        player.respawn(Constant.ORIGIN);
 
         Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE), null);
         double originalHealth = player.getHealth();
@@ -31,7 +31,7 @@ public class ZombieTest {
     @Test
     // Test 3.1.2
     public void zombieDoesDamageToPlayerWhenInRange() {
-        player.respawn(Constant.ORIGIN, null);
+        player.respawn(Constant.ORIGIN);
 
         Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE + 5), null);
         double originalHealth = player.getHealth();
@@ -45,7 +45,7 @@ public class ZombieTest {
     @Test
     // Test 3.1.3
     public void zombieDoesNoDamageToPlayerOutOfRange() {
-        player.respawn(Constant.ORIGIN, null);
+        player.respawn(Constant.ORIGIN);
 
         Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y - 100), null);
         double originalHealth = player.getHealth();
@@ -58,7 +58,7 @@ public class ZombieTest {
     @Test
     // Test 3.2.1
     public void zombieCannotAttackBeforeCooldownComplete() {
-        player.respawn(Constant.ORIGIN, null);
+        player.respawn(Constant.ORIGIN);
 
         Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y ), null);
         double originalHealth = player.getHealth();
@@ -72,7 +72,7 @@ public class ZombieTest {
     @Test
     // Test 3.2.2
     public void zombieCanAttackAfterCooldownComplete() {
-        player.respawn(Constant.ORIGIN, null);
+        player.respawn(Constant.ORIGIN);
 
         Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y ), null);
         double originalHealth = player.getHealth();

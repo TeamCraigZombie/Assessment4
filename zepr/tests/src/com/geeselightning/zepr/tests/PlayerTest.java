@@ -19,7 +19,7 @@ public class PlayerTest {
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         Vector2 originalPosition = new Vector2(player.getX(), player.getY());
         player.setPosition(10, 10);
-        player.respawn(new Vector2(0, 0), null);
+        player.respawn(new Vector2(0, 0));
         assertEquals("Position should reset when the player is respawned.", originalPosition, new Vector2(player.getX(), player.getY()));
     }
 
@@ -67,10 +67,10 @@ public class PlayerTest {
     public void playerTypesHaveDifferentHealth() {
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         Player.setType("nerdy");
-        player.respawn(Constant.ORIGIN, null);
+        player.respawn(Constant.ORIGIN);
         double nerdyHealth = player.getHealth();
         Player.setType("sporty");
-        player.respawn(Constant.ORIGIN, null);
+        player.respawn(Constant.ORIGIN);
         assertNotEquals("Sporty and nerdy students should have a different amount of hit points.",
                 nerdyHealth, player.getHealth(), 0.1);
     }
@@ -80,10 +80,10 @@ public class PlayerTest {
     public void playerTypesHaveDifferentSpeed() {
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
         Player.setType("nerdy");
-        player.respawn(Constant.ORIGIN, null);
+        player.respawn(Constant.ORIGIN);
         double nerdySpeed = player.speed;
         Player.setType("sporty");
-        player.respawn(Constant.ORIGIN, null);
+        player.respawn(Constant.ORIGIN);
         assertNotEquals("Sporty and nerdy students should have a different amount of hit points.",
                 nerdySpeed, player.speed);
     }
