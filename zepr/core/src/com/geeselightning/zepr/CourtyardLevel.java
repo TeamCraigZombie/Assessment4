@@ -17,18 +17,23 @@ public class CourtyardLevel extends Level {
     );
 
     // Defining the number of zombies to be spawned for each wave
-    private static final int[] waves = new int[]{7, 12, 17};
+    private static final int[] waves = new int[]{13, 17, 22};
 
     public CourtyardLevel(Zepr zepr) {
-        super(zepr, mapLocation, playerSpawn, zombieSpawnPoints, waves, powerSpawn);
+        super(zepr, mapLocation, playerSpawn, zombieSpawnPoints, waves, powerSpawn, true);
     }
+    
+    
 
     @Override
     public void complete() {
+    	
         // Update progress
         if (Zepr.progress == Zepr.COURTYARD) {
             Zepr.progress = Zepr.COMPLETE;
         }
+        
         // The stage is being replayed
     }
+    
 }

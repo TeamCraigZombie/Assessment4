@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.geeselightning.zepr.screens.TextScreen;
 
@@ -51,7 +52,7 @@ public class Level implements Screen {
 
     Label progressLabel, healthLabel, powerupLabel;
 
-    public Level(Zepr zepr, String mapLocation, Vector2 playerSpawn, ArrayList<Vector2> zombieSpawnPoints, int[] waves, Vector2 powerSpawn) {
+    public Level(Zepr zepr, String mapLocation, Vector2 playerSpawn, ArrayList<Vector2> zombieSpawnPoints, int[] waves, Vector2 powerSpawn, boolean isFinal) {
    
     	parent = zepr;
         this.zombieSpawnPoints = zombieSpawnPoints;
@@ -125,6 +126,9 @@ public class Level implements Screen {
     public World getBox2DWorld() {
     	return world;
     }
+    static {
+        GdxNativesLoader.load();
+    }
 
 
     /**
@@ -144,10 +148,22 @@ public class Level implements Screen {
      */
     public void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints) {
 
-        for (int i = 0; i < numberToSpawn; i++) {
+        for (int i = 0; i < numberToSpawn/3; i++) {
 
             Zombie zombie = (new Zombie(new Sprite(new Texture("zombie01.png")),
-                    spawnPoints.get(i % spawnPoints.size()), this));       
+                    spawnPoints.get(i % spawnPoints.size()), this, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP));       
+            aliveZombies.add(zombie);
+        }
+        for (int i = 0; i < numberToSpawn/3; i++) {
+
+            Zombie zombie = (new Zombie(new Sprite(new Texture("player01.png")),
+                    spawnPoints.get(i % spawnPoints.size()), this, Constant.ZOMBIESPEED * 1.5f, Constant.ZOMBIEMAXHP));       
+            aliveZombies.add(zombie);
+        }
+        for (int i = 0; i < numberToSpawn/3; i++) {
+
+            Zombie zombie = (new Zombie(new Sprite(new Texture("player02.png")),
+                    spawnPoints.get(i % spawnPoints.size()), this, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP * 2));       
             aliveZombies.add(zombie);
         }
     }

@@ -20,7 +20,7 @@ public class TownLevel extends Level {
     private static final int[] waves = new int[]{5, 10, 15};
 
     public TownLevel(Zepr zepr) {
-        super(zepr, mapLocation, playerSpawn, zombieSpawnPoints, waves, powerSpawn);
+        super(zepr, mapLocation, playerSpawn, zombieSpawnPoints, waves, powerSpawn, false);
     }
 
     @Override
