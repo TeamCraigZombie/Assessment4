@@ -44,8 +44,6 @@ public class Level implements Screen {
     static Texture blank;
     PowerUp currentPowerUp = null;
     private Box2DDebugRenderer debugRenderer;
-    private static float worldScale = 1.f;
-    static float physicsDensity = 100.f;
     LevelConfig config;
     private World world;
     Label progressLabel, healthLabel, powerupLabel;
@@ -82,11 +80,11 @@ public class Level implements Screen {
         map = loader.load(config.mapLocation);
 
         // renderer renders the .tmx map as an orthogonal (top-down) map.
-        renderer = new OrthogonalTiledMapRenderer(map, worldScale);
+        renderer = new OrthogonalTiledMapRenderer(map, Constant.worldScale);
            
         debugRenderer = new Box2DDebugRenderer();
         
-        MapBodyBuilder.buildShapes(map, physicsDensity / worldScale, world);
+        MapBodyBuilder.buildShapes(map, Constant.physicsDensity / Constant.worldScale, world);
         
         player = new Player(new Sprite(new Texture("player01.png")), new Vector2(300, 300), world);
         
@@ -266,7 +264,7 @@ public class Level implements Screen {
 
                 batch.end();
 
-                debugRenderer.render(world, camera.combined.scl(physicsDensity));
+                debugRenderer.render(world, camera.combined.scl(Constant.physicsDensity));
             }
         }
         
@@ -309,19 +307,19 @@ public class Level implements Screen {
                 int random = (int)(Math.random() * 5 + 1);
                 switch(random) {
 	                case 1:
-	                	currentPowerUp = new PowerUpHeal(this);
+	                	currentPowerUp = new PowerUpHeal(this, player);
 	                	break;
 	                case 2:
-	                	currentPowerUp = new PowerUpSpeed(this);
+	                	currentPowerUp = new PowerUpSpeed(this, player);
 	                	break;
 	                case 3:
-	                	currentPowerUp = new PowerUpImmunity(this);
+	                	currentPowerUp = new PowerUpImmunity(this, player);
 	                	break;
 	                case 4:
-	                	currentPowerUp = new PowerUpInstaKill(this);
+	                	currentPowerUp = new PowerUpInstaKill(this, player);
 	                	break;
 	                case 5:
-	                	currentPowerUp = new PowerUpInvisibility(this);
+	                	currentPowerUp = new PowerUpInvisibility(this, player);
 	                	break;
                 }
             }

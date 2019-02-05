@@ -25,7 +25,14 @@ public class Player extends Character {
 
     public Player(Sprite sprite, Vector2 playerSpawn, World world) {
         super(sprite, playerSpawn, world);
+        refreshAttributes();
+    }
 
+    public static void setType(String playertype){
+        Player.playertype = playertype;
+    }
+
+    public void refreshAttributes() {
         if (playertype == "nerdy") {
             dmgMult = Constant.NERDYDMGMULT;
             HPMult = Constant.NERDYHPMULT;
@@ -54,10 +61,6 @@ public class Player extends Character {
         speed = Constant.PLAYERSPEED * speedMult;
     }
 
-    public static void setType(String playertype){
-        Player.playertype = playertype;
-    }
-
     public void attack(Zombie zombie, float delta) {
         if (canHitGlobal(zombie, hitRange) && hitRefresh > hitCooldown) {
             zombie.takeDamage(attackDamage);
@@ -68,7 +71,7 @@ public class Player extends Character {
 
     public void respawn(Vector2 playerSpawn){
 
-        body.setTransform(playerSpawn.x / Level.physicsDensity, playerSpawn.y / Level.physicsDensity, 0);
+        body.setTransform(playerSpawn.x / Constant.physicsDensity, playerSpawn.y / Constant.physicsDensity, 0);
         health = maxhealth;
     }
     

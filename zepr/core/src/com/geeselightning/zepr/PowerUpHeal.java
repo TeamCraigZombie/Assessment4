@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class PowerUpHeal extends PowerUp {
 
-    public PowerUpHeal(Level currentLevel) {
-        super(1, new Texture("heal.png"), currentLevel);
+    public PowerUpHeal(Level currentLevel, Player player) {
+        super(1, new Texture("heal.png"), currentLevel, player);
     }
 
     @Override
@@ -13,13 +13,13 @@ public class PowerUpHeal extends PowerUp {
         super.activate();
 
         //Health cannot be more than max health
-        if(Level.getPlayer().health+Constant.HEALUP <= (int)(Level.getPlayer().HPMult * Constant.PLAYERMAXHP)) {
+        if(player.health+Constant.HEALUP <= (int)(player.HPMult * Constant.PLAYERMAXHP)) {
 
-        	Level.getPlayer().health += Constant.HEALUP;
+        	player.health += Constant.HEALUP;
 
         } else {
 
-        	Level.getPlayer().health = (int)(Level.getPlayer().HPMult * Constant.PLAYERMAXHP);
+        	player.health = (int)(player.HPMult * Constant.PLAYERMAXHP);
         }
     }
 }

@@ -14,7 +14,7 @@ public class Zombie extends Character {
     public Zombie(Sprite sprite, Vector2 zombieSpawn, World world, float speed, int health) {
         super(sprite, zombieSpawn, world);
          this.speed = speed;
-         this.health = health;
+         maxhealth = this.health = health;
     }
 
     public void attack(Player player, float delta) {

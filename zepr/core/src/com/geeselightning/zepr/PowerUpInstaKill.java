@@ -4,20 +4,20 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class PowerUpInstaKill extends PowerUp {
 
-    public PowerUpInstaKill(Level currentLevel) {
-        super(4, new Texture("instakill.png"), currentLevel);
+    public PowerUpInstaKill(Level currentLevel, Player player) {
+        super(4, new Texture("instakill.png"), currentLevel, player);
     }
 
     @Override
     public void activate() {
         super.activate();
-        Level.getPlayer().attackDamage = Constant.ZOMBIEMAXHP; //make zombies one hit kill
+        player.attackDamage = Constant.ZOMBIEMAXHP; //make zombies one hit kill
         timeRemaining = Constant.INSTAKILLTIME;
     }
 
     @Override
     public void deactivate() {
         super.deactivate();
-        Level.getPlayer().attackDamage = Constant.PLAYERDMG;
+        player.attackDamage = Constant.PLAYERDMG;
     }
 }
