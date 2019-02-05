@@ -145,13 +145,12 @@ public class SelectLevelScreen implements Screen {
                 stageLink = Zepr.TOWN;
             }
         });
-<<<<<<< Updated upstream:zepr/core/src/com/geeselightning/zepr/screens/SelectLevelScreen.java
+
 
         if (Zepr.progress <= Zepr.TOWN) {
-=======
+
       
-        if (parent.progress <= parent.TOWN) {
->>>>>>> Stashed changes:zepr/core/src/com/geeselightning/zepr/SelectLevelScreen.java
+        if (Zepr.progress <= Zepr.TOWN) {
             halifax.setColor(Color.DARK_GRAY);
             halifax.getLabel().setColor(Color.DARK_GRAY);
         } else {
@@ -216,12 +215,8 @@ public class SelectLevelScreen implements Screen {
                 }
             }
         });
-<<<<<<< Updated upstream:zepr/core/src/com/geeselightning/zepr/screens/SelectLevelScreen.java
-    }
-
-    @Override
-    public void show() {
-=======
+        
+        // Defining actions for the MiniGame button
         
         minigame.addListener(new ChangeListener() {
         	@Override
@@ -230,7 +225,16 @@ public class SelectLevelScreen implements Screen {
         	}
         	
         });
->>>>>>> Stashed changes:zepr/core/src/com/geeselightning/zepr/SelectLevelScreen.java
+      }
+
+    }
+
+    @Override
+    public void show() {
+
+        
+       
+
 
     }
 

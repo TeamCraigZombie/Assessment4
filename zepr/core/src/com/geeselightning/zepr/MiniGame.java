@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.geeselightning.zepr.screens.TextScreen;
 
 public class MiniGame implements Screen {
 	
@@ -30,7 +31,6 @@ public class MiniGame implements Screen {
 	private String zombieTexture = "tempZombie.png";
 	static long timer = 0;
 	private long last = 0;
-	private Queue<MiniZombie> respawnQueue = new Queue<MiniZombie>();
 	private  Queue<MiniZombie> ZombieQueue = new Queue<MiniZombie>();
 	private MiniZombie tempZombie;
 	private BitmapFont font;
@@ -202,26 +202,12 @@ public class MiniGame implements Screen {
             spriteBatch.end();
             
             this.generateZombie();
-       
-            // Checks the Respawn queue and adds respawned zombies to main queue
-            
-         	
-        	for(int i = 0; i < respawnQueue.size; i++) {
-        		
-	        	tempZombie = respawnQueue.removeFirst();
-	        	tempZombie.spawn();
-	
-	    		ZombieQueue.addFirst(tempZombie);          	
-            }
-                          
+                    
             // Draws zombies onto stage in order of depth
             
-            for(int i = 0; i < ZombieQueue.size; i++) {
-            	  	        	
-            	tempZombie = ZombieQueue.get(i);
-            	
-            	isVisible(tempZombie, i);
-            	
+            for(int i = 0; i < ZombieQueue.size; i++) {          	  	        	
+            	tempZombie = ZombieQueue.get(i);         	
+            	isVisible(tempZombie, i);     	
             	if(tempZombie.getDamage() && reloaded) {   		
             		kills++;
             		trigger = timer;		

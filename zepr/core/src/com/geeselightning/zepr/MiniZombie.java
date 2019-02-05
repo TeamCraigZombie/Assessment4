@@ -116,7 +116,7 @@ public class MiniZombie {
 	
 	public void spawn() {
 		
-		spawnX = ThreadLocalRandom.current().nextInt(100, 1080);
+		spawnX = ThreadLocalRandom.current().nextInt(100, 980);
 		zombie.setPosition(spawnX, y);	
 		zombie.setSize(initialWidth, initialWidth);		
 	}
