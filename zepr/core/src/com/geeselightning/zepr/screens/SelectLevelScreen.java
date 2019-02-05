@@ -34,7 +34,7 @@ public class SelectLevelScreen implements Screen {
 
         // Send any input from the user to the stage.
         Gdx.input.setInputProcessor(stage);
-
+        
         // Importing the necessary assets for the button textures.
         Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
 
@@ -42,7 +42,7 @@ public class SelectLevelScreen implements Screen {
         TextButton town      = new TextButton("Town", skin);
         TextButton halifax   = new TextButton("Halifax", skin);
         TextButton courtyard = new TextButton("Courtyard", skin);
-
+        
         // Creating character buttons.
         TextButton nerdy  = new TextButton("Nerdy",skin);
         TextButton sporty = new TextButton("Sporty",skin);
@@ -53,6 +53,7 @@ public class SelectLevelScreen implements Screen {
         TextButton save = new TextButton("Save", skin);
         TextButton load = new TextButton("Load", skin);
         TextButton back = new TextButton("Back", skin);
+        TextButton minigame = new TextButton("Mini Game", skin);
 
         // Creating stage descriptions.
         Label title = new Label("Choose a stage and character.", skin, "subtitle");
@@ -103,7 +104,7 @@ public class SelectLevelScreen implements Screen {
         stageSelect.add(town).pad(10);
         stageSelect.add(halifax).pad(10);
         stageSelect.add(courtyard).pad(10);
-
+   
         stageSelect.row();
         stageSelect.add(stageDescription).width(1000f).colspan(3);
 
@@ -124,6 +125,7 @@ public class SelectLevelScreen implements Screen {
 
         bottomTable.bottom();
         bottomTable.add(play).pad(10).center();
+        bottomTable.add(minigame).pad(10);
 
         // Adding button logic.
 
@@ -143,8 +145,13 @@ public class SelectLevelScreen implements Screen {
                 stageLink = Zepr.TOWN;
             }
         });
+<<<<<<< Updated upstream:zepr/core/src/com/geeselightning/zepr/screens/SelectLevelScreen.java
 
         if (Zepr.progress <= Zepr.TOWN) {
+=======
+      
+        if (parent.progress <= parent.TOWN) {
+>>>>>>> Stashed changes:zepr/core/src/com/geeselightning/zepr/SelectLevelScreen.java
             halifax.setColor(Color.DARK_GRAY);
             halifax.getLabel().setColor(Color.DARK_GRAY);
         } else {
@@ -209,10 +216,21 @@ public class SelectLevelScreen implements Screen {
                 }
             }
         });
+<<<<<<< Updated upstream:zepr/core/src/com/geeselightning/zepr/screens/SelectLevelScreen.java
     }
 
     @Override
     public void show() {
+=======
+        
+        minigame.addListener(new ChangeListener() {
+        	@Override
+        	public void changed(ChangeEvent event, Actor actor) {
+        		parent.changeScreen(Zepr.MINIGAME);
+        	}
+        	
+        });
+>>>>>>> Stashed changes:zepr/core/src/com/geeselightning/zepr/SelectLevelScreen.java
 
     }
 

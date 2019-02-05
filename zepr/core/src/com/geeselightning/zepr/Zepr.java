@@ -13,6 +13,7 @@ public class Zepr extends Game {
 	private StoryScreen storyScreen;
 	private Level level;
 	private SelectLevelScreen selectLevelScreen;
+	private MiniGame MiniGame;
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
 	public static int progress = 3;
@@ -24,6 +25,7 @@ public class Zepr extends Game {
 	public final static int HALIFAX = 4;
 	public final static int COURTYARD = 5;
 	public final static int COMPLETE = 6;
+	public final static int MINIGAME = 7;
 
 
 	public void changeScreen(int screen) {
@@ -51,6 +53,10 @@ public class Zepr extends Game {
 			case COURTYARD:
 				level = new CourtyardLevel(this);
 				this.setScreen(level);
+				break;
+			case MINIGAME:
+				MiniGame = new MiniGame(this);
+				this.setScreen(MiniGame);
 				break;
 		}
 	}
