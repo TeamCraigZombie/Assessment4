@@ -1,6 +1,11 @@
 package com.geeselightning.zepr;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.geeselightning.zepr.screens.LoadingScreen;
 import com.geeselightning.zepr.screens.MenuScreen;
 import com.geeselightning.zepr.screens.SelectLevelScreen;
@@ -12,23 +17,19 @@ public class Zepr extends Game {
 	private MenuScreen menuScreen;
 	private StoryScreen storyScreen;
 	private Level level;
+	private MiniGame minigame;
 	private SelectLevelScreen selectLevelScreen;
-	private MiniGame MiniGame;
+	private World world;
+	
+	public static enum location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, COMPLETE, MINIGAME };
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
-	public static int progress = 3;
+	public static location progress = location.TOWN;
 
-	public final static int MENU = 0;
-	public final static int STORY = 1;
-	public final static int SELECT = 2;
-	public final static int TOWN = 3;
-	public final static int HALIFAX = 4;
-	public final static int COURTYARD = 5;
-	public final static int COMPLETE = 6;
-	public final static int MINIGAME = 7;
+	
 
-
-	public void changeScreen(int screen) {
+	public void changeScreen(final location screen) {
+		LevelConfig config;
 		switch(screen) {
 			case MENU:
 				if (menuScreen == null) menuScreen = new MenuScreen(this);
@@ -43,26 +44,67 @@ public class Zepr extends Game {
 				this.setScreen(selectLevelScreen);
 				break;
 			case TOWN:
-				level = new TownLevel(this);
+				config = new LevelConfig() {{
+					mapLocation = "maps/townmap.tmx";
+					playerSpawn = new Vector2(530, 430);
+					powerSpawn = new Vector2(300, 300);
+					zombieSpawnPoints = new ArrayList<Vector2>(
+				            Arrays.asList(new Vector2(200,200), new Vector2(700,700),
+				                    new Vector2(200,700), new Vector2(700,200)));
+					waves = new int[]{5, 10, 15};
+					location = screen;
+					isFinal = false;
+				}};						 
+				level = new Level(this, config);
 				this.setScreen(level);
 				break;
 			case HALIFAX:
-				level = new HalifaxLevel(this);
+				config = new LevelConfig() {{
+					mapLocation = "maps/halifaxmap.tmx";
+					playerSpawn = new Vector2(300, 300);
+					powerSpawn = new Vector2(200, 200);
+					zombieSpawnPoints = new ArrayList<Vector2>(
+							Arrays.asList(new Vector2(600,100), new Vector2(100,200),
+				                    new Vector2(600,500), new Vector2(100,600)));
+					waves = new int[]{10, 15, 20};
+					location = screen;
+					isFinal = false;
+				}};						 
+				level = new Level(this, config);
 				this.setScreen(level);
 				break;
 			case COURTYARD:
-				level = new CourtyardLevel(this);
+				config = new LevelConfig() {{
+					mapLocation = "maps/courtyard.tmx";
+					playerSpawn = new Vector2(300, 300);
+					powerSpawn = new Vector2(250, 250);
+					zombieSpawnPoints = new ArrayList<Vector2>(
+							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
+					                   new Vector2(630,100), new Vector2(120,500)));
+					waves = new int[]{13, 17, 22};
+					location = screen;
+					isFinal = true;
+				}};						 
+				level = new Level(this, config);
 				this.setScreen(level);
 				break;
 			case MINIGAME:
-				MiniGame = new MiniGame(this);
-				this.setScreen(MiniGame);
+				minigame = new MiniGame(this);
+				this.setScreen(minigame);
 				break;
 		}
+	}
+	
+	public World getWorld() {
+		return world;
 	}
 
 	@Override
 	public void create() {
+		
+        //Initialise Box2D physics engine
+        world = new World(new Vector2(0, 0), true);
+		
 		loadingScreen = new LoadingScreen(this);
 		setScreen(loadingScreen);
 	}

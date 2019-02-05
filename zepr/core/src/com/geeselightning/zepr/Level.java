@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -20,7 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.geeselightning.zepr.screens.TextScreen;
-
 import java.util.ArrayList;
 
 
@@ -32,32 +32,29 @@ public class Level implements Screen {
     private OrthographicCamera camera;
     private static Player player;
     private ArrayList<Zombie> aliveZombies;
-    public ArrayList<Vector2> zombieSpawnPoints;
     private ZeprInputProcessor inputProcessor;
     private boolean isPaused;
     private Stage stage;
     private Table table;
     private Skin skin;
-    private int[] waves;
-    private int currentWave = 1;
+    private int currentWave = 2;
     public int zombiesRemaining; // the number of zombies left to kill to complete the wave
     public int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
-    Texture blank;
-    Vector2 powerSpawn;
+    static Texture blank;
     PowerUp currentPowerUp = null;
-    private World world;
     private Box2DDebugRenderer debugRenderer;
     private static float worldScale = 1.f;
     static float physicsDensity = 100.f;
-
+    LevelConfig config;
+    private World world;
     Label progressLabel, healthLabel, powerupLabel;
 
-    public Level(Zepr zepr, String mapLocation, Vector2 playerSpawn, ArrayList<Vector2> zombieSpawnPoints, int[] waves, Vector2 powerSpawn, boolean isFinal) {
+    public Level(Zepr zepr, LevelConfig config) {
    
+    	this.world = zepr.getWorld();
     	parent = zepr;
-        this.zombieSpawnPoints = zombieSpawnPoints;
-        this.blank = new Texture("blank.png");
-        this.powerSpawn = powerSpawn;
+    	this.config = config;
+        blank = new Texture("blank.png");            
         
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
         aliveZombies = new ArrayList<Zombie>();
@@ -68,8 +65,7 @@ public class Level implements Screen {
         powerupLabel = new Label("", skin);
 
         // Set up data for first wave of zombies
-        this.waves = waves;
-        this.zombiesRemaining = waves[0];
+        this.zombiesRemaining = config.waves[0];
         this.zombiesToSpawn = zombiesRemaining;
 
         // Creating a new libgdx stage to contain the pause menu and in game UI
@@ -82,25 +78,22 @@ public class Level implements Screen {
         
         // Loads the testmap.tmx file as map.
         TmxMapLoader loader = new TmxMapLoader();
-        map = loader.load(mapLocation);
+        map = loader.load(config.mapLocation);
 
         // renderer renders the .tmx map as an orthogonal (top-down) map.
         renderer = new OrthogonalTiledMapRenderer(map, worldScale);
            
-        //Initialise Box2D physics engine
-        world = new World(new Vector2(0, 0), true);
         debugRenderer = new Box2DDebugRenderer();
         
         MapBodyBuilder.buildShapes(map, physicsDensity / worldScale, world);
         
-        Player.setLevel(this);
-        player = new Player(new Sprite(new Texture("player01.png")), new Vector2(300, 300));
+        player = new Player(new Sprite(new Texture("player01.png")), new Vector2(300, 300), world);
         
         // It is only possible to view the render of the map through an orthographic camera.
         camera = new OrthographicCamera();
 
         //reset player instance
-        player.respawn(playerSpawn);
+        player.respawn(config.playerSpawn);
 
         Gdx.input.setInputProcessor(inputProcessor);
 
@@ -151,19 +144,19 @@ public class Level implements Screen {
         for (int i = 0; i < numberToSpawn/3; i++) {
 
             Zombie zombie = (new Zombie(new Sprite(new Texture("zombie01.png")),
-                    spawnPoints.get(i % spawnPoints.size()), this, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP));       
+                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP));       
             aliveZombies.add(zombie);
         }
         for (int i = 0; i < numberToSpawn/3; i++) {
 
             Zombie zombie = (new Zombie(new Sprite(new Texture("player01.png")),
-                    spawnPoints.get(i % spawnPoints.size()), this, Constant.ZOMBIESPEED * 1.5f, Constant.ZOMBIEMAXHP));       
+                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED * 1.5f, Constant.ZOMBIEMAXHP));       
             aliveZombies.add(zombie);
         }
         for (int i = 0; i < numberToSpawn/3; i++) {
 
             Zombie zombie = (new Zombie(new Sprite(new Texture("player02.png")),
-                    spawnPoints.get(i % spawnPoints.size()), this, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP * 2));       
+                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP * 2));       
             aliveZombies.add(zombie);
         }
     }
@@ -214,7 +207,7 @@ public class Level implements Screen {
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Zepr.SELECT);
+                parent.changeScreen(Zepr.location.SELECT);
             }
         });
     }
@@ -288,9 +281,22 @@ public class Level implements Screen {
     	world.step(1/60f, 6, 2);
 
     	player.update();
+    	player.look(getMouseWorldCoordinates());
+    	
+    	// When you die, end the level.
+        if (player.health <= 0)
+           gameOver();
 
-    	for(int i = 0; i < aliveZombies.size(); i++)
-            aliveZombies.get(i).update();
+    	for(int i = 0; i < aliveZombies.size(); i++) {
+            Zombie zomb = aliveZombies.get(i);
+            zomb.update();
+                        
+            if (zomb.getHealth() <= 0) {
+                zombiesRemaining--;
+                aliveZombies.remove(zomb);
+                zomb.dispose();
+            }
+        }
 
         zombiesRemaining = aliveZombies.size();
 
@@ -299,35 +305,45 @@ public class Level implements Screen {
             // Spawn a power up and the end of a wave, if there isn't already a powerUp on the level
             if (currentPowerUp == null) {
 
-                int random = (int )(Math.random() * 5 + 1);
-                if (random == 1)
-                    currentPowerUp = new PowerUpHeal(this);
-                else if (random == 2)
-                    currentPowerUp = new PowerUpSpeed(this);
-                else if (random == 3)
-                    currentPowerUp = new PowerUpImmunity(this);
-                else if (random == 4)
-                    currentPowerUp = new PowerUpInstaKill(this);
-                else //random == 5
-                    currentPowerUp = new PowerUpInvisibility(this);
+                int random = (int)(Math.random() * 5 + 1);
+                switch(random) {
+	                case 1:
+	                	currentPowerUp = new PowerUpHeal(this);
+	                	break;
+	                case 2:
+	                	currentPowerUp = new PowerUpSpeed(this);
+	                	break;
+	                case 3:
+	                	currentPowerUp = new PowerUpImmunity(this);
+	                	break;
+	                case 4:
+	                	currentPowerUp = new PowerUpInstaKill(this);
+	                	break;
+	                case 5:
+	                	currentPowerUp = new PowerUpInvisibility(this);
+	                	break;
+                }
             }
 
        	 	// Spawn all zombies in the stage
-            spawnZombies(zombiesToSpawn, zombieSpawnPoints);
+            spawnZombies(zombiesToSpawn, config.zombieSpawnPoints);
             // Wave complete, increment wave number
             currentWave++;
-            if (currentWave > waves.length) {
+            if (currentWave > config.waves.length) {
                 // Level completed, back to select screen and complete stage.
                 // If stage is being replayed complete() will stop progress being incremented.
                 isPaused = true;
                 complete();
-                if (Zepr.progress == Zepr.COMPLETE)
+                if (Zepr.progress == Zepr.location.COMPLETE)
                     parent.setScreen(new TextScreen(parent, "Game completed."));
-                else
+                else {
                     parent.setScreen(new TextScreen(parent, "Level completed."));
+	                if(Zepr.progress == config.location)
+	                	Zepr.progress = Zepr.location.values()[Zepr.progress.ordinal() + 1];
+                }
             } else {
                 // Update zombiesRemaining with the number of zombies of the new wave
-                zombiesRemaining = waves[currentWave - 1];
+                zombiesRemaining = config.waves[currentWave - 1];
                 zombiesToSpawn = zombiesRemaining;
             }
         }
@@ -382,5 +398,13 @@ public class Level implements Screen {
         for (Zombie zombie : aliveZombies)
             zombie.dispose();
         player.dispose();
+        
+       // Array<Body> bodies = new Array<Body>();
+       // world.getBodies(bodies);
+       // for(Body body : bodies)
+       // 	world.destroyBody(body);
+        
+        //world.dispose();
+        //world = new World(new Vector2(0, 0), true);
     }
 }

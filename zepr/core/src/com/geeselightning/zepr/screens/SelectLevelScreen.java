@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.Color;
 import com.geeselightning.zepr.Player;
 import com.geeselightning.zepr.Zepr;
+import com.geeselightning.zepr.Zepr.location;
 
 public class SelectLevelScreen implements Screen {
 
@@ -22,7 +23,7 @@ public class SelectLevelScreen implements Screen {
     private Stage stage;
     private Label stageDescription;
     private Label characterDescription;
-    private int stageLink = -1;
+    private location stageLink;
     private boolean playerSet = false;
 
     public SelectLevelScreen(Zepr zepr) {
@@ -133,7 +134,7 @@ public class SelectLevelScreen implements Screen {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Zepr.MENU);
+                parent.changeScreen(Zepr.location.MENU);
             }
         });
 
@@ -142,15 +143,11 @@ public class SelectLevelScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 stageDescription.setText(townDescription);
-                stageLink = Zepr.TOWN;
+                stageLink = Zepr.location.TOWN;
             }
         });
 
-
-        if (Zepr.progress <= Zepr.TOWN) {
-
-      
-        if (Zepr.progress <= Zepr.TOWN) {
+        if (Zepr.progress.ordinal() <= Zepr.location.TOWN.ordinal()) {
             halifax.setColor(Color.DARK_GRAY);
             halifax.getLabel().setColor(Color.DARK_GRAY);
         } else {
@@ -159,12 +156,12 @@ public class SelectLevelScreen implements Screen {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     stageDescription.setText(halifaxDescription);
-                    stageLink = Zepr.HALIFAX;
+                    stageLink = Zepr.location.HALIFAX;
                 }
             });
         }
 
-        if (Zepr.progress <= Zepr.HALIFAX) {
+        if (Zepr.progress.ordinal() <= Zepr.location.HALIFAX.ordinal()) {
             courtyard.setColor(Color.DARK_GRAY);
             courtyard.getLabel().setColor(Color.DARK_GRAY);
         } else {
@@ -173,7 +170,7 @@ public class SelectLevelScreen implements Screen {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     stageDescription.setText(courtyardDescription);
-                    stageLink = Zepr.COURTYARD;
+                    stageLink = Zepr.location.COURTYARD;
                 }
             });
         }
@@ -210,7 +207,7 @@ public class SelectLevelScreen implements Screen {
         play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (stageLink != -1 && playerSet) {
+                if (stageLink != null && playerSet) {
                     parent.changeScreen(stageLink);
                 }
             }
@@ -221,13 +218,12 @@ public class SelectLevelScreen implements Screen {
         minigame.addListener(new ChangeListener() {
         	@Override
         	public void changed(ChangeEvent event, Actor actor) {
-        		parent.changeScreen(Zepr.MINIGAME);
+        		parent.changeScreen(Zepr.location.MINIGAME);
         	}
         	
         });
       }
 
-    }
 
     @Override
     public void show() {

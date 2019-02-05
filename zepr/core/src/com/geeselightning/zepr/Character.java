@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+
 import static java.lang.Math.abs;
 
 public class Character extends Sprite {
@@ -18,15 +20,15 @@ public class Character extends Sprite {
     int maxhealth;
     // direction is a bearing in radians
     double direction = 0;
-    Level currentLevel;
+    World world;
     // All characters start ready to hit.
     float hitRefresh = 2;
     protected Body body;
     private static BodyDef characterBodyDef = new BodyDef() {{ type = BodyDef.BodyType.DynamicBody; }};
 
-    public Character(Sprite sprite, Vector2 spawn, Level currentLevel) {
+    public Character(Sprite sprite, Vector2 spawn, World world) {
         super(sprite);
-        this.currentLevel = currentLevel;
+        this.world = world;
         GenerateBodyFromSprite(sprite);
         body.setTransform(spawn.x / Level.physicsDensity, spawn.y / Level.physicsDensity, 0);
         body.setFixedRotation(true);
@@ -37,7 +39,7 @@ public class Character extends Sprite {
 
     private void GenerateBodyFromSprite(Sprite sprite) {
 
-    	body = currentLevel.getBox2DWorld().createBody(characterBodyDef);
+    	body = world.createBody(characterBodyDef);
     	
     	final float scale = 1.6f;
     	
@@ -53,7 +55,7 @@ public class Character extends Sprite {
     	shape.dispose();
     }
 
-    public double getHealth() {
+    public int getHealth() {
         return health;
     }
 
@@ -77,9 +79,9 @@ public class Character extends Sprite {
         // Draw health bar
         final int fillAmount = health > 0 ? (int)(32 * (float)health/maxhealth) : 0;
         batch.setColor(Color.BLACK);
-        batch.draw(currentLevel.blank, getX(), getY()+32, 32, 3);
+        batch.draw(Level.blank, getX(), getY()+32, 32, 3);
         batch.setColor(Color.RED);
-        batch.draw(currentLevel.blank, getX() + 1, getY() + 33, fillAmount, 1);
+        batch.draw(Level.blank, getX() + 1, getY() + 33, fillAmount, 1);
         batch.setColor(Color.WHITE);
 
         setRotation((float) Math.toDegrees(-direction));
@@ -167,7 +169,7 @@ public class Character extends Sprite {
     
     public void dispose() {
     	getTexture().dispose();
-    	currentLevel.getBox2DWorld().destroyBody(body);
+    	world.destroyBody(body);
     }
 
 }

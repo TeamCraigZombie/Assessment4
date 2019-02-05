@@ -2,6 +2,7 @@ package com.geeselightning.zepr;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class Zombie extends Character {
 
@@ -10,8 +11,8 @@ public class Zombie extends Character {
     public final float hitCooldown = Constant.ZOMBIEHITCOOLDOWN;
 
 
-    public Zombie(Sprite sprite, Vector2 zombieSpawn, Level currentLevel, float speed, int health) {
-        super(sprite, zombieSpawn, currentLevel);
+    public Zombie(Sprite sprite, Vector2 zombieSpawn, World world, float speed, int health) {
+        super(sprite, zombieSpawn, world);
          this.speed = speed;
          this.health = health;
     }
@@ -38,13 +39,6 @@ public class Zombie extends Character {
 
             // update direction to face the player
             direction = getDirectionTo(Level.getPlayer().getCenter());
-            
-
-            if (health <= 0) {
-                currentLevel.zombiesRemaining--;
-                currentLevel.getAliveZombiesList().remove(this);
-                dispose();
-            }
         }
     }
 }

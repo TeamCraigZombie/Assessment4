@@ -18,18 +18,14 @@ package com.geeselightning.zepr.tests;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.geeselightning.zepr.Zepr;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import static org.mockito.Mockito.mock;
-
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
@@ -90,9 +86,6 @@ public class GdxTestRunner extends BlockJUnit4ClassRunner implements Application
 		waitUntilInvokedInRenderMethod();
 	}
 
-	/**
-	    *
-	    */
 	private void waitUntilInvokedInRenderMethod() {
 		try {
 			while (true) {
@@ -106,5 +99,4 @@ public class GdxTestRunner extends BlockJUnit4ClassRunner implements Application
 			e.printStackTrace();
 		}
 	}
-
 }

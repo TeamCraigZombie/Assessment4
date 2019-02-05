@@ -17,7 +17,7 @@ public class PowerUp extends Sprite {
         this.currentLevel = currentLevel;
         if (currentLevel != null)
             // Tests pass a null currentLevel
-            setPosition(currentLevel.powerSpawn.x, currentLevel.powerSpawn.y);
+            setPosition(currentLevel.config.powerSpawn.x, currentLevel.config.powerSpawn.y);
     }
 
     public void activate(){

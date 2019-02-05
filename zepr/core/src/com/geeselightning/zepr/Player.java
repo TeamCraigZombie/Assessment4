@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class Player extends Character {
 
@@ -19,12 +20,11 @@ public class Player extends Character {
     float speedMult;
     static String playertype;
     public boolean isImmune;
-    private static Level level;
     public boolean canBeSeen = true;
 
 
-    public Player(Sprite sprite, Vector2 playerSpawn) {
-        super(sprite, playerSpawn, level);
+    public Player(Sprite sprite, Vector2 playerSpawn, World world) {
+        super(sprite, playerSpawn, world);
 
         if (playertype == "nerdy") {
             dmgMult = Constant.NERDYDMGMULT;
@@ -53,10 +53,6 @@ public class Player extends Character {
         attackDamage = (int)(Constant.PLAYERDMG * dmgMult);
         speed = Constant.PLAYERSPEED * speedMult;
     }
-    
-    public static void setLevel(Level currentLevel) {
-    	level = currentLevel;
-    }
 
     public static void setType(String playertype){
         Player.playertype = playertype;
@@ -75,6 +71,11 @@ public class Player extends Character {
         body.setTransform(playerSpawn.x / Level.physicsDensity, playerSpawn.y / Level.physicsDensity, 0);
         health = maxhealth;
     }
+    
+    public void look(Vector2 mouseCoordinates) {
+     	// Update the direction the player is facing.
+        direction = getDirectionTo(mouseCoordinates);
+    }
 
     @Override
     public void update() {
@@ -82,13 +83,7 @@ public class Player extends Character {
         
         control();
 
-        // Update the direction the player is facing.
-        direction = getDirectionTo(currentLevel.getMouseWorldCoordinates());
-
-        // When you die, end the level.
-        if (health <= 0)
-            currentLevel.gameOver();
-
+       
         // Gives the player the attack texture for 0.1s after an attack.
         //if (hitRefresh <= 0.1 && getTexture() != attackTexture) {
         if (attack)

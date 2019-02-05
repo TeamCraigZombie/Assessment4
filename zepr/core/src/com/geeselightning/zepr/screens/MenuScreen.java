@@ -60,7 +60,7 @@ public class MenuScreen implements Screen {
         start.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Zepr.STORY);
+                parent.changeScreen(Zepr.location.STORY);
             }
         });
 
