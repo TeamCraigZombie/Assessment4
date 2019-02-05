@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.geeselightning.zepr.screens.TextScreen;
@@ -399,12 +400,9 @@ public class Level implements Screen {
             zombie.dispose();
         player.dispose();
         
-       // Array<Body> bodies = new Array<Body>();
-       // world.getBodies(bodies);
-       // for(Body body : bodies)
-       // 	world.destroyBody(body);
-        
-        //world.dispose();
-        //world = new World(new Vector2(0, 0), true);
+        Array<Body> bodies = new Array<Body>();
+        world.getBodies(bodies);
+        for(Body body : bodies)
+        	world.destroyBody(body);
     }
 }
