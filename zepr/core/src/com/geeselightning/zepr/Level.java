@@ -38,7 +38,7 @@ public class Level implements Screen {
     private Stage stage;
     private Table table;
     private Skin skin;
-    private int currentWave = 2;
+    private int currentWave = 1;
     public int zombiesRemaining; // the number of zombies left to kill to complete the wave
     public int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
     static Texture blank;

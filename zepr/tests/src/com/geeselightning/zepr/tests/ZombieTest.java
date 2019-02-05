@@ -3,6 +3,7 @@ package com.geeselightning.zepr.tests;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.geeselightning.zepr.Constant;
 import com.geeselightning.zepr.Player;
 import com.geeselightning.zepr.Zombie;
@@ -13,14 +14,15 @@ import static org.junit.Assert.*;
 @RunWith(GdxTestRunner.class)
 public class ZombieTest {
 
-    Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
+    World world = new World(new Vector2(0, 0), true);
+    Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
 
     @Test
     // Test 3.1.1
     public void zombieDoesNoDamageToPlayerWhenAtMaxRange() {
         player.respawn(Constant.ORIGIN);
 
-        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE), null);
+        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE), world, 1, 10);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
 
@@ -33,7 +35,7 @@ public class ZombieTest {
     public void zombieDoesDamageToPlayerWhenInRange() {
         player.respawn(Constant.ORIGIN);
 
-        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE + 5), null);
+        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE + 5), world, 1, 10);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
 
@@ -47,7 +49,7 @@ public class ZombieTest {
     public void zombieDoesNoDamageToPlayerOutOfRange() {
         player.respawn(Constant.ORIGIN);
 
-        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y - 100), null);
+        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y - 100), world, 1, 10);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
 
@@ -60,7 +62,7 @@ public class ZombieTest {
     public void zombieCannotAttackBeforeCooldownComplete() {
         player.respawn(Constant.ORIGIN);
 
-        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y ), null);
+        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y ), world, 1, 10);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
         zombie.attack(player, 0);
@@ -74,7 +76,7 @@ public class ZombieTest {
     public void zombieCanAttackAfterCooldownComplete() {
         player.respawn(Constant.ORIGIN);
 
-        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y ), null);
+        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y ), world, 1, 10);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
         // zombie will not attack this go so has to be called a third time

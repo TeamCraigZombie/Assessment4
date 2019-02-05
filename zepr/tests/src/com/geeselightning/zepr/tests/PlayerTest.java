@@ -3,6 +3,7 @@ package com.geeselightning.zepr.tests;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.geeselightning.zepr.Constant;
 import com.geeselightning.zepr.Player;
 import com.geeselightning.zepr.Zombie;
@@ -16,7 +17,8 @@ public class PlayerTest {
     @Test
     // Test 2.1
     public void playerPositionResetsWhenRespawned() {
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
+        World world = new World(new Vector2(0, 0), true);
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
         Vector2 originalPosition = new Vector2(player.getX(), player.getY());
         player.setPosition(10, 10);
         player.respawn(new Vector2(0, 0));
@@ -26,9 +28,10 @@ public class PlayerTest {
     @Test
     // Test 2.2.1
     public void playerDoesNoDamageToZombieWhenAtMaxRange() {
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
+        World world = new World(new Vector2(0, 0), true);
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y + Constant.PLAYERRANGE), null);
+        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y + Constant.PLAYERRANGE), world, 1, 10);
         double originalHealth = zombie.getHealth();
         player.attack(zombie, 0);
 
@@ -39,9 +42,10 @@ public class PlayerTest {
     @Test
     // Test 2.2.2
     public void playerDoesDamageToZombieWhenInRange() {
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
+        World world = new World(new Vector2(0, 0), true);
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y + Constant.PLAYERRANGE - 10), null);
+        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y + Constant.PLAYERRANGE - 10), world, 1, 10);
         double originalHealth = zombie.getHealth();
         player.attack(zombie, 0);
 
@@ -52,9 +56,10 @@ public class PlayerTest {
     @Test
     //Test 2.2.3
     public void playerDoesNoDamageToZombieOutOfRange() {
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
+        World world = new World(new Vector2(0, 0), true);
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y +100), null);
+        Zombie zombie = new Zombie(new Sprite(), new Vector2(player.getCenter().x, player.getCenter().y +100), world, 1, 10);
         double originalHealth = zombie.getHealth();
         player.attack(zombie, 0);
 
@@ -65,20 +70,22 @@ public class PlayerTest {
     @Test
     // Test 2.3.1
     public void playerTypesHaveDifferentHealth() {
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
+        World world = new World(new Vector2(0, 0), true);
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
         Player.setType("nerdy");
         player.respawn(Constant.ORIGIN);
         double nerdyHealth = player.getHealth();
         Player.setType("sporty");
         player.respawn(Constant.ORIGIN);
-        assertNotEquals("Sporty and nerdy students should have a different amount of hit points.",
+        assertNotEquals("Sporty and nerdy students should have a different number of hit points.",
                 nerdyHealth, player.getHealth(), 0.1);
     }
 
     @Test
     // Test 2.3.2
     public void playerTypesHaveDifferentSpeed() {
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0));
+        World world = new World(new Vector2(0, 0), true);
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
         Player.setType("nerdy");
         player.respawn(Constant.ORIGIN);
         double nerdySpeed = player.speed;
