@@ -38,7 +38,7 @@ public class Level implements Screen {
     private Stage stage;
     private Table table;
     private Skin skin;
-    private int currentWave = 1;
+    private int currentWave = 0;
     public int zombiesRemaining; // the number of zombies left to kill to complete the wave
     public int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
     static Texture blank;
@@ -138,27 +138,36 @@ public class Level implements Screen {
      * @param spawnPoints locations where zombies should be spawned on this stage
      * @param numberToSpawn number of zombies to spawn
      */
-    public void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints) {
+    public void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints, boolean isFinal) {
 
-        for (int i = 0; i < numberToSpawn/3; i++) {
-
-            Zombie zombie = (new Zombie(new Sprite(new Texture("zombie01.png")),
-                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP));       
+    	if (isFinal == true && numberToSpawn == 1) {
+        	Zombie zombie = (new Zombie(new Sprite(new Texture("player03.png")),
+                    spawnPoints.get(0), world, Constant.ZOMBIESPEED * 3, Constant.ZOMBIEMAXHP * 5));       
             aliveZombies.add(zombie);
         }
-        for (int i = 0; i < numberToSpawn/3; i++) {
-
-            Zombie zombie = (new Zombie(new Sprite(new Texture("player01.png")),
-                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED * 1.5f, Constant.ZOMBIEMAXHP));       
-            aliveZombies.add(zombie);
-        }
-        for (int i = 0; i < numberToSpawn/3; i++) {
-
-            Zombie zombie = (new Zombie(new Sprite(new Texture("player02.png")),
-                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP * 2));       
-            aliveZombies.add(zombie);
-        }
+    	else {
+    	
+    	for (int i = 0; i < numberToSpawn/3; i++) {
+	
+	            Zombie zombie = (new Zombie(new Sprite(new Texture("zombie01.png")),
+	                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP));       
+	            aliveZombies.add(zombie);
+	        }
+	        for (int i = 0; i < numberToSpawn/3; i++) {
+	
+	            Zombie zombie = (new Zombie(new Sprite(new Texture("player01.png")),
+	                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED * 1.5f, Constant.ZOMBIEMAXHP));       
+	            aliveZombies.add(zombie);
+	        }
+	        for (int i = 0; i < (numberToSpawn - (2*(numberToSpawn/3))); i++) {
+	
+	            Zombie zombie = (new Zombie(new Sprite(new Texture("player02.png")),
+	                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP * 2));       
+	            aliveZombies.add(zombie);
+        
+    	}
     }
+   }
 
 
     /**
@@ -325,7 +334,7 @@ public class Level implements Screen {
             }
 
        	 	// Spawn all zombies in the stage
-            spawnZombies(zombiesToSpawn, config.zombieSpawnPoints);
+            spawnZombies(zombiesToSpawn, config.zombieSpawnPoints,config.isFinal);
             // Wave complete, increment wave number
             currentWave++;
             if (currentWave > config.waves.length) {
@@ -341,10 +350,17 @@ public class Level implements Screen {
 	                	Zepr.progress = Zepr.location.values()[Zepr.progress.ordinal() + 1];
                 }
             } else {
-                // Update zombiesRemaining with the number of zombies of the new wave
-                zombiesRemaining = config.waves[currentWave - 1];
-                zombiesToSpawn = zombiesRemaining;
-            }
+            	
+            	// Update zombiesRemaining with the number of zombies of the new wave
+                if (currentWave < config.waves.length)
+                	{
+                		zombiesRemaining = config.waves[currentWave];
+                	}
+                else
+                {
+                	zombiesRemaining =0;
+                }
+                zombiesToSpawn = zombiesRemaining;           }
         }
     	
     	 // Resolve all possible attacks
