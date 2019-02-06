@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,7 +29,9 @@ public class MiniGame implements Screen {
 	private boolean pauseButton = false;
 	private Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
 	private SpriteBatch spriteBatch;
-	private String zombieTexture = "tempZombie.png";
+	private String zombieTexture = "MiniZombie.png";
+	private Sprite background;
+	private Sprite crosshair;
 	static long timer = 0;
 	private long last = 0;
 	private  Queue<MiniZombie> ZombieQueue = new Queue<MiniZombie>();
@@ -51,6 +54,10 @@ public class MiniGame implements Screen {
 		this.stage = new Stage(new ScreenViewport());
 		this.pause = new Stage(new ScreenViewport());
 		
+		background = new Sprite(new Texture("MiniGameLevel.png"));
+		crosshair = new Sprite(new Texture("Crosshair.png"));
+		crosshair.setScale(2);
+		
 		// Create a table that fills the screen. Everything else will go inside this table.
         table = new Table();
         table.setFillParent(true);
@@ -65,7 +72,7 @@ public class MiniGame implements Screen {
 	public void generateZombie() {
 		
 		timer = MiniZombie.timer();
-	
+		
 		if(timer > last+rand) {
 			rand = Math.round(Math.random());
 			
@@ -184,7 +191,7 @@ public class MiniGame implements Screen {
             // Clears the screen to black.
             Gdx.gl.glClearColor(0f, 0f, 0f, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+            
             table.clear();
             
             stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -193,14 +200,13 @@ public class MiniGame implements Screen {
             // 1) Generate Zombies incrementally
             // 2) Get the Reload status of gun
             // 3) Draw the gun status 
-          
             
             gunStatus();
                    
             spriteBatch.begin();
-            font.draw(spriteBatch, "Kills: " + kills + "\n" + gunStatus, 50, 600);
-            spriteBatch.end();
-            
+            background.draw(spriteBatch);
+            font.draw(spriteBatch, "Kills: " + kills + "\n" + gunStatus, 50, 650);
+          
             this.generateZombie();
                     
             // Draws zombies onto stage in order of depth
@@ -216,7 +222,11 @@ public class MiniGame implements Screen {
             	else {  		
             		tempZombie.render(spriteBatch, i);
             	}      	
-            }	        
+            }	
+            
+            crosshair.setPosition(Gdx.input.getX(), -(Gdx.input.getY()-720));
+            crosshair.draw(spriteBatch);
+            spriteBatch.end();
         }
 	}
 

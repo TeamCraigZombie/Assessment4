@@ -13,11 +13,12 @@ public class MiniZombie {
 	
 	private static long timer;
 	private long last;
+	private long collisionTimer;
 	Sprite zombie;
 	private int y = Gdx.graphics.getHeight()/2;
 	private int width = Gdx.graphics.getWidth();
-	private double direction;
-	private int inc;
+	private double direction = 10;
+	private int inc = 0;
 	private boolean collision = false;
 	private float zombieWidth;
 	private float zombieHeight;
@@ -28,9 +29,11 @@ public class MiniZombie {
 	private int mouseY;
 	private float initialWidth;
 	private BitmapFont font;
-	private int distance = 20;
-
+	private int distance = 30;
+	private double rand;
+	
 	public MiniZombie(String texture) {
+		
 	
 		zombie = new Sprite(new Texture(texture));
 		font = new BitmapFont();
@@ -45,17 +48,21 @@ public class MiniZombie {
 		zombieWidth = zombie.getWidth();
 		zombieHeight = zombie.getHeight();
 		
-		if (timer() % 2 == 0 && timer() != last) {			
+		if(timer > collisionTimer + 1.5) {
+			collision = false;
+		}
+		
+		if (timer > last + 1) {	
+			last = timer;
 			distance -= 2;
 			if(!collision) {
 				direction = Math.random();
 			}
 			last = timer;	
-			if(last%10==0) {
-				collision = false;
-			}
-		}		
-		if(direction > 0.5) {
+			
+		}
+		
+		if(direction > 0.5 && direction < 1) {
 			if(this.collision()) {
 				inc--;
 			} else {
@@ -68,12 +75,13 @@ public class MiniZombie {
 			} else {
 				inc--;
 			}
-		}		
+		}
+	
 		if(distance <= 0) {
 			MiniGame.playerDeath(true);
 		}
 		
-		zombie.setSize(zombieWidth += 0.5, zombieHeight += 0.5);		
+		zombie.setSize(zombieWidth += 0.3, zombieHeight += 0.3);		
 		zombie.setPosition(spawnX+inc, y-zombieWidth/2);	
 		return zombie;
 	}
@@ -81,10 +89,10 @@ public class MiniZombie {
 	
 	public boolean collision() {
 		
-		if(zombieX <= 10 || zombieX+(zombieWidth) >= width-10) {	
+		if(zombieX <= 150 || zombieX+(zombieWidth) >= width-150) {	
+			collisionTimer = timer;
 			this.collision = true;
 		}
-	
 		return this.collision;
 	}
 	
@@ -116,17 +124,30 @@ public class MiniZombie {
 	
 	public void spawn() {
 		
-		spawnX = ThreadLocalRandom.current().nextInt(100, 980);
+		rand = Math.random();
+		
+		System.out.println(rand);
+		
+		if(rand < 0.3){
+			spawnX = 230;
+		}
+		else if(rand >= 0.3 && rand <= 0.6){
+			spawnX = 610;
+		}
+		else if(rand > 0.6) {
+			spawnX = 1000;
+		}
+		
+		last = timer+1;
 		zombie.setPosition(spawnX, y);	
 		zombie.setSize(initialWidth, initialWidth);		
 	}
 	
 	public void render(SpriteBatch spriteBatch, int zCount) {
-	
-		spriteBatch.begin();
+		
         this.move().draw(spriteBatch);
         font.draw(spriteBatch, Integer.toString(distance) + " meters", zombieX, zombieY+zombieHeight);
-        spriteBatch.end();    
+       
 	}
 	
 	public boolean aimingAt() {
