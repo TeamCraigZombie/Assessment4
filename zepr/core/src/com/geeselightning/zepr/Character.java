@@ -44,7 +44,7 @@ public class Character extends Sprite {
     	final float scale = 1.6f;
     	
     	PolygonShape shape = new PolygonShape();
-    	shape.setAsBox(sprite.getWidth() / scale / 2 / Constant.physicsDensity,
+        shape.setAsBox(sprite.getWidth() / scale / 2 / Constant.physicsDensity,
     			 sprite.getHeight() / scale / 2 / Constant.physicsDensity);
     	
     	FixtureDef fixtureDef = new FixtureDef();
@@ -68,13 +68,16 @@ public class Character extends Sprite {
     public boolean collidesWith(Character character) {
         // Circles less buggy than character.getBoundingRectangle()
         double diameter = 10;
-        double distanceBetweenCenters = (Math.pow(getCenter().x - character.getCenter().x, 2)
-                + Math.pow(getCenter().y - character.getCenter().y, 2));
+        Vector2 center1 = getCenter();
+        Vector2 center2 = character.getCenter();
+        double distanceBetweenCenters = (Math.pow(center1.x - center2.x, 2)
+                + Math.pow(center1.y - center2.y, 2));
         return (0 <= distanceBetweenCenters && distanceBetweenCenters <= Math.pow(diameter, 2));
     }
 
     public void setCharacterPosition(Vector2 position) {
         body.setTransform(position.x / Constant.physicsDensity, position.y / Constant.physicsDensity, 0);
+        update();
     }
 
     @Override
@@ -116,8 +119,7 @@ public class Character extends Sprite {
      * @return bearing   double in radians of the bearing from the character to the coordinate
      */
     public double getDirectionTo(Vector2 coordinate) {
-        Vector2 charCenter = new Vector2(this.getX() + (getWidth()/ 2),
-                this.getY()+ (getHeight() / 2));
+        Vector2 charCenter = getCenter();
 
         // atan2 is uses the signs of both variables the determine the correct quadrant (relative to the character) of the
         // result.

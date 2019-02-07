@@ -29,7 +29,7 @@ public class CharacterTest {
     public void touchingCharactersShouldCollide() {
         World world = new World(new Vector2(0, 0), true);
         Character anotherCharacter = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0,10), world);
-        Character character = new Character(new Sprite(), new Vector2(0,0), world);
+        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0,0), world);
         assertTrue("Characters that touch should collide.", character.collidesWith(anotherCharacter));
         anotherCharacter.dispose();
         character.dispose();
@@ -40,8 +40,8 @@ public class CharacterTest {
     // Test 1.1.3
     public void nonTouchingCharactersShouldNotCollide() {
         World world = new World(new Vector2(0, 0), true);
-        Character anotherCharacter = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(20,20), world);
-        Character character = new Character(new Sprite(), new Vector2(0,0), world);
+        Character anotherCharacter = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(200,200), world);
+        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0,0), world);
         assertFalse("Characters that don't touch should not collide.", character.collidesWith(anotherCharacter));
         anotherCharacter.dispose();
         character.dispose();
@@ -54,8 +54,8 @@ public class CharacterTest {
     public void getCenterOnCharacterWithPositivePosition() {
         World world = new World(new Vector2(0, 0), true);
         Character character = new Character(new Sprite(new Texture(charTexturePath)),
-                new Vector2(1,1), world);
-        assertEquals("Testing center calculation with positive position.", new Vector2((float) 17.0, (float) 17.0),
+                new Vector2(50,20), world);
+        assertEquals("Testing center calculation with positive position.", new Vector2(50, 20),
                 character.getCenter());
         character.dispose();
         world.dispose();
@@ -66,9 +66,11 @@ public class CharacterTest {
     public void getCenterOnCharacterWithNegativePosition() {
         World world = new World(new Vector2(0, 0), true);
         Character character = new Character(new Sprite(new Texture(charTexturePath)),
-                new Vector2(-50,-50), world);
-        assertEquals("Testing center calculation with negative position.", new Vector2(-34, -34),
+                new Vector2(-50,-20), world);
+        assertEquals("Testing center calculation with negative position.", new Vector2(-50, -20),
                 character.getCenter());
+        character.dispose();
+        world.dispose();
     }
 
     @Test
@@ -85,8 +87,13 @@ public class CharacterTest {
     // Test 1.3.2
     public void getDirectionInBottomRightQuadrant() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-16,-16), world);
-        assertEquals("South-East direction should be 2.356.", 2.356, character.getDirectionTo(new Vector2(1,-1)), 0.001);
+        Vector2 center1 = new Vector2(-16,-16);
+        Vector2 center2 = new Vector2(1,-1);
+        Character character = new Character(new Sprite(new Texture(charTexturePath)), center1, world);
+
+        double angle = Math.atan2(center1.y-center2.y, center1.x-center2.x)+Math.PI*2;
+
+        assertEquals("South-East direction should be correct.", angle, character.getDirectionTo(center2), angle);
         character.dispose();
         world.dispose();
     }
@@ -95,8 +102,13 @@ public class CharacterTest {
     // Test 1.3.3
     public void getDirectionInBottomLeftQuadrant() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-16,-16), world);
-        assertEquals("South-West direction should be 3.927.", 3.927, character.getDirectionTo(new Vector2(-1,-1)), 0.001);
+        Vector2 center1 = new Vector2(-16,-16);
+        Vector2 center2 = new Vector2(-1,-1);
+        Character character = new Character(new Sprite(new Texture(charTexturePath)), center1, world);
+
+        double angle = Math.atan2(center1.y-center2.y, center1.x-center2.x)+Math.PI*2;
+
+        assertEquals("South-West direction should be correct.", angle, character.getDirectionTo(center2), angle);
         character.dispose();
         world.dispose();
     }
@@ -105,8 +117,13 @@ public class CharacterTest {
     // Test 1.3.4
     public void getDirectionInTopLeftQuadrant() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-16,-16), world);
-        assertEquals("North-West direction should be 5.498.", 5.498, character.getDirectionTo(new Vector2(-1,1)), 0.001);
+        Vector2 center1 = new Vector2(-16,-16);
+        Vector2 center2 = new Vector2(-1,1);
+        Character character = new Character(new Sprite(new Texture(charTexturePath)), center1, world);
+
+        double angle = Math.atan2(center1.y-center2.y, center1.x-center2.x)+Math.PI*2;
+
+        assertEquals("North-West direction should be correct.", angle, character.getDirectionTo(center2), angle);
         character.dispose();
         world.dispose();
     }
@@ -130,9 +147,14 @@ public class CharacterTest {
         World world = new World(new Vector2(0, 0), true);
         Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-16,-16), world);
         Vector2 position = new Vector2(-10, -30);
+
         Vector2 normalizedDirection = character.getDirNormVector(position);
-        double expectedX = -10 / Math.sqrt(1000);
-        double expectedY = -30 / Math.sqrt(1000);
+
+        Vector2 center = character.getCenter();
+        double len = Math.sqrt(Math.pow(center.x-position.x,2)+Math.pow(center.y-position.y,2));
+        double expectedX = (position.x-center.x) / len;
+        double expectedY = (position.y-center.y) / len;
+
         assertEquals("Correct x component for player with center at origin to (-10, -30).", expectedX, normalizedDirection.x, 0.1);
         assertEquals("Correct y component for player with center at origin to (-10, -30).", expectedY, normalizedDirection.y, 0.1);
         character.dispose();
@@ -144,12 +166,17 @@ public class CharacterTest {
     public void getDirNormVectorToPositivePosition() {
         World world = new World(new Vector2(0, 0), true);
         Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-16,-16), world);
-        Vector2 position = new Vector2(47, 20);
+        Vector2 position = new Vector2(-47, -20);
+
         Vector2 normalizedDirection = character.getDirNormVector(position);
-        double expectedX = 47 / Math.sqrt(2609);
-        double expectedY = 20 / Math.sqrt(2609);
-        assertEquals("Correct x component for player with center at origin to (47, 20).", expectedX, normalizedDirection.x, 0.1);
-        assertEquals("Correct y component for player with center at origin to (47, 20).", expectedY, normalizedDirection.y, 0.1);
+
+        Vector2 center = character.getCenter();
+        double len = Math.sqrt(Math.pow(center.x-position.x,2)+Math.pow(center.y-position.y,2));
+        double expectedX = (position.x-center.x) / len;
+        double expectedY = (position.y-center.y) / len;
+
+        assertEquals("Correct x component for player with center at origin to (-10, -30).", expectedX, normalizedDirection.x, 0.1);
+        assertEquals("Correct y component for player with center at origin to (-10, -30).", expectedY, normalizedDirection.y, 0.1);
         character.dispose();
         world.dispose();
     }
