@@ -49,9 +49,11 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<Vector2>(
 				            Arrays.asList(new Vector2(200,200), new Vector2(700,700),
 				                    new Vector2(200,700), new Vector2(700,200)));
-					waves = new int[]{5, 10, 15};
+					waves = new int[]{5, 10, 15, 1};
 					location = screen;
-					isFinal = false;
+					
+					boss1 = false;
+					boss2 = true;
 				}};						 
 				level = new Level(this, config);
 				this.setScreen(level);
@@ -66,7 +68,8 @@ public class Zepr extends Game {
 				                    new Vector2(600,500), new Vector2(100,600)));
 					waves = new int[]{10, 15, 20};
 					location = screen;
-					isFinal = false;
+					boss1 = false;
+					boss2 = false;
 				}};						 
 				level = new Level(this, config);
 				this.setScreen(level);
@@ -81,7 +84,9 @@ public class Zepr extends Game {
 					                   new Vector2(630,100), new Vector2(120,500)));
 					waves = new int[]{13, 17, 1};
 					location = screen;
-					isFinal = true;
+					boss1 = true;
+					boss2 = false;
+					
 				}};						 
 				level = new Level(this, config);
 				this.setScreen(level);
@@ -100,7 +105,8 @@ public class Zepr extends Game {
 									new Vector2(630, 100), new Vector2(120, 500)));
 					waves = new int[]{4,4,4};
 					location = screen;
-					isFinal = true;
+					boss1 = false;
+					boss2 = false;
 				}};
 				level = new Level(this, config);
 				this.setScreen(level);

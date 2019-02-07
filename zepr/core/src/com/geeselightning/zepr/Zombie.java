@@ -46,6 +46,7 @@ public class Zombie extends Character {
 
         pathFinder.searchNodePath(startNode, endNode, new HeuristicImp(), resultPath);
         Gdx.app.log("path", "" + resultPath.getCount());
+        hitRange *= getWidth() / 25;
     }
 
     public void attack(Player player, float delta) {

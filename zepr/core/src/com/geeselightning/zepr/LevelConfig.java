@@ -13,5 +13,6 @@ public class LevelConfig {
     // Defining the number of zombies to be spawned for each wave
     int[] waves;
     Zepr.location location;
-    boolean isFinal;
+    boolean boss1;
+    boolean boss2;
 }

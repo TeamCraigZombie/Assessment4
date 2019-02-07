@@ -166,11 +166,15 @@ public class Level implements Screen {
      * @param spawnPoints locations where zombies should be spawned on this stage
      * @param numberToSpawn number of zombies to spawn
      */
-    public void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints, boolean isFinal) {
-
-    	if (isFinal == true && numberToSpawn == 1) {
-        	Zombie zombie = new Zombie(new Sprite(new Texture("player03.png")),
-                    spawnPoints.get(0), world, player,Constant.ZOMBIESPEED * 3, Constant.ZOMBIEMAXHP * 5);
+    public void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints, boolean boss1, boolean boss2) {
+    	if (boss2 == true && numberToSpawn == 1) {
+        	Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
+                    spawnPoints.get(0), world, player,Constant.ZOMBIESPEED * 15, Constant.ZOMBIEMAXHP * 5);
+            aliveZombies.add(zombie);
+        }
+    	else if (boss1 == true && numberToSpawn == 1) {
+        	Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
+                    spawnPoints.get(0), world, player,Constant.ZOMBIESPEED * 15, Constant.ZOMBIEMAXHP * 5);
             aliveZombies.add(zombie);
         }
     	else {
@@ -362,7 +366,7 @@ public class Level implements Screen {
             }
 
        	 	// Spawn all zombies in the stage
-            spawnZombies(zombiesToSpawn, config.zombieSpawnPoints,config.isFinal);
+            spawnZombies(zombiesToSpawn, config.zombieSpawnPoints,config.boss1, config.boss2);
             // Wave complete, increment wave number
             currentWave++;
             if (currentWave > config.waves.length) {

@@ -82,7 +82,8 @@ public class Character extends Sprite {
 
     @Override
     public void draw(Batch batch) {
-
+    	setRotation((float) Math.toDegrees(-direction));
+        super.draw(batch);
         // Draw health bar
         final int fillAmount = health > 0 ? (int)(32 * (float)health/maxhealth) : 0;
         batch.setColor(Color.BLACK);
@@ -91,8 +92,7 @@ public class Character extends Sprite {
         batch.draw(Level.blank, getX() + 1, getY() + 33, fillAmount, 1);
         batch.setColor(Color.WHITE);
 
-        setRotation((float) Math.toDegrees(-direction));
-        super.draw(batch);
+        
     }
 
     // hitRange has to be passed by the subclass from the canHit method.
