@@ -68,7 +68,10 @@ public class Level implements Screen {
     	this.world = zepr.getWorld();
     	parent = zepr;
     	this.config = config;
-        blank = new Texture("blank.png");            
+        blank = new Texture("blank.png");
+
+
+        player = new Player(new Sprite(new Texture("player01.png")), new Vector2(300, 300), world);
         
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
         aliveZombies = new ArrayList<Zombie>();
@@ -111,8 +114,7 @@ public class Level implements Screen {
         debugRenderer = new Box2DDebugRenderer();
         
         MapBodyBuilder.buildShapes(map, Constant.physicsDensity / Constant.worldScale, world);
-        
-        player = new Player(new Sprite(new Texture("player01.png")), new Vector2(300, 300), world);
+
         
         // It is only possible to view the render of the map through an orthographic camera.
         camera = new OrthographicCamera();
@@ -167,28 +169,28 @@ public class Level implements Screen {
     public void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints, boolean isFinal) {
 
     	if (isFinal == true && numberToSpawn == 1) {
-        	Zombie zombie = (new Zombie(new Sprite(new Texture("player03.png")),
-                    spawnPoints.get(0), world, Constant.ZOMBIESPEED * 3, Constant.ZOMBIEMAXHP * 5));       
+        	Zombie zombie = new Zombie(new Sprite(new Texture("player03.png")),
+                    spawnPoints.get(0), world, player,Constant.ZOMBIESPEED * 3, Constant.ZOMBIEMAXHP * 5);
             aliveZombies.add(zombie);
         }
     	else {
     	
     	for (int i = 0; i < numberToSpawn/3; i++) {
 	
-	            Zombie zombie = (new Zombie(new Sprite(new Texture("zombie01.png")),
-	                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP));       
+	            Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")),
+	                    spawnPoints.get(i % spawnPoints.size()), world, player, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP);
 	            aliveZombies.add(zombie);
 	        }
 	        for (int i = 0; i < numberToSpawn/3; i++) {
 	
-	            Zombie zombie = (new Zombie(new Sprite(new Texture("player01.png")),
-	                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED * 1.5f, Constant.ZOMBIEMAXHP));       
+	            Zombie zombie = new Zombie(new Sprite(new Texture("player01.png")),
+	                    spawnPoints.get(i % spawnPoints.size()), world, player, Constant.ZOMBIESPEED * 1.5f, Constant.ZOMBIEMAXHP);
 	            aliveZombies.add(zombie);
 	        }
 	        for (int i = 0; i < (numberToSpawn - (2*(numberToSpawn/3))); i++) {
 	
-	            Zombie zombie = (new Zombie(new Sprite(new Texture("player02.png")),
-	                    spawnPoints.get(i % spawnPoints.size()), world, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP * 2));       
+	            Zombie zombie = new Zombie(new Sprite(new Texture("player02.png")),
+	                    spawnPoints.get(i % spawnPoints.size()), world, player, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP * 2);
 	            aliveZombies.add(zombie);
         
     	}
@@ -314,7 +316,7 @@ public class Level implements Screen {
     	  	       
     	world.step(1/60f, 6, 2);
 
-    	player.update();
+    	player.updateSprite();
     	player.look(getMouseWorldCoordinates());
     	
     	// When you die, end the level.

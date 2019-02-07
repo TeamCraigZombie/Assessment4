@@ -26,14 +26,14 @@ public class Character extends Sprite {
     protected Body body;
     private static BodyDef characterBodyDef = new BodyDef() {{ type = BodyDef.BodyType.DynamicBody; }};
 
-    public Character(Sprite sprite, Vector2 spawn, World world) {
+    public Character(Sprite sprite, Vector2 spawnPosition, World world) {
         super(sprite);
         this.world = world;
         GenerateBodyFromSprite(sprite);
-        setCharacterPosition(spawn);
         body.setFixedRotation(true);
         body.setLinearDamping(50.f);
-
+        setCharacterPosition(spawnPosition);
+        updateSprite();
         health = maxhealth = 100;
     }
 
@@ -77,7 +77,7 @@ public class Character extends Sprite {
 
     public void setCharacterPosition(Vector2 position) {
         body.setTransform(position.x / Constant.physicsDensity, position.y / Constant.physicsDensity, 0);
-        update();
+        updateSprite();
     }
 
     @Override
@@ -162,7 +162,7 @@ public class Character extends Sprite {
     /**
      * This method updates the character properties.
      */
-    public void update() {
+    public void updateSprite() {
         // Update x, y position of character.     
         Vector2 position = getPhysicsPosition();
         setPosition(position.x-getWidth()/2, position.y-getHeight()/2);

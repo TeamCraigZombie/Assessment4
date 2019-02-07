@@ -17,11 +17,15 @@ public class Zombie extends Character {
 
     private IndexedAStarPathFinder<Node> pathFinder;
     private GraphPathImp resultPath = new GraphPathImp();
+    private Player player;
 
-    public Zombie(Sprite sprite, Vector2 zombieSpawn, World world, float speed, int health) {
+    public Zombie(Sprite sprite, Vector2 zombieSpawn, World world, Player player, float speed, int health) {
         super(sprite, zombieSpawn, world);
         this.speed = speed;
+        this.player = player;
         maxhealth = this.health = health;
+
+        setCharacterPosition(zombieSpawn);
 
         pathFinder = new IndexedAStarPathFinder<>(Level.graph, false);
 
@@ -52,20 +56,19 @@ public class Zombie extends Character {
             hitRefresh += delta;
     }
 
-    @Override
     public void update() {
         //move according to velocity
-        super.update();
+        super.updateSprite();
 
-        if (Level.getPlayer().canBeSeen) {
+        if (player.canBeSeen) {
             // update velocity to move towards player
             // Vector2.scl scales the vector
-            velocity = getDirNormVector(Level.getPlayer().getPixelPosition()).scl(speed);
+            velocity = getDirNormVector(player.getPixelPosition()).scl(speed);
             
             body.applyLinearImpulse(velocity, body.getPosition() , true);
 
             // update direction to face the player
-            direction = getDirectionTo(Level.getPlayer().getCenter());
+            direction = getDirectionTo(player.getCenter());
         }
     }
 }

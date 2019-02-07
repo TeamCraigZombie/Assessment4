@@ -53,8 +53,7 @@ public class CharacterTest {
     // Test 1.2.1
     public void getCenterOnCharacterWithPositivePosition() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)),
-                new Vector2(50,20), world);
+        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(50,20), world);
         assertEquals("Testing center calculation with positive position.", new Vector2(50, 20),
                 character.getCenter());
         character.dispose();
@@ -65,8 +64,7 @@ public class CharacterTest {
     // Test 1.2.2
     public void getCenterOnCharacterWithNegativePosition() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)),
-                new Vector2(-50,-20), world);
+        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-50,-20), world);
         assertEquals("Testing center calculation with negative position.", new Vector2(-50, -20),
                 character.getCenter());
         character.dispose();
@@ -77,8 +75,13 @@ public class CharacterTest {
     // Test 1.3.1
     public void getDirectionInTopRightQuadrant() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-16,-16), world);
-        assertEquals("North-East direction should be 0.785.", 0.785, character.getDirectionTo(new Vector2(1,1)), 0.001);
+        Vector2 center1 = new Vector2(-16,-16);
+        Vector2 center2 = new Vector2(1,1);
+        Character character = new Character(new Sprite(new Texture(charTexturePath)), center1, world);
+
+        double angle = Math.atan2(center1.y-center2.y, center1.x-center2.x)+Math.PI*2;
+
+        assertEquals("North-East direction should be correct.", angle, character.getDirectionTo(center2), angle);
         character.dispose();
         world.dispose();
     }
