@@ -65,7 +65,7 @@ public class MapBodyBuilder {
 		return bodies;
 	}
 
-	private static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
+	public static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
 		Rectangle rectangle = rectangleObject.getRectangle();
 		PolygonShape polygon = new PolygonShape();
 		Vector2 size = new Vector2((rectangle.x + rectangle.width * 0.5f) / ppt,

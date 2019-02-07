@@ -1,8 +1,9 @@
-package com.geeselightning.zepr;
+package com.geeselightning.zepr.powerups;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.geeselightning.zepr.Level;
 
 public class PowerUp extends Sprite {
 

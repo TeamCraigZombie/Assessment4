@@ -9,13 +9,13 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Player extends Character {
 
-    int attackDamage = Constant.PLAYERDMG;
+    public int attackDamage = Constant.PLAYERDMG;
     int hitRange = Constant.PLAYERRANGE;
     final float hitCooldown =  Constant.PLAYERHITCOOLDOWN;
     Texture mainTexture;
     Texture attackTexture;
     public boolean attack = false;
-    float HPMult;
+    public float HPMult;
     float dmgMult;
     float speedMult;
     static String playertype;

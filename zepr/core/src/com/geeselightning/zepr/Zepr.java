@@ -21,12 +21,10 @@ public class Zepr extends Game {
 	private SelectLevelScreen selectLevelScreen;
 	private World world;
 	
-	public static enum location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, COMPLETE, MINIGAME };
+	public enum location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, COMPLETE, MINIGAME, TEST }
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
 	public static location progress = location.TOWN;
-
-	
 
 	public void changeScreen(final location screen) {
 		LevelConfig config;
@@ -91,6 +89,21 @@ public class Zepr extends Game {
 			case MINIGAME:
 				minigame = new MiniGame(this);
 				this.setScreen(minigame);
+				break;
+			case TEST:
+				config = new LevelConfig() {{
+					mapLocation = "maps/pathfindingtest.tmx";
+					playerSpawn = new Vector2(600,500);
+					powerSpawn = new Vector2(250, 250);
+					zombieSpawnPoints = new ArrayList<>(
+							Arrays.asList(new Vector2(50,500), new Vector2(630, 600),
+									new Vector2(630, 100), new Vector2(120, 500)));
+					waves = new int[]{4,4,4};
+					location = screen;
+					isFinal = true;
+				}};
+				level = new Level(this, config);
+				this.setScreen(level);
 				break;
 		}
 	}

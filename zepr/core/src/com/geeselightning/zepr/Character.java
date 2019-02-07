@@ -16,7 +16,7 @@ public class Character extends Sprite {
 
     Vector2 velocity = new Vector2(); // 2D vector
     public float speed;
-    int health;
+    public int health;
     int maxhealth;
     // direction is a bearing in radians
     double direction = 0;

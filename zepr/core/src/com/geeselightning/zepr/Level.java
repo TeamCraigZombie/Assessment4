@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -21,6 +22,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.geeselightning.zepr.pathfinding.GraphGenerator;
+import com.geeselightning.zepr.pathfinding.GraphImp;
+import com.geeselightning.zepr.powerups.*;
 import com.geeselightning.zepr.screens.TextScreen;
 import java.util.ArrayList;
 
@@ -42,12 +46,21 @@ public class Level implements Screen {
     public int zombiesRemaining; // the number of zombies left to kill to complete the wave
     public int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
     static Texture blank;
-    PowerUp currentPowerUp = null;
+    public PowerUp currentPowerUp = null;
     private Box2DDebugRenderer debugRenderer;
     private static float worldScale = 1.f;
     static float physicsDensity = 100.f;
-    LevelConfig config;
+    public LevelConfig config;
     private World world;
+
+    public static int lvlTileWidth;
+    public static int lvlTileHeight;
+    public static int lvlPixelWidth;
+    public static int lvlPixelHeight;
+    public static int tilePixelWidth;
+    public static int tilePixelHeight;
+    public static GraphImp graph;
+
     Label progressLabel, healthLabel, powerupLabel;
 
     public Level(Zepr zepr, LevelConfig config) {
@@ -80,6 +93,17 @@ public class Level implements Screen {
         // Loads the testmap.tmx file as map.
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load(config.mapLocation);
+
+        // get level width/height in both tiles and pixels and hang on to the values
+        MapProperties properties = map.getProperties();
+        lvlTileWidth = properties.get("width", Integer.class);
+        lvlTileHeight = properties.get("height", Integer.class);
+        tilePixelWidth = properties.get("tilewidth", Integer.class);
+        tilePixelHeight = properties.get("tileheight", Integer.class);
+        lvlPixelWidth = lvlTileWidth * tilePixelWidth;
+        lvlPixelHeight = lvlTileHeight * tilePixelHeight;
+        // graph for indexed a star search for zombie pathfinding
+        graph = GraphGenerator.generateGraph(map);
 
         // renderer renders the .tmx map as an orthogonal (top-down) map.
         renderer = new OrthogonalTiledMapRenderer(map, worldScale);
