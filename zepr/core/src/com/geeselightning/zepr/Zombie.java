@@ -20,8 +20,8 @@ public class Zombie extends Character {
 
     public Zombie(Sprite sprite, Vector2 zombieSpawn, World world, float speed, int health) {
         super(sprite, zombieSpawn, world);
-         this.speed = speed;
-         this.health = health;
+        this.speed = speed;
+        maxhealth = this.health = health;
 
         pathFinder = new IndexedAStarPathFinder<>(Level.graph, false);
 

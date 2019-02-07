@@ -21,8 +21,8 @@ public class GraphGenerator {
         Array<Node> nodes = new Array<>();
 
         TiledMapTileLayer tiles = (TiledMapTileLayer) map.getLayers().get("Background");
-        // cannot use object layer, so make sure all tiles with objects in them are in own "Walls" layer
-        TiledMapTileLayer collisionTiles = (TiledMapTileLayer) map.getLayers().get("Walls");
+        // cannot use object layer, so make sure all tiles with objects in them are in own "Foreground" layer
+        TiledMapTileLayer collisionTiles = (TiledMapTileLayer) map.getLayers().get("Foreground");
         int mapHeight = Level.lvlTileHeight;
         int mapWidth = Level.lvlTileWidth;
 

@@ -30,7 +30,7 @@ public class Character extends Sprite {
         super(sprite);
         this.world = world;
         GenerateBodyFromSprite(sprite);
-        body.setTransform(spawn.x / Level.physicsDensity, spawn.y / Level.physicsDensity, 0);
+        setCharacterPosition(spawn);
         body.setFixedRotation(true);
         body.setLinearDamping(50.f);
 
@@ -44,8 +44,8 @@ public class Character extends Sprite {
     	final float scale = 1.6f;
     	
     	PolygonShape shape = new PolygonShape();
-    	shape.setAsBox(sprite.getWidth() / scale / 2 / Level.physicsDensity,
-    			 sprite.getHeight() / scale / 2 / Level.physicsDensity);
+    	shape.setAsBox(sprite.getWidth() / scale / 2 / Constant.physicsDensity,
+    			 sprite.getHeight() / scale / 2 / Constant.physicsDensity);
     	
     	FixtureDef fixtureDef = new FixtureDef();
     	fixtureDef.shape = shape;
@@ -71,6 +71,10 @@ public class Character extends Sprite {
         double distanceBetweenCenters = (Math.pow(getCenter().x - character.getCenter().x, 2)
                 + Math.pow(getCenter().y - character.getCenter().y, 2));
         return (0 <= distanceBetweenCenters && distanceBetweenCenters <= Math.pow(diameter, 2));
+    }
+
+    public void setCharacterPosition(Vector2 position) {
+        body.setTransform(position.x / Constant.physicsDensity, position.y / Constant.physicsDensity, 0);
     }
 
     @Override
@@ -142,7 +146,7 @@ public class Character extends Sprite {
      * @return the position as Vector2
      */
     public Vector2 getPhysicsPosition() {
-        return body.getPosition().scl(Level.physicsDensity);
+        return body.getPosition().scl(Constant.physicsDensity);
     }
 
     /**

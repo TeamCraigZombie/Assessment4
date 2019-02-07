@@ -79,7 +79,7 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<Vector2>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
-					waves = new int[]{13, 17, 22};
+					waves = new int[]{13, 17, 1};
 					location = screen;
 					isFinal = true;
 				}};						 
