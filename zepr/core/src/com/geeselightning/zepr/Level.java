@@ -52,6 +52,8 @@ public class Level implements Screen {
     static float physicsDensity = 100.f;
     public LevelConfig config;
     private World world;
+    private int teleportCounter = 0;
+    private boolean dupe = false;
 
     public static int lvlTileWidth;
     public static int lvlTileHeight;
@@ -171,10 +173,11 @@ public class Level implements Screen {
         	Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
                     spawnPoints.get(0), world, player,Constant.ZOMBIESPEED * 15, Constant.ZOMBIEMAXHP * 5);
             aliveZombies.add(zombie);
+            config.isTeleporting = true;
         }
     	else if (boss1 == true && numberToSpawn == 1) {
         	Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
-                    spawnPoints.get(0), world, player,Constant.ZOMBIESPEED * 15, Constant.ZOMBIEMAXHP * 5);
+                    spawnPoints.get(0), world, player,Constant.ZOMBIESPEED * 20, Constant.ZOMBIEMAXHP * 5);
             aliveZombies.add(zombie);
         }
     	else {
@@ -317,7 +320,6 @@ public class Level implements Screen {
     }
     
     public void update(float delta) {
-    	  	       
     	world.step(1/60f, 6, 2);
 
     	player.updateSprite();
@@ -367,6 +369,11 @@ public class Level implements Screen {
 
        	 	// Spawn all zombies in the stage
             spawnZombies(zombiesToSpawn, config.zombieSpawnPoints,config.boss1, config.boss2);
+            
+            
+            
+        
+        
             // Wave complete, increment wave number
             currentWave++;
             if (currentWave > config.waves.length) {
@@ -404,7 +411,30 @@ public class Level implements Screen {
             if (player.attack)
                 player.attack(zombie, delta);
             zombie.attack(player, delta);          
-        }    
+        } 
+        teleportCounter ++;
+        if (config.isTeleporting && teleportCounter > 100) {
+        	teleportCounter = 0;
+        	Vector2 spawnPoint = new Vector2(200,200);
+        	Zombie originalBoss = aliveZombies.get(0);
+        	int currentHealth = originalBoss.getHealth();
+        	if (currentHealth < 250 && dupe == false) {
+        		Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
+                        spawnPoint, world, player,Constant.ZOMBIESPEED * 15, Constant.ZOMBIEMAXHP * 2);
+                aliveZombies.add(zombie);
+                dupe = true;
+        	}
+        	for (Zombie boss : aliveZombies) {
+	        	int startX = (int) boss.getPhysicsPosition().x;
+	            int startY = (int) boss.getPhysicsPosition().y;
+	        	
+	        	int endX = (int) Level.getPlayer().getPhysicsPosition().x;
+	            int endY = (int) Level.getPlayer().getPhysicsPosition().y;
+	            
+	            Vector2 position = new Vector2((startX + endX)/2, (startY + endY)/2);
+	        	boss.setCharacterPosition(position);
+        	}
+        }
         
         String progressString = ("Wave " + Integer.toString(currentWave) + ", " + Integer.toString(zombiesRemaining) + " zombies remaining.");
         String healthString = ("Health: " + Integer.toString(player.health) + "HP");

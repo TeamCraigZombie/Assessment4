@@ -89,6 +89,7 @@ public class MiniZombie {
 	
 	public boolean collision() {
 		
+
 		if(zombieX <= 150 || zombieX+(zombieWidth) >= width-150) {	
 			collisionTimer = timer;
 			this.collision = true;

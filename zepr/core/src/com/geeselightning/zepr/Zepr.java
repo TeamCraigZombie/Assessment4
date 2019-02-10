@@ -54,6 +54,7 @@ public class Zepr extends Game {
 					
 					boss1 = false;
 					boss2 = true;
+					isTeleporting = false;
 				}};						 
 				level = new Level(this, config);
 				this.setScreen(level);
@@ -70,6 +71,7 @@ public class Zepr extends Game {
 					location = screen;
 					boss1 = false;
 					boss2 = false;
+					isTeleporting = false;
 				}};						 
 				level = new Level(this, config);
 				this.setScreen(level);
@@ -86,6 +88,7 @@ public class Zepr extends Game {
 					location = screen;
 					boss1 = true;
 					boss2 = false;
+					isTeleporting = false;
 					
 				}};						 
 				level = new Level(this, config);

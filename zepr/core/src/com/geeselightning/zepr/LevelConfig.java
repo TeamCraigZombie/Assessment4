@@ -15,4 +15,5 @@ public class LevelConfig {
     Zepr.location location;
     boolean boss1;
     boolean boss2;
+    boolean isTeleporting;
 }
