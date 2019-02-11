@@ -28,7 +28,7 @@ public class PlayerTest {
     }
 
     @Test
-    // Test 2.2.1
+    // Test 2.2
     public void playerDoesNoDamageToZombieWhenAtMaxRange() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
@@ -44,7 +44,7 @@ public class PlayerTest {
     }
 
     @Test
-    // Test 2.2.2
+    // Test 2.3
     public void playerDoesDamageToZombieWhenInRange() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
@@ -60,7 +60,7 @@ public class PlayerTest {
     }
 
     @Test
-    //Test 2.2.3
+    //Test 2.4
     public void playerDoesNoDamageToZombieOutOfRange() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
@@ -76,7 +76,7 @@ public class PlayerTest {
     }
 
     @Test
-    // Test 2.3.1
+    // Test 2.5
     public void playerTypesHaveDifferentHealth() {
         World world = new World(new Vector2(0, 0), true);
 
@@ -96,7 +96,7 @@ public class PlayerTest {
     }
 
     @Test
-    // Test 2.3.2
+    // Test 2.6
     public void playerTypesHaveDifferentSpeed() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);

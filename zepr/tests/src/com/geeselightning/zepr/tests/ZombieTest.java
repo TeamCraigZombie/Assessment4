@@ -17,7 +17,7 @@ public class ZombieTest {
 
 
     @Test
-    // Test 3.1.1
+    // Test 3.1
     public void zombieDoesNoDamageToPlayerWhenAtMaxRange() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
@@ -33,7 +33,7 @@ public class ZombieTest {
     }
 
     @Test
-    // Test 3.1.2
+    // Test 3.2
     public void zombieDoesDamageToPlayerWhenInRange() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
@@ -50,7 +50,7 @@ public class ZombieTest {
 
 
     @Test
-    // Test 3.1.3
+    // Test 3.3
     public void zombieDoesNoDamageToPlayerOutOfRange() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
@@ -66,7 +66,7 @@ public class ZombieTest {
     }
 
     @Test
-    // Test 3.2.1
+    // Test 3.4
     public void zombieCannotAttackBeforeCooldownComplete() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
@@ -83,7 +83,7 @@ public class ZombieTest {
     }
 
     @Test
-    // Test 3.2.2
+    // Test 3.5
     public void zombieCanAttackAfterCooldownComplete() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);

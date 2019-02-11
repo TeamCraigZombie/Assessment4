@@ -33,7 +33,7 @@ public class PowerUpTest {
     }
 
     @Test
-    // Test 4.2.1
+    // Test 4.2
     public void powerUpSpeedIncreasePlayersSpeed() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
@@ -47,7 +47,7 @@ public class PowerUpTest {
     }
 
     @Test
-    // Test 4.2.2
+    // Test 4.3
     public void powerUpSpeedDeactivatesAfter10s() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
@@ -61,7 +61,7 @@ public class PowerUpTest {
     }
 
     @Test
-    // Test 4.2.3
+    // Test 4.4
     public void powerUpSpeedDoesNotDeactiveBefore10s() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
@@ -76,7 +76,7 @@ public class PowerUpTest {
     }
 
     @Test
-    // Test 4.2.3
+    // Test 4.5
     public void powerUpSpeedDeactivateMethodResetsPlayerSpeed() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
@@ -92,7 +92,7 @@ public class PowerUpTest {
     }
 
     @Test
-    // Test 4.3.1
+    // Test 4.6
     public void playerCannotPickUpFarAwayPowerUp() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(100, 100), world);
@@ -104,7 +104,7 @@ public class PowerUpTest {
     }
 
     @Test
-    //Test 4.3.2
+    //Test 4.7
     public void playerCanPickUpClosePowerUp() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(31, 31), world);
@@ -116,8 +116,8 @@ public class PowerUpTest {
     }
 
     @Test
-    // Test 4.4.1
-    public void powerUpImmunityStopsThePlayerTakingDamge() {
+    // Test 4.8
+    public void powerUpImmunityStopsThePlayerTakingDamage() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
         PowerUpImmunity immunity = new PowerUpImmunity(null, player);
@@ -131,7 +131,7 @@ public class PowerUpTest {
     }
 
     @Test
-    // Test 4.4.2
+    // Test 4.9
     public void powerUpImmunityDeactivatesAfter5s() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
@@ -148,7 +148,7 @@ public class PowerUpTest {
     }
 
     @Test
-    // Test 4.4.3
+    // Test 4.10
     public void powerUpImmunityDeactivateMethodCancelsImmunity() {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);

@@ -15,7 +15,7 @@ public class CharacterTest {
     private final String charTexturePath = "player01.png";
 
     @Test
-    // Test 1.1.1
+    // Test 1.1
     public void charactersWithSamePositionShouldCollide() {
         World world = new World(new Vector2(0, 0), true);
         Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0,0), world);
@@ -25,7 +25,7 @@ public class CharacterTest {
     }
 
     @Test
-    // Test 1.1.2
+    // Test 1.2
     public void touchingCharactersShouldCollide() {
         World world = new World(new Vector2(0, 0), true);
         Character anotherCharacter = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0,10), world);
@@ -37,7 +37,7 @@ public class CharacterTest {
     }
 
     @Test
-    // Test 1.1.3
+    // Test 1.3
     public void nonTouchingCharactersShouldNotCollide() {
         World world = new World(new Vector2(0, 0), true);
         Character anotherCharacter = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(200,200), world);
@@ -50,7 +50,7 @@ public class CharacterTest {
 
 
     @Test
-    // Test 1.2.1
+    // Test 1.4
     public void getCenterOnCharacterWithPositivePosition() {
         World world = new World(new Vector2(0, 0), true);
         Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(50,20), world);
@@ -61,7 +61,7 @@ public class CharacterTest {
     }
 
     @Test
-    // Test 1.2.2
+    // Test 1.5
     public void getCenterOnCharacterWithNegativePosition() {
         World world = new World(new Vector2(0, 0), true);
         Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-50,-20), world);
@@ -72,7 +72,7 @@ public class CharacterTest {
     }
 
     @Test
-    // Test 1.3.1
+    // Test 1.6
     public void getDirectionInTopRightQuadrant() {
         World world = new World(new Vector2(0, 0), true);
         Vector2 center1 = new Vector2(-16,-16);
@@ -87,7 +87,7 @@ public class CharacterTest {
     }
 
     @Test
-    // Test 1.3.2
+    // Test 1.7
     public void getDirectionInBottomRightQuadrant() {
         World world = new World(new Vector2(0, 0), true);
         Vector2 center1 = new Vector2(-16,-16);
@@ -102,7 +102,7 @@ public class CharacterTest {
     }
 
     @Test
-    // Test 1.3.3
+    // Test 1.8
     public void getDirectionInBottomLeftQuadrant() {
         World world = new World(new Vector2(0, 0), true);
         Vector2 center1 = new Vector2(-16,-16);
@@ -117,7 +117,7 @@ public class CharacterTest {
     }
 
     @Test
-    // Test 1.3.4
+    // Test 1.9
     public void getDirectionInTopLeftQuadrant() {
         World world = new World(new Vector2(0, 0), true);
         Vector2 center1 = new Vector2(-16,-16);
@@ -132,7 +132,7 @@ public class CharacterTest {
     }
 
     @Test
-    // Test 1.4
+    // Test 1.10
     public void charactersTakeSpecifiedDamage() {
         World world = new World(new Vector2(0, 0), true);
         Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0, 0), world);
@@ -145,7 +145,7 @@ public class CharacterTest {
     }
 
     @Test
-    // Test 1.5.1
+    // Test 1.11
     public void getDirNormVectorToNegativePosition() {
         World world = new World(new Vector2(0, 0), true);
         Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-16,-16), world);
@@ -165,11 +165,11 @@ public class CharacterTest {
     }
 
     @Test
-    // Test 1.5.2
+    // Test 1.12
     public void getDirNormVectorToPositivePosition() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-16,-16), world);
-        Vector2 position = new Vector2(-47, -20);
+        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(16,16), world);
+        Vector2 position = new Vector2(30, 20);
 
         Vector2 normalizedDirection = character.getDirNormVector(position);
 
