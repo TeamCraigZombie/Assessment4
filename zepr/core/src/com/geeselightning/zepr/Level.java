@@ -27,6 +27,9 @@ import com.geeselightning.zepr.pathfinding.GraphImp;
 import com.geeselightning.zepr.powerups.*;
 import com.geeselightning.zepr.screens.TextScreen;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 
 public class Level implements Screen {
@@ -250,7 +253,19 @@ public class Level implements Screen {
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Zepr.location.SELECT);
+            	File f = new File("saveData.txt");
+        		FileOutputStream edit;
+				try {
+					edit = new FileOutputStream(f);
+					byte[] lvl = (Integer.toString(Zepr.progress.ordinal())).getBytes();
+					edit.write(lvl);
+					edit.close();
+					System.out.println("Saved!");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	parent.changeScreen(Zepr.location.SELECT);
             }
         });
     }
