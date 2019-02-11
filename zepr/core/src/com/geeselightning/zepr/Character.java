@@ -79,6 +79,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
 
     public void setCharacterPosition(Vector2 position) {
         body.setTransform(position.x / Constant.physicsDensity, position.y / Constant.physicsDensity, 0);
+        updatePosition();
     }
 
     @Override
@@ -92,8 +93,6 @@ public class Character extends Sprite implements Steerable<Vector2> {
         batch.setColor(Color.RED);
         batch.draw(Level.blank, getX() + 1, getY() + 33, fillAmount, 1);
         batch.setColor(Color.WHITE);
-
-        
     }
 
     // hitRange has to be passed by the subclass from the canHit method.
@@ -148,12 +147,9 @@ public class Character extends Sprite implements Steerable<Vector2> {
         return body.getPosition().scl(Constant.physicsDensity);
     }
 
-    /**
-     * Gets the position in pixel coordinates
-     * @return the position as Vector2
-     */
-    public Vector2 getPixelPosition() {
-        return new Vector2(getX(), getY());
+    public void updatePosition() {
+        Vector2 position = getPhysicsPosition();
+        setPosition(position.x-getWidth()/2, position.y-getHeight()/2);
     }
 
     /**
@@ -161,8 +157,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
      */
     public void update(float delta) {
         // Update x, y position of character.
-        Vector2 position = getPhysicsPosition();
-        setPosition(position.x-getWidth()/2, position.y-getHeight()/2);
+        updatePosition();
 
         if (steeringBehavior != null) { // update character based on assigned steering behaviour
             steeringBehavior.calculateSteering(steeringOutput);

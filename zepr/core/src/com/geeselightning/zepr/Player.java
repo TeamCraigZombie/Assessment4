@@ -72,7 +72,7 @@ public class Player extends Character {
 
     public void respawn(Vector2 playerSpawn){
 
-        body.setTransform(playerSpawn.x / Constant.physicsDensity, playerSpawn.y / Constant.physicsDensity, 0);
+        setCharacterPosition(playerSpawn);
         health = maxhealth;
     }
     
