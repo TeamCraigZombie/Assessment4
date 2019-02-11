@@ -25,6 +25,7 @@ public class Player extends Character {
 
     public Player(Sprite sprite, Vector2 playerSpawn, World world) {
         super(sprite, playerSpawn, world);
+        setCharacterPosition(playerSpawn);
         refreshAttributes();
     }
 

@@ -29,14 +29,13 @@ public class Character extends Sprite implements Steerable<Vector2> {
     protected Body body;
     private static BodyDef characterBodyDef = new BodyDef() {{ type = BodyDef.BodyType.DynamicBody; }};
 
-    public Character(Sprite sprite, Vector2 spawn, World world) {
+    public Character(Sprite sprite, Vector2 spawnPosition, World world) {
         super(sprite);
         this.world = world;
         GenerateBodyFromSprite(sprite);
-        setCharacterPosition(spawn);
         body.setFixedRotation(true);
         body.setLinearDamping(50.f);
-
+        setCharacterPosition(spawnPosition);
         health = maxhealth = 100;
     }
 
@@ -47,7 +46,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
     	final float scale = 1.6f;
     	
     	PolygonShape shape = new PolygonShape();
-    	shape.setAsBox(sprite.getWidth() / scale / 2 / Constant.physicsDensity,
+        shape.setAsBox(sprite.getWidth() / scale / 2 / Constant.physicsDensity,
     			 sprite.getHeight() / scale / 2 / Constant.physicsDensity);
     	
     	FixtureDef fixtureDef = new FixtureDef();
@@ -71,8 +70,10 @@ public class Character extends Sprite implements Steerable<Vector2> {
     public boolean collidesWith(Character character) {
         // Circles work better than character.getBoundingRectangle()
         double diameter = 10;
-        double distanceBetweenCenters = (Math.pow(getCenter().x - character.getCenter().x, 2)
-                + Math.pow(getCenter().y - character.getCenter().y, 2));
+        Vector2 center1 = getCenter();
+        Vector2 center2 = character.getCenter();
+        double distanceBetweenCenters = (Math.pow(center1.x - center2.x, 2)
+                + Math.pow(center1.y - center2.y, 2));
         return (0 <= distanceBetweenCenters && distanceBetweenCenters <= Math.pow(diameter, 2));
     }
 
@@ -82,7 +83,8 @@ public class Character extends Sprite implements Steerable<Vector2> {
 
     @Override
     public void draw(Batch batch) {
-
+    	setRotation((float) Math.toDegrees(-direction));
+        super.draw(batch);
         // Draw health bar
         final int fillAmount = health > 0 ? (int)(32 * (float)health/maxhealth) : 0;
         batch.setColor(Color.BLACK);
@@ -91,8 +93,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
         batch.draw(Level.blank, getX() + 1, getY() + 33, fillAmount, 1);
         batch.setColor(Color.WHITE);
 
-        setRotation((float) Math.toDegrees(-direction));
-        super.draw(batch);
+        
     }
 
     // hitRange has to be passed by the subclass from the canHit method.
@@ -115,8 +116,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
      * @return bearing   double in radians of the bearing from the character to the coordinate
      */
     public double getDirectionTo(Vector2 coordinate) {
-        Vector2 charCenter = new Vector2(this.getX() + (getWidth()/ 2),
-                this.getY()+ (getHeight() / 2));
+        Vector2 charCenter = getCenter();
 
         // atan2 is uses the signs of both variables the determine the correct quadrant (relative to the character) of the
         // result.

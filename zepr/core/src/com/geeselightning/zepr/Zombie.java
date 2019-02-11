@@ -10,10 +10,14 @@ public class Zombie extends Character {
     public int hitRange = Constant.ZOMBIERANGE;
     public final float hitCooldown = Constant.ZOMBIEHITCOOLDOWN;
 
-    public Zombie(Sprite sprite, Vector2 zombieSpawn, World world, float speed, int health) {
+    private Player player;
+
+    public Zombie(Sprite sprite, Vector2 zombieSpawn, World world, Player player, float speed, int health) {
         super(sprite, zombieSpawn, world);
         this.speed = speed;
+        this.player = player;
         maxhealth = this.health = health;
+        setCharacterPosition(zombieSpawn);
     }
 
     public void attack(Player player, float delta) {

@@ -34,7 +34,7 @@ public class MiniGame implements Screen {
 	private Sprite crosshair;
 	static long timer = 0;
 	private long last = 0;
-	private  Queue<MiniZombie> ZombieQueue = new Queue<MiniZombie>();
+	private  Queue<MiniZombie> ZombieQueue = new Queue<>();
 	private MiniZombie tempZombie;
 	private BitmapFont font;
 	private static String gunStatus = "Reloaded";
@@ -134,7 +134,7 @@ public class MiniGame implements Screen {
 	public void render(float delta) {
 		
 		if(death) {
-			parent.setScreen(new TextScreen(parent, "MINIGAME OVER"));
+			parent.setScreen(new TextScreen(parent, "Kills: "+kills+"\nMINIGAME OVER"));
 			ZombieQueue.clear();
 		}
 		

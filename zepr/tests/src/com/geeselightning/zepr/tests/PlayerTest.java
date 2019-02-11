@@ -33,7 +33,7 @@ public class PlayerTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y + Constant.PLAYERRANGE/Constant.physicsDensity), world, 1, 10);
+        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(0, Constant.PLAYERRANGE/Constant.physicsDensity), world, player,1, 10);
         double originalHealth = zombie.getHealth();
         player.attack(zombie, 0);
 
@@ -49,7 +49,7 @@ public class PlayerTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y + Constant.PLAYERRANGE - 10), world, 1, 10);
+        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(0, Constant.PLAYERRANGE - 10), world, player,1, 10);
         double originalHealth = zombie.getHealth();
         player.attack(zombie, 0);
 
@@ -65,7 +65,7 @@ public class PlayerTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y +100), world, 1, 10);
+        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y +100), world, player,1, 10);
         double originalHealth = zombie.getHealth();
         player.attack(zombie, 0);
 

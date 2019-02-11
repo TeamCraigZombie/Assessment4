@@ -3,6 +3,13 @@ package com.geeselightning.zepr;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.BufferedReader;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -24,7 +31,7 @@ public class Zepr extends Game {
 	public enum location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, COMPLETE, MINIGAME, TEST }
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
-	public static location progress = location.TOWN;
+	public static location progress;
 
 	public void changeScreen(final location screen) {
 		LevelConfig config;
@@ -49,9 +56,12 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<Vector2>(
 				            Arrays.asList(new Vector2(200,200), new Vector2(700,700),
 				                    new Vector2(200,700), new Vector2(700,200)));
-					waves = new int[]{5, 10, 15};
+					waves = new int[]{5, 10, 15, 1};
 					location = screen;
-					isFinal = false;
+					
+					boss1 = false;
+					boss2 = true;
+					isTeleporting = false;
 				}};						 
 				level = new Level(this, config);
 				this.setScreen(level);
@@ -66,7 +76,9 @@ public class Zepr extends Game {
 				                    new Vector2(600,500), new Vector2(100,600)));
 					waves = new int[]{10, 15, 20};
 					location = screen;
-					isFinal = false;
+					boss1 = false;
+					boss2 = false;
+					isTeleporting = false;
 				}};						 
 				level = new Level(this, config);
 				this.setScreen(level);
@@ -81,7 +93,10 @@ public class Zepr extends Game {
 					                   new Vector2(630,100), new Vector2(120,500)));
 					waves = new int[]{13, 17, 1};
 					location = screen;
-					isFinal = true;
+					boss1 = true;
+					boss2 = false;
+					isTeleporting = false;
+					
 				}};						 
 				level = new Level(this, config);
 				this.setScreen(level);
@@ -100,7 +115,8 @@ public class Zepr extends Game {
 									new Vector2(630, 100), new Vector2(120, 500)));
 					waves = new int[]{4,4,4};
 					location = screen;
-					isFinal = true;
+					boss1 = false;
+					boss2 = false;
 				}};
 				level = new Level(this, config);
 				this.setScreen(level);
@@ -120,5 +136,35 @@ public class Zepr extends Game {
 		
 		loadingScreen = new LoadingScreen(this);
 		setScreen(loadingScreen);
+		
+		File f = new File("saveData.txt");
+		if(f.isFile()) {
+			System.out.println(f.getName() + " exists.");
+			BufferedReader br;
+			try {
+				br = new BufferedReader(new FileReader(f));
+				String st; 
+				  while ((st = br.readLine()) != null) { 
+				    System.out.println("Player is on stage:" + st);
+				    Zepr.progress = Zepr.location.values()[Integer.parseInt(st)];
+				  }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println(f.getName() + " does not exist. Creating now...");
+			try {
+				Boolean b = f.createNewFile();
+				System.out.println(f.getName() + " has been created? ... " + b);
+				FileOutputStream edit = new FileOutputStream(f);
+				byte[] lvl = ("3").getBytes();
+				edit.write(lvl);
+				edit.close();
+				progress = location.TOWN;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	
 	}
 }
