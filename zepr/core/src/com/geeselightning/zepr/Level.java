@@ -49,8 +49,6 @@ public class Level implements Screen {
     static Texture blank;
     public PowerUp currentPowerUp = null;
     private Box2DDebugRenderer debugRenderer;
-    private static float worldScale = 1.f;
-    static float physicsDensity = 100.f;
     public LevelConfig config;
     private World world;
     private int teleportCounter = 0;
@@ -66,8 +64,10 @@ public class Level implements Screen {
     Label progressLabel, healthLabel, powerupLabel;
 
     public Level(Zepr zepr, LevelConfig config) {
-   
-    	this.world = zepr.getWorld();
+
+        //Initialise Box2D physics engine
+    	this.world =  new World(new Vector2(0, 0), true);
+
     	parent = zepr;
     	this.config = config;
         blank = new Texture("blank.png");
@@ -435,13 +435,9 @@ public class Level implements Screen {
                 dupe = true;
         	}
         	for (Zombie boss : aliveZombies) {
-	        	int startX = (int) boss.getPhysicsPosition().x;
-	            int startY = (int) boss.getPhysicsPosition().y;
-	        	
-	        	int endX = (int) Level.getPlayer().getPhysicsPosition().x;
-	            int endY = (int) Level.getPlayer().getPhysicsPosition().y;
-	            
-	            Vector2 position = new Vector2((startX + endX)/2, (startY + endY)/2);
+        	    Vector2 start = boss.getPhysicsPosition();
+        	    Vector2 end =  player.getPhysicsPosition();
+	            Vector2 position = new Vector2((start.x + end.x)/2, (start.y + end.y)/2);
 	        	boss.setCharacterPosition(position);
         	}
         }

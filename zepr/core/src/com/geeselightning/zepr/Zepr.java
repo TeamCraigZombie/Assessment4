@@ -26,7 +26,6 @@ public class Zepr extends Game {
 	private Level level;
 	private MiniGame minigame;
 	private SelectLevelScreen selectLevelScreen;
-	private World world;
 	
 	public enum location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, COMPLETE, MINIGAME, TEST }
 
@@ -123,16 +122,9 @@ public class Zepr extends Game {
 				break;
 		}
 	}
-	
-	public World getWorld() {
-		return world;
-	}
 
 	@Override
 	public void create() {
-		
-        //Initialise Box2D physics engine
-        world = new World(new Vector2(0, 0), true);
 		
 		loadingScreen = new LoadingScreen(this);
 		setScreen(loadingScreen);
