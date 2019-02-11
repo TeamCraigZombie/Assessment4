@@ -22,8 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.geeselightning.zepr.pathfinding.GraphGenerator;
-import com.geeselightning.zepr.pathfinding.GraphImp;
 import com.geeselightning.zepr.powerups.*;
 import com.geeselightning.zepr.screens.TextScreen;
 import java.util.ArrayList;
@@ -59,7 +57,6 @@ public class Level implements Screen {
     public static int lvlPixelHeight;
     public static int tilePixelWidth;
     public static int tilePixelHeight;
-    public static GraphImp graph;
 
     Label progressLabel, healthLabel, powerupLabel;
 
@@ -102,8 +99,6 @@ public class Level implements Screen {
         tilePixelHeight = properties.get("tileheight", Integer.class);
         lvlPixelWidth = lvlTileWidth * tilePixelWidth;
         lvlPixelHeight = lvlTileHeight * tilePixelHeight;
-        // graph for indexed a star search for zombie pathfinding
-        graph = GraphGenerator.generateGraph(map);
 
         // renderer renders the .tmx map as an orthogonal (top-down) map.
         renderer = new OrthogonalTiledMapRenderer(map, Constant.worldScale);
@@ -314,7 +309,7 @@ public class Level implements Screen {
     	  	       
     	world.step(1/60f, 6, 2);
 
-    	player.update();
+    	player.update(delta);
     	player.look(getMouseWorldCoordinates());
     	
     	// When you die, end the level.
@@ -323,7 +318,7 @@ public class Level implements Screen {
 
     	for(int i = 0; i < aliveZombies.size(); i++) {
             Zombie zomb = aliveZombies.get(i);
-            zomb.update();
+            zomb.update(delta);
                         
             if (zomb.getHealth() <= 0) {
                 zombiesRemaining--;

@@ -1,5 +1,9 @@
 package com.geeselightning.zepr;
 
+import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.steer.SteeringAcceleration;
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,9 +16,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import static java.lang.Math.abs;
 
-public class Character extends Sprite {
+public class Character extends Sprite implements Steerable<Vector2> {
 
-    Vector2 velocity = new Vector2(); // 2D vector
     public float speed;
     public int health;
     int maxhealth;
@@ -66,7 +69,7 @@ public class Character extends Sprite {
      * @return boolean true if they collide, false otherwise
      */
     public boolean collidesWith(Character character) {
-        // Circles less buggy than character.getBoundingRectangle()
+        // Circles work better than character.getBoundingRectangle()
         double diameter = 10;
         double distanceBetweenCenters = (Math.pow(getCenter().x - character.getCenter().x, 2)
                 + Math.pow(getCenter().y - character.getCenter().y, 2));
@@ -98,11 +101,7 @@ public class Character extends Sprite {
         double angle = abs(directionToCharacter - direction);
         double distance = this.getCenter().sub(character.getCenter()).len();
 
-        if (angle < 0.8 && distance < hitRange) {
-            return true;
-        } else {
-            return false;
-        }
+        return (angle < 0.8 && distance < hitRange);
     }
 
     public Vector2 getCenter() {
@@ -160,15 +159,22 @@ public class Character extends Sprite {
     /**
      * This method updates the character properties.
      */
-    public void update() {
-        // Update x, y position of character.     
+    public void update(float delta) {
+        // Update x, y position of character.
         Vector2 position = getPhysicsPosition();
         setPosition(position.x-getWidth()/2, position.y-getHeight()/2);
+
+        if (steeringBehavior != null) { // update character based on assigned steering behaviour
+            steeringBehavior.calculateSteering(steeringOutput);
+            applySteering(steeringOutput, delta);
+        }
     }
 
-    // Decreases health by value of dmg
-    public void takeDamage(int dmg){
-        health -= dmg;
+    /**
+     * Decreases health by value of damage
+      */
+    public void takeDamage(int damage){
+        health -= damage;
     }
     
     public void dispose() {
@@ -176,4 +182,174 @@ public class Character extends Sprite {
     	world.destroyBody(body);
     }
 
+    // Implementation of Steerable<Vector2> Interface
+    public enum SteeringState {WANDER, SEEK, ARRIVE, NONE}
+    public SteeringState currentMode = SteeringState.WANDER;
+
+    private float maxLinearSpeed = Constant.ZOMBIESPEED;
+    private float maxLinearAcceleration = 2f;
+    private float maxAngularSpeed = 20f;
+    private float maxAngularAcceleration = 2f;
+    private float zeroThreshold = 0.01f;
+    SteeringBehavior<Vector2> steeringBehavior;
+    private static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
+    private float boundingRadius = 100f;
+    private boolean tagged = true;
+    private boolean independentFacing = false;
+
+    public boolean isIndependentFacing() {
+        return independentFacing;
+    }
+
+    public void setIndependentFacing(boolean independentFacing) {
+        this.independentFacing = independentFacing;
+    }
+
+    /**
+     * Apply assigned steering functionality to the character
+     * @param steering steering behaviour to apply
+     * @param delta time update
+     */
+    protected void applySteering(SteeringAcceleration<Vector2> steering, float delta) {
+        boolean anyAccelerations = false;
+        // Update position and linear velocity
+        if (!steeringOutput.linear.isZero()) {
+            body.applyForceToCenter(steeringOutput.linear, true);
+            anyAccelerations = true;
+        }
+        //Update orientation and angular velocity
+        if (isIndependentFacing()) {
+            if (steeringOutput.angular != 0) {
+                body.applyTorque(steeringOutput.angular, true);
+                anyAccelerations = true;
+            }
+        } else {
+            Vector2 linearVelocity = getLinearVelocity();
+            if (!linearVelocity.isZero(getZeroLinearSpeedThreshold())) {
+                float newOrientation = vectorToAngle(linearVelocity);
+                body.setAngularVelocity((newOrientation - getAngularVelocity()) * delta);
+                body.setTransform(body.getPosition(), newOrientation);
+            }
+        }
+
+        if (anyAccelerations) {
+            Vector2 velocity = body.getLinearVelocity();
+            float currentSpeedSquare = velocity.len2();
+            float maxLinearSpeed = getMaxLinearSpeed();
+            if (currentSpeedSquare > (maxLinearSpeed*maxLinearSpeed)) {
+                body.setLinearVelocity(velocity.scl(maxLinearSpeed/(float)Math.sqrt(currentSpeedSquare)));
+            }
+            float maxAngVelocity = getMaxAngularSpeed();
+            if (body.getAngularVelocity() > maxAngVelocity) {
+                body.setAngularVelocity(maxAngVelocity);
+            }
+        }
+    }
+
+    @Override
+    public Vector2 getPosition() {
+        return body.getPosition();
+    }
+
+    @Override
+    public float getOrientation() {
+        return body.getAngle();
+    }
+
+    @Override
+    public void setOrientation(float orientation) {
+        body.setTransform(getPosition(), orientation);
+    }
+
+    @Override
+    public float vectorToAngle(Vector2 vector) {
+        return (float) Math.atan2(-vector.x, vector.y);
+    }
+
+    @Override
+    public Vector2 angleToVector(Vector2 outVector, float angle) {
+        outVector.x = -(float)Math.sin(angle);
+        outVector.y = (float)Math.cos(angle);
+        return outVector;
+    }
+
+    @Override
+    public Location<Vector2> newLocation() {
+        return null;
+    }
+
+    @Override
+    public float getAngularVelocity() {
+        return body.getAngularVelocity();
+    }
+
+    @Override
+    public float getBoundingRadius() {
+        return boundingRadius;
+    }
+
+    @Override
+    public boolean isTagged() {
+        return tagged;
+    }
+
+    @Override
+    public void setTagged(boolean tagged) {
+        this.tagged = tagged;
+    }
+
+    @Override
+    public Vector2 getLinearVelocity() {
+        return body.getLinearVelocity();
+    }
+
+    @Override
+    public float getZeroLinearSpeedThreshold() {
+        return zeroThreshold;
+    }
+
+    @Override
+    public void setZeroLinearSpeedThreshold(float value) {
+        zeroThreshold = value;
+    }
+
+    @Override
+    public float getMaxLinearSpeed() {
+        return maxLinearSpeed;
+    }
+
+    @Override
+    public void setMaxLinearSpeed(float maxLinearSpeed) {
+        this.maxLinearSpeed = maxLinearSpeed;
+    }
+
+    @Override
+    public float getMaxLinearAcceleration() {
+        return maxLinearAcceleration;
+    }
+
+    @Override
+    public void setMaxLinearAcceleration(float maxLinearAcceleration) {
+        this.maxLinearAcceleration = maxLinearAcceleration;
+    }
+
+    @Override
+    public float getMaxAngularSpeed() {
+        return maxAngularSpeed;
+    }
+
+    @Override
+    public void setMaxAngularSpeed(float maxAngularSpeed) {
+        this.maxAngularSpeed = maxAngularSpeed;
+    }
+
+    @Override
+    public float getMaxAngularAcceleration() {
+        return maxAngularAcceleration;
+    }
+
+    @Override
+    public void setMaxAngularAcceleration(float maxAngularAcceleration) {
+        this.maxLinearAcceleration = maxAngularAcceleration;
+    }
 }
