@@ -17,6 +17,11 @@ import com.geeselightning.zepr.Player;
 import com.geeselightning.zepr.Zepr;
 import com.geeselightning.zepr.Zepr.location;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+
 public class SelectLevelScreen implements Screen {
 
     private Zepr parent;
@@ -135,6 +140,44 @@ public class SelectLevelScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 parent.changeScreen(Zepr.location.MENU);
+            }
+        });
+
+        save.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                File f = new File("saveData.txt");
+                FileOutputStream edit;
+                try {
+                    edit = new FileOutputStream(f);
+                    byte[] lvl = (Integer.toString(Zepr.progress.ordinal())).getBytes();
+                    edit.write(lvl);
+                    edit.close();
+                    System.out.println("Saved!");
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                parent.changeScreen(Zepr.location.SELECT);
+            }
+        });
+
+        load.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                File f = new File("saveData.txt");
+                BufferedReader br;
+                try {
+                    br = new BufferedReader(new FileReader(f));
+                    String st;
+                    while ((st = br.readLine()) != null) {
+                        System.out.println("Player is on stage:" + st);
+                        Zepr.progress = Zepr.location.values()[Integer.parseInt(st)];
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                parent.changeScreen(location.SELECT);
             }
         });
 

@@ -248,21 +248,25 @@ public class Level implements Screen {
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-            	File f = new File("saveData.txt");
-        		FileOutputStream edit;
-				try {
-					edit = new FileOutputStream(f);
-					byte[] lvl = (Integer.toString(Zepr.progress.ordinal())).getBytes();
-					edit.write(lvl);
-					edit.close();
-					System.out.println("Saved!");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            	parent.changeScreen(Zepr.location.SELECT);
+            	saveGame();
             }
         });
+    }
+
+    public void saveGame() {
+        File f = new File("saveData.txt");
+        FileOutputStream edit;
+        try {
+            edit = new FileOutputStream(f);
+            byte[] lvl = (Integer.toString(Zepr.progress.ordinal())).getBytes();
+            edit.write(lvl);
+            edit.close();
+            System.out.println("Saved!");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        parent.changeScreen(Zepr.location.SELECT);
     }
 
     private void resumeGame() {
@@ -395,8 +399,10 @@ public class Level implements Screen {
                     parent.setScreen(new TextScreen(parent, "Game completed."));
                 else {
                     parent.setScreen(new TextScreen(parent, "Level completed."));
-	                if(Zepr.progress == config.location)
-	                	Zepr.progress = Zepr.location.values()[Zepr.progress.ordinal() + 1];
+	                if(Zepr.progress == config.location) {
+                        Zepr.progress = Zepr.location.values()[Zepr.progress.ordinal() + 1];
+                        saveGame();
+                    }
                 }
             } else {
             	

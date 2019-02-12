@@ -159,7 +159,7 @@ public class PowerUpTest {
         player.takeDamage(40);
         immunity.deactivate();
         player.takeDamage(30);
-        assertEquals("Player should take 30 damage afrer immunity is deactivated.", originalHealth-30,
+        assertEquals("Player should take 30 damage after immunity is deactivated.", originalHealth-30,
                 player.getHealth(), 0.1);
         player.dispose();
         world.dispose();
