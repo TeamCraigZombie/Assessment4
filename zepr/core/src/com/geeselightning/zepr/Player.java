@@ -57,7 +57,7 @@ public class Player extends Character {
 
         setTexture(mainTexture);
 
-        health = maxhealth = (int) HPMult * Constant.PLAYERMAXHP;
+        health = maxhealth = (int) (HPMult * 100);
         attackDamage = (int)(Constant.PLAYERDMG * dmgMult);
         speed = Constant.PLAYERSPEED * speedMult;
     }

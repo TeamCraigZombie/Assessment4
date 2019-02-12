@@ -16,7 +16,7 @@ public class PowerUpHeal extends PowerUp {
         super.activate();
 
         //Health cannot be more than max health
-        if(player.health+ Constant.HEALUP <= (int)(player.HPMult * Constant.PLAYERMAXHP)) {
+        if(player.getHealth() + Constant.HEALUP < (int)(player.HPMult * Constant.PLAYERMAXHP)) {
 
         	player.health += Constant.HEALUP;
 

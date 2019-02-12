@@ -33,6 +33,21 @@ public class PowerUpTest {
     }
 
     @Test
+    // Test 4.1.1
+    public void powerUpHealthCapsAtMaxHP() {
+        World world = new World(new Vector2(0,0), true);
+        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        PowerUpHeal heal = new PowerUpHeal(null, player);
+        double originalHealth = player.getHealth();
+        heal.activate();
+        heal.update(1);
+        assertEquals("Heal powerup should cap at max hit points.",
+                originalHealth, player.getHealth(), 0.01);
+        player.dispose();
+        world.dispose();
+    }
+
+    @Test
     // Test 4.2
     public void powerUpSpeedIncreasePlayersSpeed() {
         World world = new World(new Vector2(0, 0), true);
