@@ -53,7 +53,7 @@ public class TextScreen implements Screen {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Zepr.location.SELECT);
+                parent.changeScreen(Zepr.Location.SELECT);
                 dispose();
             }
         });

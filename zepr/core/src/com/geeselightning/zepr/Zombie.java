@@ -6,17 +6,18 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Zombie extends Character {
 
-    int attackDamage = Constant.ZOMBIEDMG;
+    int attackDamage;
     public int hitRange = Constant.ZOMBIERANGE;
     public final float hitCooldown = Constant.ZOMBIEHITCOOLDOWN;
 
     private Player player;
 
-    public Zombie(Sprite sprite, Vector2 zombieSpawn, World world, Player player, float speed, int health) {
+    public Zombie(Sprite sprite, Vector2 zombieSpawn, World world, Player player, float speed, int health, int damage) {
         super(sprite, zombieSpawn, world);
-        this.speed = speed;
+        this.speed = speed*Constant.ZOMBIESPEED;
         this.player = player;
-        maxhealth = this.health = health;
+        this.attackDamage = damage*Constant.ZOMBIEDMG;
+        maxhealth = this.health = health*Constant.ZOMBIEMAXHP;
         setCharacterPosition(zombieSpawn);
     }
 

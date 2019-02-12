@@ -27,7 +27,6 @@ import com.geeselightning.zepr.screens.TextScreen;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 
 
 public class Level implements Screen {
@@ -130,10 +129,6 @@ public class Level implements Screen {
     public static Player getPlayer() {
     	return player;
     }
-    
-    public ArrayList<Zombie> getAliveZombiesList() {
-    	return aliveZombies;
-    }
 
     /**
      * Called once the stage is complete to update the game progress
@@ -142,10 +137,7 @@ public class Level implements Screen {
         // implemented in subclasses
     }
     
-    
-    public World getBox2DWorld() {
-    	return world;
-    }
+
     static {
         GdxNativesLoader.load();
     }
@@ -167,15 +159,15 @@ public class Level implements Screen {
      * @param numberToSpawn number of zombies to spawn
      */
     public void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints, boolean boss1, boolean boss2) {
-    	if (boss2 == true && numberToSpawn == 1) {
+    	if (boss2 && numberToSpawn == 1) {
         	Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
-                    spawnPoints.get(0), world, player,Constant.ZOMBIESPEED * 15, Constant.ZOMBIEMAXHP * 5);
+                    spawnPoints.get(0), world, player,15, 5,2);
             aliveZombies.add(zombie);
             config.isTeleporting = true;
         }
-    	else if (boss1 == true && numberToSpawn == 1) {
+    	else if (boss1 && numberToSpawn == 1) {
         	Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
-                    spawnPoints.get(0), world, player,Constant.ZOMBIESPEED * 20, Constant.ZOMBIEMAXHP * 5);
+                    spawnPoints.get(0), world, player,20, 5,1);
             aliveZombies.add(zombie);
         }
     	else {
@@ -183,19 +175,19 @@ public class Level implements Screen {
     	for (int i = 0; i < numberToSpawn/3; i++) {
 	
 	            Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")),
-	                    spawnPoints.get(i % spawnPoints.size()), world, player, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP);
+	                    spawnPoints.get(i % spawnPoints.size()), world, player, 1, 1, 2);
 	            aliveZombies.add(zombie);
 	        }
 	        for (int i = 0; i < numberToSpawn/3; i++) {
 	
 	            Zombie zombie = new Zombie(new Sprite(new Texture("player01.png")),
-	                    spawnPoints.get(i % spawnPoints.size()), world, player, Constant.ZOMBIESPEED * 1.5f, Constant.ZOMBIEMAXHP);
+	                    spawnPoints.get(i % spawnPoints.size()), world, player, 1.5f, 1, 1);
 	            aliveZombies.add(zombie);
 	        }
 	        for (int i = 0; i < (numberToSpawn - (2*(numberToSpawn/3))); i++) {
 	
 	            Zombie zombie = new Zombie(new Sprite(new Texture("player02.png")),
-	                    spawnPoints.get(i % spawnPoints.size()), world, player, Constant.ZOMBIESPEED, Constant.ZOMBIEMAXHP * 2);
+	                    spawnPoints.get(i % spawnPoints.size()), world, player, 1, 1 * 2, 1);
 	            aliveZombies.add(zombie);
         
     	}
@@ -209,7 +201,7 @@ public class Level implements Screen {
      *
      * @return Vector2 of the mouse position in the world.
      */
-    public Vector2 getMouseWorldCoordinates() {
+    private Vector2 getMouseWorldCoordinates() {
         // Must first convert to 3D vector as camera.unproject() does not take 2D vectors.
         Vector3 screenCoordinates = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         Vector3 worldCoords3 = camera.unproject(screenCoordinates);
@@ -266,7 +258,7 @@ public class Level implements Screen {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        parent.changeScreen(Zepr.location.SELECT);
+        parent.changeScreen(Zepr.Location.SELECT);
     }
 
     private void resumeGame() {
@@ -395,12 +387,12 @@ public class Level implements Screen {
                 // If stage is being replayed complete() will stop progress being incremented.
                 isPaused = true;
                 complete();
-                if (Zepr.progress == Zepr.location.COMPLETE)
+                if (Zepr.progress == Zepr.Location.COMPLETE)
                     parent.setScreen(new TextScreen(parent, "Game completed."));
                 else {
                     parent.setScreen(new TextScreen(parent, "Level completed."));
 	                if(Zepr.progress == config.location) {
-                        Zepr.progress = Zepr.location.values()[Zepr.progress.ordinal() + 1];
+                        Zepr.progress = Zepr.Location.values()[Zepr.progress.ordinal() + 1];
                         saveGame();
                     }
                 }
@@ -436,7 +428,7 @@ public class Level implements Screen {
         	int currentHealth = originalBoss.getHealth();
         	if (currentHealth < 250 && dupe == false) {
         		Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
-                        spawnPoint, world, player,Constant.ZOMBIESPEED * 15, Constant.ZOMBIEMAXHP * 2);
+                        spawnPoint, world, player,15,  2, 2);
                 aliveZombies.add(zombie);
                 dupe = true;
         	}

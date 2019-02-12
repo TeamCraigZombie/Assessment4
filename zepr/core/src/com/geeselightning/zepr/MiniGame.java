@@ -181,7 +181,7 @@ public class MiniGame implements Screen {
             exit.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    parent.changeScreen(Zepr.location.SELECT);
+                    parent.changeScreen(Zepr.Location.SELECT);
                 }
             });
 

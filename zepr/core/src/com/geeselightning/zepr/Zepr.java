@@ -12,7 +12,6 @@ import java.io.BufferedReader;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.geeselightning.zepr.screens.LoadingScreen;
 import com.geeselightning.zepr.screens.MenuScreen;
 import com.geeselightning.zepr.screens.SelectLevelScreen;
@@ -27,12 +26,12 @@ public class Zepr extends Game {
 	private MiniGame minigame;
 	private SelectLevelScreen selectLevelScreen;
 	
-	public enum location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, COMPLETE, MINIGAME }
+	public enum Location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, COMPLETE, MINIGAME, TEST }
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
-	public static location progress;
+	public static Location progress;
 
-	public void changeScreen(final location screen) {
+	public void changeScreen(final Location screen) {
 		LevelConfig config;
 		switch(screen) {
 			case MENU:
@@ -122,8 +121,7 @@ public class Zepr extends Game {
 				String st; 
 				  while ((st = br.readLine()) != null) { 
 				    System.out.println("Player is on stage:" + st);
-				    //Zepr.progress = Zepr.location.values()[Integer.parseInt(st)];
-				    progress = location.TOWN;
+				    Zepr.progress = Location.values()[Integer.parseInt(st)];
 				  }
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -137,7 +135,7 @@ public class Zepr extends Game {
 				byte[] lvl = ("3").getBytes();
 				edit.write(lvl);
 				edit.close();
-				progress = location.TOWN;
+				progress = Location.TOWN;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

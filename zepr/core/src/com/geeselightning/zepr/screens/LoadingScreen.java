@@ -22,7 +22,7 @@ public class LoadingScreen implements Screen {
         // Clears the screen to black.
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         // Changes to the menu screen.
-        parent.changeScreen(Zepr.location.MENU);
+        parent.changeScreen(Zepr.Location.MENU);
     }
 
     @Override

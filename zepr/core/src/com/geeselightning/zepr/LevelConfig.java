@@ -12,7 +12,7 @@ public class LevelConfig {
     ArrayList<Vector2> zombieSpawnPoints;
     // Defining the number of zombies to be spawned for each wave
     int[] waves;
-    Zepr.location location;
+    Zepr.Location location;
     boolean boss1;
     boolean boss2;
     boolean isTeleporting;
