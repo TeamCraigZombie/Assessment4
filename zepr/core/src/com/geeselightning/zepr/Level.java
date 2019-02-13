@@ -161,13 +161,13 @@ public class Level implements Screen {
     public void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints, boolean boss1, boolean boss2) {
     	if (boss2 && numberToSpawn == 1) {
         	Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
-                    spawnPoints.get(0), world, player,15, 5,2);
+                    spawnPoints.get(0), world,15, 5,2);
             aliveZombies.add(zombie);
             config.isTeleporting = true;
         }
     	else if (boss1 && numberToSpawn == 1) {
         	Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
-                    spawnPoints.get(0), world, player,20, 5,1);
+                    spawnPoints.get(0), world,20, 5,1);
             aliveZombies.add(zombie);
         }
     	else {
@@ -175,19 +175,19 @@ public class Level implements Screen {
     	for (int i = 0; i < numberToSpawn/3; i++) {
 	
 	            Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")),
-	                    spawnPoints.get(i % spawnPoints.size()), world, player, 1, 1, 2);
+	                    spawnPoints.get(i % spawnPoints.size()), world, 1, 1, 2);
 	            aliveZombies.add(zombie);
 	        }
 	        for (int i = 0; i < numberToSpawn/3; i++) {
 	
 	            Zombie zombie = new Zombie(new Sprite(new Texture("player01.png")),
-	                    spawnPoints.get(i % spawnPoints.size()), world, player, 1.5f, 1, 1);
+	                    spawnPoints.get(i % spawnPoints.size()), world, 1.5f, 1, 1);
 	            aliveZombies.add(zombie);
 	        }
 	        for (int i = 0; i < (numberToSpawn - (2*(numberToSpawn/3))); i++) {
 	
 	            Zombie zombie = new Zombie(new Sprite(new Texture("player02.png")),
-	                    spawnPoints.get(i % spawnPoints.size()), world, player, 1, 1 * 2, 1);
+	                    spawnPoints.get(i % spawnPoints.size()), world, 1, 1 * 2, 1);
 	            aliveZombies.add(zombie);
         
     	}
@@ -416,7 +416,7 @@ public class Level implements Screen {
             // facing a player.
             // Player will only attack in the reverse situation but player.attack must also be true. This is
             //controlled by the ZeprInputProcessor. So the player will only attack when the user clicks.
-            if (player.attack)
+            if (player.isAttacking())
                 player.attack(zombie, delta);
             zombie.attack(player, delta);          
         } 
@@ -426,9 +426,9 @@ public class Level implements Screen {
         	Vector2 spawnPoint = new Vector2(200,200);
         	Zombie originalBoss = aliveZombies.get(0);
         	int currentHealth = originalBoss.getHealth();
-        	if (currentHealth < 250 && dupe == false) {
+        	if (currentHealth < 250 && !dupe) {
         		Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
-                        spawnPoint, world, player,15,  2, 2);
+                        spawnPoint, world,15,  2, 2);
                 aliveZombies.add(zombie);
                 dupe = true;
         	}
@@ -440,8 +440,8 @@ public class Level implements Screen {
         	}
         }
         
-        String progressString = ("Wave " + Integer.toString(currentWave) + ", " + Integer.toString(zombiesRemaining) + " zombies remaining.");
-        String healthString = ("Health: " + Integer.toString(player.health) + "HP");
+        String progressString = ("Wave " + currentWave + ", " + zombiesRemaining + " zombies remaining.");
+        String healthString = ("Health: " + player.health + "HP");
 
         progressLabel.setText(progressString);
         healthLabel.setText(healthString);

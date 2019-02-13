@@ -28,7 +28,7 @@ public class SelectLevelScreen implements Screen {
 
     /**
      * Constructor for the select level screen
-     * @param zepr - an instance of the main class of the game
+     * @param zepr an instance of the main class of the game
      */
     public SelectLevelScreen(Zepr zepr) {
 
@@ -231,7 +231,7 @@ public class SelectLevelScreen implements Screen {
 
     /**
      * Draw the menu to the screen
-     * @param delta - the time between the start of the previous render() call and now
+     * @param delta the time between the start of the previous render() call and now
      */
     @Override
     public void render(float delta) {
@@ -246,8 +246,8 @@ public class SelectLevelScreen implements Screen {
 
     /**
      * Resize method, called when the game window is resized
-     * @param width - the new window width
-     * @param height  - the new window height
+     * @param width the new window width
+     * @param height the new window height
      */
     @Override
     public void resize(int width, int height) {

@@ -9,8 +9,8 @@ public class PowerUpImmunity extends PowerUp {
 
     /**
      * Constructor for the immunity power up
-     * @param currentLevel - level to spawn the power up in
-     * @param player - player to monitor for pick up event and to apply the effect to
+     * @param currentLevel level to spawn the power up in
+     * @param player player to monitor for pick up event and to apply the effect to
      */
     public PowerUpImmunity(Level currentLevel, Player player) {
         super(new Texture("immunity.png"), currentLevel, player, Constant.IMMUNITYTIME);
@@ -22,7 +22,7 @@ public class PowerUpImmunity extends PowerUp {
     @Override
     public void activate() {
         super.activate();
-        player.isImmune = true;
+        player.setImmune(true);
     }
 
     /**
@@ -31,6 +31,6 @@ public class PowerUpImmunity extends PowerUp {
     @Override
     public void deactivate() {
         super.deactivate();
-        player.isImmune = false;
+        player.setImmune(false);
     }
 }

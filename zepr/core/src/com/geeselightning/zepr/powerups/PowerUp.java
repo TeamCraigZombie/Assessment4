@@ -16,9 +16,9 @@ public class PowerUp extends Sprite {
 
     /**
      * Constructor for the generic power up class
-     * @param texture - the texture to display for the pick up
-     * @param currentLevel - the instance of Level to spawn the power up in
-     * @param player - player instance to pick up and apply the power up to
+     * @param texture the texture to display for the pick up
+     * @param currentLevel the instance of Level to spawn the power up in
+     * @param player player instance to pick up and apply the power up to
      */
     PowerUp(Texture texture, Level currentLevel, Player player, float effectDuration) {
         super(new Sprite(texture));
@@ -61,7 +61,7 @@ public class PowerUp extends Sprite {
 
     /**
      * Update method to advance the effect duration timer and deactivate if expired
-     * @param delta - the time between the start of the previous render() call and now
+     * @param delta the time between the start of the previous render() call and now
      */
     public void update(float delta) {
         if (active) {

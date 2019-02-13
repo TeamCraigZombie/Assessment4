@@ -10,7 +10,7 @@ public class LoadingScreen implements Screen {
 
     /**
      * Constructor for the loading screen
-     * @param zepr - an instance of the main class of the game
+     * @param zepr an instance of the main class of the game
      */
     public LoadingScreen(Zepr zepr) {
         parent = zepr;
@@ -23,7 +23,7 @@ public class LoadingScreen implements Screen {
 
     /**
      * Draw the menu to the screen
-     * @param delta - the time between the start of the previous render() call and now
+     * @param delta the time between the start of the previous render() call and now
      */
     @Override
     public void render(float delta) {

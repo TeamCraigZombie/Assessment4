@@ -22,7 +22,7 @@ public class ZombieTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE), world, player, 1, 10, 1);
+        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE), world, 1, 10, 1);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
 
@@ -38,7 +38,7 @@ public class ZombieTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE + 5), world, player, 1, 1, 10);
+        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE + 5), world, 1, 1, 10);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
 
@@ -55,7 +55,7 @@ public class ZombieTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y - 100), world, player,1, 10, 1);
+        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y - 100), world,1, 10, 1);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
 
@@ -71,7 +71,7 @@ public class ZombieTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y ), world, player,1, 10, 1);
+        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y ), world,1, 10, 1);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
         zombie.attack(player, 0);
@@ -88,7 +88,7 @@ public class ZombieTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y ), world, player,1, 10, 1);
+        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y ), world,1, 10, 1);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
         // zombie will not attack this go so has to be called a third time

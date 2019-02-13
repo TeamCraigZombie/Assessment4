@@ -9,8 +9,8 @@ public class PowerUpInstaKill extends PowerUp {
 
     /**
      * Constructor for the instakill power up
-     * @param currentLevel - level to spawn the power up in
-     * @param player - player to monitor for pick up event and to apply the effect to
+     * @param currentLevel level to spawn the power up in
+     * @param player player to monitor for pick up event and to apply the effect to
      */
     public PowerUpInstaKill(Level currentLevel, Player player) {
         super(new Texture("instakill.png"), currentLevel, player, Constant.INSTAKILLTIME);
@@ -22,7 +22,7 @@ public class PowerUpInstaKill extends PowerUp {
     @Override
     public void activate() {
         super.activate();
-        player.attackDamage = Constant.ZOMBIEMAXHP;
+        player.setBoostDamage(10);
     }
 
 
@@ -32,6 +32,6 @@ public class PowerUpInstaKill extends PowerUp {
     @Override
     public void deactivate() {
         super.deactivate();
-        player.attackDamage = Constant.PLAYERDMG;
+        player.setBoostDamage(1);
     }
 }

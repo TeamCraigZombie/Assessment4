@@ -22,8 +22,8 @@ public class TextScreen implements Screen {
 
     /**
      * Constructor for the menu
-     * @param zepr - an instance of the main class of the game
-     * @param text - the text string to use as the subtitle
+     * @param zepr an instance of the main class of the game
+     * @param text the text string to use as the subtitle
      */
     public TextScreen(Zepr zepr, String text) {
         // Constructor builds the gui of the menu screen.
@@ -71,7 +71,7 @@ public class TextScreen implements Screen {
 
     /**
      * Draw the menu to the screen
-     * @param delta - the time between the start of the previous render() call and now
+     * @param delta the time between the start of the previous render() call and now
      */
     @Override
     public void render(float delta) {
@@ -86,8 +86,8 @@ public class TextScreen implements Screen {
 
     /**
      * Resize method, called when the game window is resized
-     * @param width - the new window width
-     * @param height - the new window height
+     * @param width the new window width
+     * @param height the new window height
      */
     @Override
     public void resize(int width, int height) {

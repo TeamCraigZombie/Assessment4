@@ -9,8 +9,8 @@ public class PowerUpInvisibility extends PowerUp {
 
     /**
      * Constructor for the invisibility power up
-     * @param currentLevel - level to spawn the power up in
-     * @param player - player to monitor for pick up event and to apply the effect to
+     * @param currentLevel level to spawn the power up in
+     * @param player player to monitor for pick up event and to apply the effect to
      */
     public PowerUpInvisibility(Level currentLevel, Player player) {
         super(new Texture("invisibility.png"), currentLevel, player, Constant.INVISIBILITYTIME);
@@ -22,7 +22,7 @@ public class PowerUpInvisibility extends PowerUp {
     @Override
     public void activate() {
         super.activate();
-        player.canBeSeen = false; //player is undetectable for 5 seconds
+        player.setVisible(false); //player is undetectable for 5 seconds
     }
 
     /**
@@ -31,6 +31,6 @@ public class PowerUpInvisibility extends PowerUp {
     @Override
     public void deactivate() {
         super.deactivate();
-        player.canBeSeen = true;
+        player.setVisible(true);
     }
 }
