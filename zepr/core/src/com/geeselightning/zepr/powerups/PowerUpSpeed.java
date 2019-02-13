@@ -22,7 +22,7 @@ public class PowerUpSpeed extends PowerUp {
     @Override
     public void activate() {
         super.activate();
-        player.speed += Constant.SPEEDUP;
+        player.setSpeed(player.getSpeed() + Constant.SPEEDUP);
     }
 
     /**
@@ -31,6 +31,6 @@ public class PowerUpSpeed extends PowerUp {
     @Override
     public void deactivate() {
         super.deactivate();
-        player.speed -= Constant.SPEEDUP;
+        player.setSpeed(player.getSpeed() - Constant.SPEEDUP);
     }
 }

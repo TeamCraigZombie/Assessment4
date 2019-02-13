@@ -26,7 +26,7 @@ public class PowerUp extends Sprite {
         this.effectDuration = effectDuration;
         // Tests pass a null currentLevel
         if (currentLevel != null)
-            setPosition(currentLevel.config.powerSpawn.x, currentLevel.config.powerSpawn.y);
+            setPosition(currentLevel.getConfig().powerSpawn.x, currentLevel.getConfig().powerSpawn.y);
         this.player = player;
     }
 
@@ -46,7 +46,7 @@ public class PowerUp extends Sprite {
         active = false;
         if (currentLevel != null)
             // Tests pass a null currentLevel
-            currentLevel.currentPowerUp = null;
+            currentLevel.setCurrentPowerUp(null);
     }
 
     /**

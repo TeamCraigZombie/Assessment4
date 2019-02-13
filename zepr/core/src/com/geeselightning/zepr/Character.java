@@ -18,29 +18,27 @@ import static java.lang.Math.abs;
 
 public class Character extends Sprite implements Steerable<Vector2> {
 
-    public float speed;
-    public int health;
+    protected float speed;
+    int health;
     int maxhealth;
     // direction is a bearing in radians
     double direction = 0;
-    World world;
+    private World world;
     // All characters start ready to hit.
     float hitRefresh = 2;
-    protected Body body;
+    Body body;
     private static BodyDef characterBodyDef = new BodyDef() {{ type = BodyDef.BodyType.DynamicBody; }};
-
     // Implementation of Steerable<Vector2> Interface
     public enum SteeringState {WANDER, SEEK, ARRIVE, NONE}
-    public SteeringState currentMode = SteeringState.WANDER;
-
+    SteeringState currentMode;
     private float maxLinearSpeed = Constant.ZOMBIESPEED;
     private float maxLinearAcceleration = 2f;
     private float maxAngularSpeed = 20f;
-    private float maxAngularAcceleration = 2f;
+    float maxAngularAcceleration = 2f;
     private float zeroThreshold = 0.01f;
     SteeringBehavior<Vector2> steeringBehavior;
     private static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
-    private float boundingRadius = 100f;
+    float boundingRadius = 100f;
     private boolean tagged = true;
     private boolean independentFacing = false;
 
@@ -58,6 +56,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
         body.setLinearDamping(50.f);
         setCharacterPosition(spawnPosition);
         health = maxhealth = 100;
+        currentMode = SteeringState.WANDER;
     }
 
     /**
@@ -83,6 +82,18 @@ public class Character extends Sprite implements Steerable<Vector2> {
 
     public int getHealth() {
         return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 
     /**

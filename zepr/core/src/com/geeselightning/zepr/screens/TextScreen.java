@@ -30,6 +30,8 @@ public class TextScreen implements Screen {
         // parent allows the MenuScreen to reference the MyGdxGame class.
         parent = zepr;
 
+        skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
+
         title = new Label(text, skin, "subtitle");
 
         // The stage is the controller which will react to inputs from the user.
@@ -56,8 +58,6 @@ public class TextScreen implements Screen {
                 dispose();
             }
         });
-
-        skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
     }
 
     /**
