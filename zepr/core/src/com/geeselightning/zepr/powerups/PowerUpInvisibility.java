@@ -7,17 +7,27 @@ import com.geeselightning.zepr.Player;
 
 public class PowerUpInvisibility extends PowerUp {
 
+    /**
+     * Constructor for the invisibility power up
+     * @param currentLevel - level to spawn the power up in
+     * @param player - player to monitor for pick up event and to apply the effect to
+     */
     public PowerUpInvisibility(Level currentLevel, Player player) {
-        super(5, new Texture("invisibility.png"), currentLevel, player);
+        super(new Texture("invisibility.png"), currentLevel, player, Constant.INVISIBILITYTIME);
     }
 
+    /**
+     * Enable player invisibility
+     */
     @Override
     public void activate() {
         super.activate();
         player.canBeSeen = false; //player is undetectable for 5 seconds
-        timeRemaining = Constant.INVISIBILITYTIME;
     }
 
+    /**
+     * Disable player invisibility
+     */
     @Override
     public void deactivate() {
         super.deactivate();

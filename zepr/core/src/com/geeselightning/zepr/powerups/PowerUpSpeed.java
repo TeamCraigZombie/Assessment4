@@ -7,17 +7,27 @@ import com.geeselightning.zepr.Player;
 
 public class PowerUpSpeed extends PowerUp {
 
+    /**
+     * Constructor for the speed power up
+     * @param currentLevel - level to spawn the power up in
+     * @param player - player to monitor for pick up event and to apply the effect to
+     */
     public PowerUpSpeed(Level currentLevel, Player player) {
-        super(2, new Texture("speed.png"), currentLevel, player);
+        super(new Texture("speed.png"), currentLevel, player, Constant.SPEEDUPTIME);
     }
 
+    /**
+     * Increase player speed attribute value
+     */
     @Override
     public void activate() {
         super.activate();
         player.speed += Constant.SPEEDUP;
-        timeRemaining = Constant.SPEEDUPTIME;
     }
 
+    /**
+     * Reset player speed attribute value
+     */
     @Override
     public void deactivate() {
         super.deactivate();

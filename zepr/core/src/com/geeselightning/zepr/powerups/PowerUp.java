@@ -8,27 +8,40 @@ import com.geeselightning.zepr.Player;
 
 public class PowerUp extends Sprite {
 
-    public int type;
-    Level currentLevel;
-    public boolean active;
-    public float timeRemaining;
+    private Level currentLevel;
+    private boolean active;
+    private float timeRemaining;
+    private float effectDuration;
     protected Player player;
 
-    public PowerUp(int type, Texture texture, Level currentLevel, Player player) {
+    /**
+     * Constructor for the generic power up class
+     * @param texture - the texture to display for the pick up
+     * @param currentLevel - the instance of Level to spawn the power up in
+     * @param player - player instance to pick up and apply the power up to
+     */
+    PowerUp(Texture texture, Level currentLevel, Player player, float effectDuration) {
         super(new Sprite(texture));
-        this.type = type;
         this.currentLevel = currentLevel;
+        this.effectDuration = effectDuration;
+        // Tests pass a null currentLevel
         if (currentLevel != null)
-            // Tests pass a null currentLevel
             setPosition(currentLevel.config.powerSpawn.x, currentLevel.config.powerSpawn.y);
         this.player = player;
     }
 
+    /**
+     * Apply the power up effect to the player, removing the power up texture
+     */
     public void activate(){
+        timeRemaining = effectDuration;
         active = true;
         this.getTexture().dispose();
     }
 
+    /**
+     * Remove the power up effect from the player
+     */
     public void deactivate(){
         active = false;
         if (currentLevel != null)
@@ -36,12 +49,20 @@ public class PowerUp extends Sprite {
             currentLevel.currentPowerUp = null;
     }
 
+    /**
+     * Check whether the player instance is overlapping the power up
+     * @return true if the player is overlapping the power up
+     */
     public boolean overlapsPlayer(){
         Rectangle rectanglePlayer = player.getBoundingRectangle();
         Rectangle rectanglePower = this.getBoundingRectangle();
         return rectanglePlayer.overlaps(rectanglePower);
     }
 
+    /**
+     * Update method to advance the effect duration timer and deactivate if expired
+     * @param delta - the time between the start of the previous render() call and now
+     */
     public void update(float delta) {
         if (active) {
             timeRemaining -= delta;
@@ -49,5 +70,9 @@ public class PowerUp extends Sprite {
             if (timeRemaining < 0)
                 deactivate();
         }
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

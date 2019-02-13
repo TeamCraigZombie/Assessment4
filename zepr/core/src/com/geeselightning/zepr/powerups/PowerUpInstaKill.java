@@ -7,17 +7,28 @@ import com.geeselightning.zepr.Player;
 
 public class PowerUpInstaKill extends PowerUp {
 
+    /**
+     * Constructor for the instakill power up
+     * @param currentLevel - level to spawn the power up in
+     * @param player - player to monitor for pick up event and to apply the effect to
+     */
     public PowerUpInstaKill(Level currentLevel, Player player) {
-        super(4, new Texture("instakill.png"), currentLevel, player);
+        super(new Texture("instakill.png"), currentLevel, player, Constant.INSTAKILLTIME);
     }
 
+    /**
+     * Increase player attack damage attribute
+     */
     @Override
     public void activate() {
         super.activate();
-        player.attackDamage = Constant.ZOMBIEMAXHP; //make zombies one hit kill
-        timeRemaining = Constant.INSTAKILLTIME;
+        player.attackDamage = Constant.ZOMBIEMAXHP;
     }
 
+
+    /**
+     * Reset player attack damage
+     */
     @Override
     public void deactivate() {
         super.deactivate();

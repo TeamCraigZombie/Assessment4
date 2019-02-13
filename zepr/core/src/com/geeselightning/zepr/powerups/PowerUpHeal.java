@@ -7,22 +7,26 @@ import com.geeselightning.zepr.Player;
 
 public class PowerUpHeal extends PowerUp {
 
+    /**
+     * Constructor for the healing power up
+     * @param currentLevel - level to spawn the power up in
+     * @param player - player to monitor for pick up event and to apply the effect to
+     */
     public PowerUpHeal(Level currentLevel, Player player) {
-        super(1, new Texture("heal.png"), currentLevel, player);
+        super(new Texture("heal.png"), currentLevel, player, 0);
     }
 
+    /**
+     * Increase the player health
+     */
     @Override
     public void activate() {
         super.activate();
 
         //Health cannot be more than max health
-        if(player.getHealth() + Constant.HEALUP < (int)(player.HPMult * Constant.PLAYERMAXHP)) {
-
+        if(player.getHealth() + Constant.HEALUP < (int)(player.HPMult * Constant.PLAYERMAXHP))
         	player.health += Constant.HEALUP;
-
-        } else {
-
-        	player.health = (int)(player.HPMult * Constant.PLAYERMAXHP);
-        }
+        else
+        	player.health = (int) player.HPMult * Constant.PLAYERMAXHP;
     }
 }
