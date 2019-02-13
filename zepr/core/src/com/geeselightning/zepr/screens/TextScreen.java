@@ -18,8 +18,13 @@ public class TextScreen implements Screen {
     private Label title;
     private Zepr parent;
     private Stage stage;
-    private Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
+    private Skin skin;
 
+    /**
+     * Constructor for the menu
+     * @param zepr - an instance of the main class of the game
+     * @param text - the text string to use as the subtitle
+     */
     public TextScreen(Zepr zepr, String text) {
         // Constructor builds the gui of the menu screen.
         // parent allows the MenuScreen to reference the MyGdxGame class.
@@ -29,12 +34,6 @@ public class TextScreen implements Screen {
 
         // The stage is the controller which will react to inputs from the user.
         this.stage = new Stage(new ScreenViewport());
-    }
-
-    @Override
-    public void show() {
-        // Send any input from the user to the stage.
-        Gdx.input.setInputProcessor(stage);
 
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
@@ -57,8 +56,23 @@ public class TextScreen implements Screen {
                 dispose();
             }
         });
+
+        skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
     }
 
+    /**
+     * Show method which is run when the screen enters focus
+     */
+    @Override
+    public void show() {
+        // Send any input from the user to the stage.
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    /**
+     * Draw the menu to the screen
+     * @param delta - the time between the start of the previous render() call and now
+     */
     @Override
     public void render(float delta) {
         // Clears the screen to black.
@@ -70,10 +84,15 @@ public class TextScreen implements Screen {
         this.stage.draw();
     }
 
+    /**
+     * Resize method, called when the game window is resized
+     * @param width - the new window width
+     * @param height - the new window height
+     */
     @Override
     public void resize(int width, int height) {
         // Update the screen when the window resolution is changed.
-        this.stage.getViewport().update(width, height, true);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -91,6 +110,9 @@ public class TextScreen implements Screen {
         // TODO Auto-generated method stub
     }
 
+    /**
+     * Dispose the of the menu screen instance, clearing the memory
+     */
     @Override
     public void dispose() {
         // Dispose of assets when they are no longer needed.

@@ -29,25 +29,49 @@ public class Character extends Sprite implements Steerable<Vector2> {
     protected Body body;
     private static BodyDef characterBodyDef = new BodyDef() {{ type = BodyDef.BodyType.DynamicBody; }};
 
+    // Implementation of Steerable<Vector2> Interface
+    public enum SteeringState {WANDER, SEEK, ARRIVE, NONE}
+    public SteeringState currentMode = SteeringState.WANDER;
+
+    private float maxLinearSpeed = Constant.ZOMBIESPEED;
+    private float maxLinearAcceleration = 2f;
+    private float maxAngularSpeed = 20f;
+    private float maxAngularAcceleration = 2f;
+    private float zeroThreshold = 0.01f;
+    SteeringBehavior<Vector2> steeringBehavior;
+    private static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
+    private float boundingRadius = 100f;
+    private boolean tagged = true;
+    private boolean independentFacing = false;
+
+    /**
+     * Constructor for the character
+     * @param sprite - the character sprite
+     * @param spawnPosition - the position to spawn the character in
+     * @param world - the Box2D world to spawn the character in
+     */
     public Character(Sprite sprite, Vector2 spawnPosition, World world) {
         super(sprite);
         this.world = world;
-        GenerateBodyFromSprite(sprite);
+        GenerateBodyFromSprite();
         body.setFixedRotation(true);
         body.setLinearDamping(50.f);
         setCharacterPosition(spawnPosition);
         health = maxhealth = 100;
     }
 
-    private void GenerateBodyFromSprite(Sprite sprite) {
+    /**
+     * Set the character Box2D body to a rectangle sized around sprite dimensions
+     */
+    private void GenerateBodyFromSprite() {
 
     	body = world.createBody(characterBodyDef);
     	
     	final float scale = 1.6f;
     	
     	PolygonShape shape = new PolygonShape();
-        shape.setAsBox(sprite.getWidth() / scale / 2 / Constant.physicsDensity,
-    			 sprite.getHeight() / scale / 2 / Constant.physicsDensity);
+        shape.setAsBox(getWidth() / scale / 2 / Constant.PHYSICSDENSITY,
+    			 getHeight() / scale / 2 / Constant.PHYSICSDENSITY);
     	
     	FixtureDef fixtureDef = new FixtureDef();
     	fixtureDef.shape = shape;
@@ -77,11 +101,19 @@ public class Character extends Sprite implements Steerable<Vector2> {
         return (0 <= distanceBetweenCenters && distanceBetweenCenters <= Math.pow(diameter, 2));
     }
 
+    /**
+     * Set the character position, moving the sprite and Box2D body
+     * @param position - the position in pixel screen coordinates
+     */
     public void setCharacterPosition(Vector2 position) {
-        body.setTransform(position.x / Constant.physicsDensity, position.y / Constant.physicsDensity, 0);
+        body.setTransform(position.x / Constant.PHYSICSDENSITY, position.y / Constant.PHYSICSDENSITY, 0);
         updatePosition();
     }
 
+    /**
+     * Draw the character to the screen
+     * @param batch - the SpriteBatch instance to draw to
+     */
     @Override
     public void draw(Batch batch) {
     	setRotation((float) Math.toDegrees(-direction));
@@ -144,9 +176,12 @@ public class Character extends Sprite implements Steerable<Vector2> {
      * @return the position as Vector2
      */
     public Vector2 getPhysicsPosition() {
-        return body.getPosition().scl(Constant.physicsDensity);
+        return body.getPosition().scl(Constant.PHYSICSDENSITY);
     }
 
+    /**
+     * Update the sprite position so that it is aligned with the Box2D body
+     */
     public void updatePosition() {
         Vector2 position = getPhysicsPosition();
         setPosition(position.x-getWidth()/2, position.y-getHeight()/2);
@@ -171,26 +206,14 @@ public class Character extends Sprite implements Steerable<Vector2> {
     public void takeDamage(int damage){
         health -= damage;
     }
-    
+
+    /**
+     * Dispose of the character, clearing the memory
+     */
     public void dispose() {
     	getTexture().dispose();
     	world.destroyBody(body);
     }
-
-    // Implementation of Steerable<Vector2> Interface
-    public enum SteeringState {WANDER, SEEK, ARRIVE, NONE}
-    public SteeringState currentMode = SteeringState.WANDER;
-
-    private float maxLinearSpeed = Constant.ZOMBIESPEED;
-    private float maxLinearAcceleration = 2f;
-    private float maxAngularSpeed = 20f;
-    private float maxAngularAcceleration = 2f;
-    private float zeroThreshold = 0.01f;
-    SteeringBehavior<Vector2> steeringBehavior;
-    private static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
-    private float boundingRadius = 100f;
-    private boolean tagged = true;
-    private boolean independentFacing = false;
 
     public boolean isIndependentFacing() {
         return independentFacing;

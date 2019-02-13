@@ -108,11 +108,11 @@ public class Level implements Screen {
         lvlPixelHeight = lvlTileHeight * tilePixelHeight;
 
         // renderer renders the .tmx map as an orthogonal (top-down) map.
-        renderer = new OrthogonalTiledMapRenderer(map, Constant.worldScale);
+        renderer = new OrthogonalTiledMapRenderer(map, Constant.WORLDSCALE);
            
         debugRenderer = new Box2DDebugRenderer();
         
-        MapBodyBuilder.buildShapes(map, Constant.physicsDensity / Constant.worldScale, world);
+        MapBodyBuilder.buildShapes(map, Constant.PHYSICSDENSITY / Constant.WORLDSCALE, world);
 
         
         // It is only possible to view the render of the map through an orthographic camera.
@@ -314,7 +314,7 @@ public class Level implements Screen {
 
                 batch.end();
 
-                debugRenderer.render(world, camera.combined.scl(Constant.physicsDensity));
+                debugRenderer.render(world, camera.combined.scl(Constant.PHYSICSDENSITY));
             }
         }
         

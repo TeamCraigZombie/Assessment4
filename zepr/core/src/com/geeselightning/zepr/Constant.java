@@ -29,7 +29,6 @@ public final class Constant {
     public static final float IMMUNITYTIME = 5;
     public static final float INSTAKILLTIME = 5;
     public static final float INVISIBILITYTIME = 5;
-
-    public final static float worldScale = 1.f;
-    public final static float physicsDensity = 100.f;
+    public final static float WORLDSCALE = 1.f;
+    public final static float PHYSICSDENSITY = 100.f;
 }

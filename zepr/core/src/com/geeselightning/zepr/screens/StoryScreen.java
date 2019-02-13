@@ -19,6 +19,10 @@ public class StoryScreen implements Screen {
     private Zepr parent;
     private Stage stage;
 
+    /**
+     * Constructor for the story screen
+     * @param zepr - an instance of the main class of the game
+     */
     public StoryScreen(Zepr zepr) {
         // Constructor builds the gui of the menu screen.
         // parent allows the StoryScreen to reference the MyGdxGame class.
@@ -26,11 +30,6 @@ public class StoryScreen implements Screen {
 
         // The stage is the controller which will react to inputs from the user.
         this.stage = new Stage(new ScreenViewport());
-    }
-    @Override
-    public void show() {
-        // Send any input from the user to the stage.
-        Gdx.input.setInputProcessor(stage);
 
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
@@ -43,14 +42,14 @@ public class StoryScreen implements Screen {
 
         // Writing the story.
         Label line1 = new Label("After a hard night of partying following the dreaded POPL exam, you wake up\n" +
-                                     "to find yourself in the middle of town, your friends nowhere to be found.", skin);
+                "to find yourself in the middle of town, your friends nowhere to be found.", skin);
         Label line2 = new Label("As you try and recall how you ended up here, you hear a \n" +
-                                     "low rumbling sound coming from the alleyway near you.", skin);
+                "low rumbling sound coming from the alleyway near you.", skin);
         Label line3 = new Label("A horde of decaying zombies suddenly appear from the alleyways,\n" +
-                                     "their clothes tattered, blood and bone sticking out of their bodies.", skin);
+                "their clothes tattered, blood and bone sticking out of their bodies.", skin);
         Label line4 = new Label("Not soon after, the zombies notice you and charge towards you, \n" +
-                                     "trampling over each other, their rumbles turning into screams and cries.\n" +
-                                     "But in the spur of the movement, you suddenly realize...\n", skin);
+                "trampling over each other, their rumbles turning into screams and cries.\n" +
+                "But in the spur of the movement, you suddenly realize...\n", skin);
         Label line5 = new Label("You forgot to hand in your SEPR Assessment!", skin, "subtitle");
 
         line1.setAlignment(Align.center);
@@ -84,6 +83,19 @@ public class StoryScreen implements Screen {
         });
     }
 
+    /**
+     * Show method which is run when the screen enters focus
+     */
+    @Override
+    public void show() {
+        // Send any input from the user to the stage.
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    /**
+     * Draw the menu to the screen
+     * @param delta - the time between the start of the previous render() call and now
+     */
     @Override
     public void render(float delta) {
         // Clears the screen to black.
@@ -91,14 +103,19 @@ public class StoryScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Draws the stage.
-        this.stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        this.stage.draw();
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
     }
 
+    /**
+     * Resize method, called when the game window is resized
+     * @param width - the new window width
+     * @param height - the new window height
+     */
     @Override
     public void resize(int width, int height) {
         // Update the screen when the window resolution is changed.
-        this.stage.getViewport().update(width, height, true);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -116,6 +133,9 @@ public class StoryScreen implements Screen {
         // TODO Auto-generated method stub
     }
 
+    /**
+     * Dispose of the screen, clearing the memory
+     */
     @Override
     public void dispose() {
         // Dispose of assets when they are no longer needed.

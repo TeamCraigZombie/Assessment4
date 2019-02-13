@@ -17,11 +17,6 @@ import com.geeselightning.zepr.Player;
 import com.geeselightning.zepr.Zepr;
 import com.geeselightning.zepr.Zepr.Location;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-
 public class SelectLevelScreen implements Screen {
 
     private Zepr parent;
@@ -31,6 +26,10 @@ public class SelectLevelScreen implements Screen {
     private Location stageLink;
     private boolean playerSet = false;
 
+    /**
+     * Constructor for the select level screen
+     * @param zepr - an instance of the main class of the game
+     */
     public SelectLevelScreen(Zepr zepr) {
 
         parent = zepr;
@@ -56,8 +55,6 @@ public class SelectLevelScreen implements Screen {
 
         // Creating other buttons.
         TextButton play = new TextButton("Play", skin);
-        TextButton save = new TextButton("Save", skin);
-        TextButton load = new TextButton("Load", skin);
         TextButton back = new TextButton("Back", skin);
         TextButton minigame = new TextButton("Mini Game", skin);
 
@@ -66,7 +63,6 @@ public class SelectLevelScreen implements Screen {
         final String townDescription      = "You wake up hungover in town to discover there is a zombie apocalypse.";
         final String halifaxDescription   = "You need to get your laptop with the work on it from your accomodation.";
         final String courtyardDescription = "You should go to Courtyard and get some breakfast.";
-        final String lockedDescription    = "This stage is locked until you complete the previous one.";
         final String defaultDescription   = "Select a stage from the buttons above.";
         stageDescription = new Label(defaultDescription, skin);
         stageDescription.setWrap(true);
@@ -92,8 +88,6 @@ public class SelectLevelScreen implements Screen {
         menuBar.top().left();
         menuBar.row();
         menuBar.add(back).pad(10);
-        menuBar.add(save).pad(10);
-        menuBar.add(load).pad(10);
 
         // Adding stage selector buttons.
         Table stageSelect = new Table();
@@ -140,44 +134,6 @@ public class SelectLevelScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 parent.changeScreen(Location.MENU);
-            }
-        });
-
-        save.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                File f = new File("saveData.txt");
-                FileOutputStream edit;
-                try {
-                    edit = new FileOutputStream(f);
-                    byte[] lvl = (Integer.toString(Zepr.progress.ordinal())).getBytes();
-                    edit.write(lvl);
-                    edit.close();
-                    System.out.println("Saved!");
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                parent.changeScreen(Zepr.Location.SELECT);
-            }
-        });
-
-        load.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                File f = new File("saveData.txt");
-                BufferedReader br;
-                try {
-                    br = new BufferedReader(new FileReader(f));
-                    String st;
-                    while ((st = br.readLine()) != null) {
-                        System.out.println("Player is on stage:" + st);
-                        Zepr.progress = Zepr.Location.values()[Integer.parseInt(st)];
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                parent.changeScreen(Location.SELECT);
             }
         });
 
@@ -270,13 +226,13 @@ public class SelectLevelScreen implements Screen {
 
     @Override
     public void show() {
-
-        
-       
-
-
+        // TODO Auto-generated method stub
     }
 
+    /**
+     * Draw the menu to the screen
+     * @param delta - the time between the start of the previous render() call and now
+     */
     @Override
     public void render(float delta) {
         // Clears the screen to black.
@@ -284,14 +240,19 @@ public class SelectLevelScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Draws the stage.
-        this.stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
-        this.stage.draw();
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
+        stage.draw();
     }
 
+    /**
+     * Resize method, called when the game window is resized
+     * @param width - the new window width
+     * @param height  - the new window height
+     */
     @Override
     public void resize(int width, int height) {
         // Update the screen when the window resolution is changed.
-        this.stage.getViewport().update(width, height, true);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -309,6 +270,9 @@ public class SelectLevelScreen implements Screen {
         // TODO Auto-generated method stub
     }
 
+    /**
+     * Dispose of the screen, clearing the memory
+     */
     @Override
     public void dispose() {
         // Dispose of assets when they are no longer needed.
