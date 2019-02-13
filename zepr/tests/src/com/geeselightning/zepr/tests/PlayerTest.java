@@ -102,11 +102,11 @@ public class PlayerTest {
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
         Player.setType("nerdy");
         player.respawn(Constant.ORIGIN);
-        double nerdySpeed = player.speed;
+        double nerdySpeed = player.getSpeed();
         Player.setType("sporty");
         player.respawn(Constant.ORIGIN);
         assertNotEquals("Sporty and nerdy students should have a different amount of hit points.",
-                nerdySpeed, player.speed);
+                nerdySpeed, player.getSpeed());
         player.dispose();
         world.dispose();
     }

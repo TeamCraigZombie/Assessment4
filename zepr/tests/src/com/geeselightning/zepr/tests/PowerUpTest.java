@@ -53,10 +53,10 @@ public class PowerUpTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
         PowerUpSpeed speed = new PowerUpSpeed(null, player);
-        float originalSpeed = player.speed;
+        float originalSpeed = player.getSpeed();
         speed.activate();
         assertEquals("Speed powerup should increase the Players speed.", originalSpeed + Constant.SPEEDUP,
-                player.speed, 0.1);
+                player.getSpeed(), 0.1);
         player.dispose();
         world.dispose();
     }
@@ -67,10 +67,10 @@ public class PowerUpTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
         PowerUpSpeed speed = new PowerUpSpeed(null, player);
-        double originalSpeed = player.speed;
+        double originalSpeed = player.getSpeed();
         speed.activate();
         speed.update(11);
-        assertEquals("Speed should go back to the original speed after 10s.", originalSpeed, player.speed, 0.1);
+        assertEquals("Speed should go back to the original speed after 10s.", originalSpeed, player.getSpeed(), 0.1);
         player.dispose();
         world.dispose();
     }
@@ -81,11 +81,11 @@ public class PowerUpTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
         PowerUpSpeed speed = new PowerUpSpeed(null, player);
-        double originalSpeed = player.speed;
+        double originalSpeed = player.getSpeed();
         speed.activate();
         speed.update(9);
         assertNotEquals("Speed powerup should increase the Players speed.", originalSpeed,
-                player.speed);
+                player.getSpeed());
         player.dispose();
         world.dispose();
     }
@@ -96,12 +96,12 @@ public class PowerUpTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
         PowerUpSpeed speed = new PowerUpSpeed(null, player);
-        double originalSpeed = player.speed;
+        double originalSpeed = player.getSpeed();
         speed.activate();
         speed.update(5);
         speed.deactivate();
         assertEquals("Player speed is reset if deactivate is used on the powerup.", originalSpeed,
-                player.speed, 0.1);
+                player.getSpeed(), 0.1);
         player.dispose();
         world.dispose();
     }

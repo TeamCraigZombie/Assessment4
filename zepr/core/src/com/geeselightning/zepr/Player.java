@@ -45,13 +45,13 @@ public class Player extends Character {
      */
     public void refreshAttributes() {
         float dmgMult, speedMult;
-        if (playerType.equals("nerdy")) {
+        if (playerType == "nerdy") {
             dmgMult = Constant.NERDYDMGMULT;
             HPMult = Constant.NERDYHPMULT;
             speedMult = Constant.NERDYSPEEDMULT;
             mainTexture = new Texture("player01.png");
             attackTexture = new Texture("player01_attack.png");
-        } else if (playerType.equals("sporty")) {
+        } else if (playerType == "sporty") {
             dmgMult = Constant.SPORTYDMGMULT;
             HPMult = Constant.SPORTYHPMULT;
             speedMult = Constant.SPORTYSPEEDMULT;
