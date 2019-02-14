@@ -160,7 +160,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
     public double getDirectionTo(Vector2 coordinate) {
         Vector2 charCenter = getCenter();
 
-        // atan2 is uses the signs of both variables the determine the correct quadrant (relative to the character) of the
+        // atan2 uses the signs of both variables the determine the correct quadrant (relative to the character) of the
         // result.
         // Modulus 2pi of the angle must be taken as the angle is negative for the -x quadrants.
         // The angle must first be displaced by 2pi because the Java modulus function can return a -ve value.

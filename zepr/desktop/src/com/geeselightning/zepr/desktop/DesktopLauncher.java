@@ -7,9 +7,10 @@ import com.geeselightning.zepr.Zepr;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.resizable = false;
-		config.width = 1280;
-		config.height = 720;
+		config.resizable = true;
+		config.width = 1920;
+		config.height = 1080;
+		config.title = "Geese Lightning";
 		new LwjglApplication(new Zepr(), config);
 	}
 }
