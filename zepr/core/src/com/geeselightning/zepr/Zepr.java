@@ -19,7 +19,7 @@ public class Zepr extends Game {
 	private MenuScreen menuScreen;
 	
 	public enum Location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, CENTRALHALL, 
-		GLASSHOUSE, CONSTANTINE, COMPLETE, MINIGAME, TEST }
+		GLASSHOUSE, CONSTANTINE, COMPLETE, MINIGAME }
 	
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
@@ -103,7 +103,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/centralhallmap.tmx";
 					playerSpawn = new Vector2(50, 900);
 					powerSpawn = new Vector2(250, 250);
-					zombieSpawnPoints = new ArrayList<Vector2>(
+					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
 					waves = new int[]{13, 17, 1};
@@ -120,7 +120,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/glasshousemap.tmx";
 					playerSpawn = new Vector2(400, 70);
 					powerSpawn = new Vector2(250, 250);
-					zombieSpawnPoints = new ArrayList<Vector2>(
+					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
 					waves = new int[]{13, 17, 1};
@@ -134,7 +134,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/constantinemap.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(250, 250);
-					zombieSpawnPoints = new ArrayList<Vector2>(
+					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
 					waves = new int[]{13, 17, 1};
@@ -171,8 +171,8 @@ public class Zepr extends Game {
 				br = new BufferedReader(new FileReader(f));
 				String st;
 				  while ((st = br.readLine()) != null) {
-				    System.out.println("Player is on stage:" + st);
-				    Zepr.progress = Location.values()[Integer.parseInt(st)];
+				    System.out.println("Player has saved progress on stage: " + st);
+				    progress = Location.TOWN;
 				  }
 			} catch (Exception e) {
 				e.printStackTrace();

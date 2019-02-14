@@ -17,6 +17,11 @@ import com.geeselightning.zepr.Player;
 import com.geeselightning.zepr.Zepr;
 import com.geeselightning.zepr.Zepr.Location;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+
 public class SelectLevelScreen implements Screen {
 
     private Zepr parent;
@@ -58,6 +63,8 @@ public class SelectLevelScreen implements Screen {
 
         // Creating other buttons.
         TextButton play = new TextButton("Play", skin);
+        TextButton save = new TextButton("Save", skin);
+        TextButton load = new TextButton("Load", skin);
         TextButton back = new TextButton("Back", skin);
         TextButton minigame = new TextButton("Mini Game", skin);
 
@@ -94,6 +101,8 @@ public class SelectLevelScreen implements Screen {
         menuBar.top().left();
         menuBar.row();
         menuBar.add(back).pad(10);
+        menuBar.add(save).pad(10);
+        menuBar.add(load).pad(10);
 
         // Adding stage selector buttons.
         Table stageSelect = new Table();
@@ -140,6 +149,46 @@ public class SelectLevelScreen implements Screen {
         bottomTable.add(minigame).pad(10);
 
         // Adding button logic.
+
+        // Defining actions for the save button
+        save.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                File f = new File("saveData.txt");
+                FileOutputStream edit;
+                try {
+                    edit = new FileOutputStream(f);
+                    byte[] lvl = (Integer.toString(Zepr.progress.ordinal())).getBytes();
+                    edit.write(lvl);
+                    edit.close();
+                    System.out.println("Saved!");
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                parent.changeScreen(Zepr.Location.SELECT);
+            }
+        });
+
+        // Defining actions for the load button
+        load.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                File f = new File("saveData.txt");
+                BufferedReader br;
+                try {
+                    br = new BufferedReader(new FileReader(f));
+                    String st;
+                    while ((st = br.readLine()) != null) {
+                        System.out.println("Player is on stage:" + st);
+                        Zepr.progress = Zepr.Location.values()[Integer.parseInt(st)];
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                parent.changeScreen(Location.SELECT);
+            }
+        });
 
         // Defining actions for the back button.
         back.addListener(new ChangeListener() {
