@@ -143,8 +143,8 @@ public class SelectLevelScreen implements Screen {
         stage.addActor(bottomTable);
 
         bottomTable.bottom();
-        bottomTable.add(play).pad(10).center();
         bottomTable.add(minigame).pad(10);
+        bottomTable.add(play).pad(10).center();
 
         // Adding button logic.
 
