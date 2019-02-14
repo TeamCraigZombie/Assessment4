@@ -282,7 +282,7 @@ public class SelectLevelScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 characterDescription.setText(nerdyDescription);
-                Player.setType("nerdy");
+                Player.setType(Player.PlayerType.NERDY);
                 playerSet = true;
             }
         });
@@ -291,7 +291,7 @@ public class SelectLevelScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 characterDescription.setText(sportyDescription);
-                Player.setType("sporty");
+                Player.setType(Player.PlayerType.SPORTY);
                 playerSet = true;
             }
         });
@@ -300,7 +300,7 @@ public class SelectLevelScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 characterDescription.setText(ArtsyDescription);
-                Player.setType("Artsy");
+                Player.setType(Player.PlayerType.ARTSY);
                 playerSet = true;
             }
         });
