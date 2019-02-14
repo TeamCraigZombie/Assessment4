@@ -117,12 +117,10 @@ public class SelectLevelScreen implements Screen {
 
         stageSelect.row().pad(50,0,100,0);
         stageSelect.add(town).pad(10);
-        stageSelect.add(halifax).pad(10);
-        stageSelect.add(courtyard).pad(10);
-        
-        stageSelect.row();
-        
+        stageSelect.add(halifax).pad(10);    
         stageSelect.add(centralhall).pad(10);
+        stageSelect.row();
+        stageSelect.add(courtyard).pad(10);  
         stageSelect.add(glasshouse).pad(10);
         stageSelect.add(constantine).pad(10);
    
@@ -220,22 +218,8 @@ public class SelectLevelScreen implements Screen {
                 }
             });
         }
-
-        if (Zepr.progress.ordinal() <= Location.HALIFAX.ordinal()) {
-            courtyard.setColor(Color.DARK_GRAY);
-            courtyard.getLabel().setColor(Color.DARK_GRAY);
-        } else {
-            // Defining actions for the courtyard button.
-            courtyard.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    stageDescription.setText(courtyardDescription);
-                    stageLink = Location.COURTYARD;
-                }
-            });
-        }
         
-        if (Zepr.progress.ordinal() <= Location.COURTYARD.ordinal()) {
+        if (Zepr.progress.ordinal() <= Location.HALIFAX.ordinal()) {
             centralhall.setColor(Color.DARK_GRAY);
             centralhall.getLabel().setColor(Color.DARK_GRAY);
         } else {
@@ -248,8 +232,22 @@ public class SelectLevelScreen implements Screen {
                 }
             });
         }
-        
+
         if (Zepr.progress.ordinal() <= Location.CENTRALHALL.ordinal()) {
+            courtyard.setColor(Color.DARK_GRAY);
+            courtyard.getLabel().setColor(Color.DARK_GRAY);
+        } else {
+            // Defining actions for the courtyard button.
+            courtyard.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    stageDescription.setText(courtyardDescription);
+                    stageLink = Location.COURTYARD;
+                }
+            });
+        }
+       
+        if (Zepr.progress.ordinal() <= Location.COURTYARD.ordinal()) {
             glasshouse.setColor(Color.DARK_GRAY);
             glasshouse.getLabel().setColor(Color.DARK_GRAY);
         } else {

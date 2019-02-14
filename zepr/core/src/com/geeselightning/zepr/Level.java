@@ -188,7 +188,8 @@ public class Level implements Screen {
         TextButton resume = new TextButton("Resume", skin);
         TextButton exit = new TextButton("Exit", skin);
         
-        tutorialTable.clear();
+        if(tutorialTable != null)
+        	tutorialTable.clear();
         
         table.clear();
         table.center();
