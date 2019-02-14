@@ -3,7 +3,9 @@ package com.geeselightning.zepr;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -46,11 +48,14 @@ public class MiniGame implements Screen {
 	private boolean reloaded = false;
 	private int kills = 0;
 	private float rand = 0;
+	Pixmap pm = new Pixmap(Gdx.files.internal("blank.png"));
 	
 	private static boolean death = false;
 
 	
 	public MiniGame(Zepr zepr) {
+		
+		Gdx.graphics.setWindowedMode(1280, 720);
 		
 		parent = zepr;
 		this.isPaused = false;
@@ -69,7 +74,8 @@ public class MiniGame implements Screen {
         
         spriteBatch = new SpriteBatch();
         font = new BitmapFont();
-        
+       
+		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0)); 
         death = false;
 	}
 	
@@ -159,12 +165,16 @@ public class MiniGame implements Screen {
 		
 		if(death) {
 			parent.setScreen(new TextScreen(parent, "Kills: "+kills+"\nMINIGAME OVER"));
+			Gdx.graphics.setWindowedMode(1920, 1080);
+			Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
 			ZombieQueue.clear();
 		}
 		
 		// Pause Menu
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || isPaused) {
+			
+			Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
 				
 			isPaused = true;
 			
@@ -194,6 +204,7 @@ public class MiniGame implements Screen {
             resume.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                	Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
                     isPaused = false;
                     // Change input processor back
                     Gdx.input.setInputProcessor(stage);
@@ -205,10 +216,11 @@ public class MiniGame implements Screen {
             exit.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                	Gdx.graphics.setWindowedMode(1920, 1080);
                     parent.changeScreen(Zepr.Location.SELECT);
                 }
             });
-
+            
             stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
             stage.draw();
         } else {
