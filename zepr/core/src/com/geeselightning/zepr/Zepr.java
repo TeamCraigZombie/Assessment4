@@ -129,6 +129,9 @@ public class Zepr extends Game {
 					boss2 = false;
 					isTeleporting = false;
 				}};
+				level = new Level(this, config);
+				this.setScreen(level);
+				break;
 			case CONSTANTINE:
 				config = new LevelConfig() {{
 					mapLocation = "maps/constantinemap.tmx";
