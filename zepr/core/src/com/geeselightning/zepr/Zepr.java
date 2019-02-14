@@ -88,10 +88,9 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
-                    waves = new Wave[]{ new Wave(13, Zombie.Type.ZOMBIE1),
+                    waves = new Wave[]{ new Wave(13, Zombie.Type.ZOMBIE2),
                                         new Wave(17, Zombie.Type.ZOMBIE2),
-                                        new Wave(25, Zombie.Type.ZOMBIE3),
-										new Wave(1, Zombie.Type.BOSS1)};
+                                        new Wave(1, Zombie.Type.BOSS1)};
 					location = screen;
 				}};						 
 				level = new Level(this, config);
@@ -103,11 +102,12 @@ public class Zepr extends Game {
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(150, 150);
 					zombieSpawnPoints = new ArrayList<>(
-							Arrays.asList(new Vector2(120,100), new Vector2(630,600),
-									new Vector2(630,100), new Vector2(120,500)));
-					waves = new Wave[]{ new Wave(12, Zombie.Type.ZOMBIE2),
-										new Wave(16, Zombie.Type.ZOMBIE3),
-										new Wave(20, Zombie.Type.ZOMBIE3)};
+							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
+					                   new Vector2(630,100), new Vector2(120,500)));
+                    waves = new Wave[]{ new Wave(12, Zombie.Type.ZOMBIE2),
+                                        new Wave(12, Zombie.Type.ZOMBIE2),
+                                        new Wave(12, Zombie.Type.ZOMBIE3),
+                                        new Wave(16, Zombie.Type.ZOMBIE3)};
 					location = screen;
 				}};
 				level = new Level(this, config);

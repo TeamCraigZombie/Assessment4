@@ -18,7 +18,7 @@ public class PlayerTest {
     // Test 2.1
     public void playerPositionResetsWhenRespawned() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
         Vector2 originalPosition = new Vector2(player.getX(), player.getY());
         player.setCharacterPosition(new Vector2(10, 10));
         player.respawn(new Vector2(0, 0));
@@ -31,9 +31,9 @@ public class PlayerTest {
     // Test 2.2
     public void playerDoesNoDamageToZombieWhenAtMaxRange() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(0, Constant.PLAYERRANGE), world,1, 10, 1);
+        Zombie zombie = new Zombie(new Vector2(0, Constant.PLAYERRANGE), world, Zombie.Type.ZOMBIE1);
         double originalHealth = zombie.getHealth();
         player.attack(zombie, 0);
 

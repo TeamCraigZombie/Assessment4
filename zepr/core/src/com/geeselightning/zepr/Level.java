@@ -48,9 +48,9 @@ public class Level implements Screen {
     private LevelConfig config;
     private World world;
     private int teleportCounter;
-    private boolean dupe;
     private Label progressLabel, healthLabel, powerUpLabel, abilityLabel, tutorialLabel;
     static Texture blank;
+    private Zombie originalBoss;
 
     public Level(Zepr zepr, LevelConfig config) {
 
@@ -120,7 +120,6 @@ public class Level implements Screen {
         Gdx.input.setInputProcessor(inputProcessor);
 
         teleportCounter = 0;
-        dupe = false;
         currentWaveNumber = 0;
 
         resumeGame();
@@ -154,10 +153,14 @@ public class Level implements Screen {
      */
     private void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints) {
 
-            for (int i = 0; i < numberToSpawn; i++) {
-                aliveZombies.add(new Zombie(spawnPoints.get(i % spawnPoints.size()), world, config.waves[currentWaveNumber].zombieType));
-            }
-   }
+        for (int i = 0; i < numberToSpawn; i++) {
+            Zombie.Type type = config.waves[currentWaveNumber-1].zombieType;
+            Zombie zombie = new Zombie(spawnPoints.get(i % spawnPoints.size()), world, type);
+            aliveZombies.add(zombie);
+            if(type == Zombie.Type.BOSS2 && aliveZombies.size()==1)
+                originalBoss = zombie;
+    }
+}
 
     /**
      * Converts the mousePosition which is a Vector2 representing the coordinates of the mouse within the game window
@@ -318,23 +321,23 @@ public class Level implements Screen {
      * @param delta the time between the start of the previous call and now
      */
     public void update(float delta) {
-    	world.step(1/60f, 6, 2);
-    	
-    	player.update(delta);
-    	player.look(getMouseWorldCoordinates());
-    
-    	if(tutorialTable != null && currentWaveNumber > 1) {
-    		tutorialTable.clear();
-    	}
-    	
-    	// When you die, end the level.
+        world.step(1/60f, 6, 2);
+
+        player.update(delta);
+        player.look(getMouseWorldCoordinates());
+
+        if(tutorialTable != null && currentWaveNumber > 1) {
+            tutorialTable.clear();
+        }
+
+        // When you die, end the level.
         if (player.health <= 0)
             gameOver();
 
-    	for(int i = 0; i < aliveZombies.size(); i++) {
+        for(int i = 0; i < aliveZombies.size(); i++) {
             Zombie zomb = aliveZombies.get(i);
             zomb.update(delta);
-                        
+
             if (zomb.getHealth() <= 0) {
                 zombiesRemaining--;
                 aliveZombies.remove(zomb);
@@ -354,24 +357,7 @@ public class Level implements Screen {
                 player.attack(zombie, delta);
             zombie.attack(player, delta);
         }
-        teleportCounter++;
-        if (currentWaveNumber == config.waves.length && config.waves[currentWaveNumber-1].zombieType == Zombie.Type.BOSS1 && teleportCounter > 100) {
-            teleportCounter = 0;
-            Vector2 spawnPoint = new Vector2(200,200);
-            Zombie originalBoss = aliveZombies.get(0);
-            int currentHealth = originalBoss.getHealth();
-            if (currentHealth < 250 && !dupe) {
-                Zombie zombie = new Zombie(spawnPoint, world, Zombie.Type.BOSS1);
-                aliveZombies.add(zombie);
-                dupe = true;
-            }
-            for (Zombie boss : aliveZombies) {
-                Vector2 start = boss.getPhysicsPosition();
-                Vector2 end =  player.getPhysicsPosition();
-                Vector2 position = new Vector2((start.x + end.x)/2, (start.y + end.y)/2);
-                boss.setCharacterPosition(position);
-            }
-        }
+
         if (zombiesRemaining == 0) {
 
             // Spawn a power up and the end of a wave, if there isn't already a powerUp on the level
@@ -379,29 +365,25 @@ public class Level implements Screen {
 
                 int random = (int)(Math.random() * 5 + 1);
                 switch(random) {
-	                case 1:
-	                	currentPowerUp = new PowerUpHeal(this, player);           
-	                	break;
-	                case 2:
-	                	currentPowerUp = new PowerUpSpeed(this, player);	       
-	                	break;
-	                case 3:
-	                	currentPowerUp = new PowerUpImmunity(this, player);     
-	                	break;
-	                case 4:
-	                	currentPowerUp = new PowerUpInstaKill(this, player);
-	                	break;
-	                case 5:
-	                	currentPowerUp = new PowerUpInvisibility(this, player);
-	                	break;
+                    case 1:
+                        currentPowerUp = new PowerUpHeal(this, player);
+                        break;
+                    case 2:
+                        currentPowerUp = new PowerUpSpeed(this, player);
+                        break;
+                    case 3:
+                        currentPowerUp = new PowerUpImmunity(this, player);
+                        break;
+                    case 4:
+                        currentPowerUp = new PowerUpInstaKill(this, player);
+                        break;
+                    case 5:
+                        currentPowerUp = new PowerUpInvisibility(this, player);
+                        break;
                 }
             }
 
-       	 	// Spawn all zombies in the stage
-            spawnZombies(zombiesToSpawn, config.zombieSpawnPoints);
 
-            // Wave complete, increment wave number
-            currentWaveNumber++;
             if (currentWaveNumber > config.waves.length) {
                 // Level completed, back to select screen and complete stage.
                 // If stage is being replayed complete() will stop progress being incremented.
@@ -411,43 +393,63 @@ public class Level implements Screen {
                     parent.setScreen(new TextScreen(parent, "Game completed."));
                 else {
                     parent.setScreen(new TextScreen(parent, "Level completed."));
-	                if(Zepr.progress == config.location) {
+                    if(Zepr.progress == config.location) {
                         Zepr.progress = Zepr.Location.values()[Zepr.progress.ordinal() + 1];
                         saveGame();
                     }
                 }
-            } else if (currentWaveNumber < config.waves.length)
+            } else {
+                if (currentWaveNumber < config.waves.length) {
                     // Update zombiesRemaining with the number of zombies of the new wave
                     zombiesRemaining = config.waves[currentWaveNumber].numberToSpawn;
-                else
+
+                } else
                     zombiesRemaining = 0;
-                zombiesToSpawn = zombiesRemaining;
+
+                // Wave complete, increment wave number
+                currentWaveNumber++;
+            }
+
+            zombiesToSpawn = zombiesRemaining;
+
+            // Spawn all zombies in the stage
+            spawnZombies(zombiesToSpawn, config.zombieSpawnPoints);
         }
+
+        //Teleporting and minon spawning behavior for boss2
+        teleportCounter++;
+        if (currentWaveNumber <= config.waves.length && config.waves[currentWaveNumber-1].zombieType == Zombie.Type.BOSS2 && teleportCounter > 100) {
+            teleportCounter = 0;
+            if (originalBoss.getHealth() < 250 && Math.random() < 0.1)
+                aliveZombies.add(new Zombie(new Vector2(200,200), world, Zombie.Type.BOSS2));
+            for (Zombie boss : aliveZombies) {
+                Vector2 start = boss.getPhysicsPosition();
+                Vector2 end =  player.getPhysicsPosition();
+                Vector2 position = new Vector2((start.x + end.x)/2, (start.y + end.y)/2);
+                boss.setCharacterPosition(position);
+            }
+        }
+
 
         String progressString = ("Wave " + currentWaveNumber + ", " + zombiesRemaining + " zombies remaining.");
         String healthString = ("Health: " + player.health + "HP");
         String abilityString;
         String powerUpString = PowerUp.activePowerUp;
-        
-        if(player.ability) {
-        	abilityString = ("Press E to trigger special ability");
-        }
-        else if(player.abilityUsed) {
-        	abilityString = player.abilityString;
-        }
-        else {
-        	abilityString = ("Special ability used");
-        }
-       
+
+        if(player.ability)
+            abilityString = ("Press E to trigger special ability");
+        else if(player.abilityUsed)
+            abilityString = player.abilityString;
+        else
+            abilityString = ("Special ability used");
+
         progressLabel.setText(progressString);
         powerUpLabel.setText(powerUpString);
         healthLabel.setText(healthString);
         abilityLabel.setText(abilityString);
-        
-        if(tutorialTable != null && currentWaveNumber == 1) {
-        	tutorialLabel.setText("TUTORIAL WAVE \n\n Up: W \n Left: A \n Down: S \n Right: D \n Attack: Left Click \n Look: Mouse \n Special Ability: E");
-        }
-          
+
+        if(tutorialTable != null && currentWaveNumber == 1)
+            tutorialLabel.setText("TUTORIAL WAVE \n\n Up: W \n Left: A \n Down: S \n Right: D \n Attack: Left Click \n Look: Mouse \n Special Ability: E");
     }
 
     /**

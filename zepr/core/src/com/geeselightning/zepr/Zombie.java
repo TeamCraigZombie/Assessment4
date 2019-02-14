@@ -20,8 +20,6 @@ public class Zombie extends Character {
     public Zombie(Vector2 zombieSpawn, World world, Type type) {
         super(world);
 
-        hitRange = Constant.ZOMBIERANGE;
-
         speed = Constant.ZOMBIESPEED;
         attackDamage = Constant.ZOMBIEDMG;
         maxhealth = Constant.ZOMBIEMAXHP;
@@ -46,14 +44,14 @@ public class Zombie extends Character {
                 set(new Sprite(new Texture("player02.png")));
                 break;
             case BOSS1:
-                speed *= 20;
-                attackDamage *= 1;
+                speed *= 100;
+                attackDamage *= 2;
                 maxhealth *= 5;
                 set(new Sprite(new Texture("GeeseLightningBoss.png")));
                 break;
             case BOSS2:
-                speed *= 15;
-                attackDamage *= 2;
+                speed *= 60;
+                attackDamage *= 1;
                 maxhealth *= 5;
                 set(new Sprite(new Texture("GeeseLightningBoss.png")));
                 break;
@@ -65,6 +63,8 @@ public class Zombie extends Character {
         body.setFixedRotation(true);
         body.setLinearDamping(50f);
         setCharacterPosition(zombieSpawn);
+
+        hitRange = (int) (Constant.ZOMBIERANGE*getWidth()/30 - getWidth()*getHealth()/1200);
     }
 
     /**

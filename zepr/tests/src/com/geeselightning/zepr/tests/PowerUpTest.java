@@ -20,7 +20,7 @@ public class PowerUpTest {
     // Test 4.1
     public void powerUpHealthAddsHPToPlayer() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
         PowerUpHeal heal = new PowerUpHeal(null, player);
         player.takeDamage(50);
         double originalHealth = player.getHealth();
@@ -36,7 +36,7 @@ public class PowerUpTest {
     // Test 4.1.1
     public void powerUpHealthCapsAtMaxHP() {
         World world = new World(new Vector2(0,0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
         PowerUpHeal heal = new PowerUpHeal(null, player);
         double originalHealth = player.getHealth();
         heal.activate();
@@ -51,7 +51,7 @@ public class PowerUpTest {
     // Test 4.2
     public void powerUpSpeedIncreasePlayersSpeed() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
         PowerUpSpeed speed = new PowerUpSpeed(null, player);
         float originalSpeed = player.getSpeed();
         speed.activate();
@@ -65,7 +65,7 @@ public class PowerUpTest {
     // Test 4.3
     public void powerUpSpeedDeactivatesAfter10s() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
         PowerUpSpeed speed = new PowerUpSpeed(null, player);
         double originalSpeed = player.getSpeed();
         speed.activate();
@@ -79,7 +79,7 @@ public class PowerUpTest {
     // Test 4.4
     public void powerUpSpeedDoesNotDeactiveBefore10s() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
         PowerUpSpeed speed = new PowerUpSpeed(null, player);
         double originalSpeed = player.getSpeed();
         speed.activate();
@@ -94,7 +94,7 @@ public class PowerUpTest {
     // Test 4.5
     public void powerUpSpeedDeactivateMethodResetsPlayerSpeed() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
         PowerUpSpeed speed = new PowerUpSpeed(null, player);
         double originalSpeed = player.getSpeed();
         speed.activate();
@@ -110,7 +110,7 @@ public class PowerUpTest {
     // Test 4.6
     public void playerCannotPickUpFarAwayPowerUp() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(100, 100), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(100, 100), world);
         PowerUpHeal powerUp = new PowerUpHeal(null, player);
         powerUp.setPosition(0,0);
         assertFalse("Player cannot pickup a power up if it is not touching it.", powerUp.overlapsPlayer());
@@ -122,7 +122,7 @@ public class PowerUpTest {
     //Test 4.7
     public void playerCanPickUpClosePowerUp() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(31, 31), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(31, 31), world);
         PowerUpHeal powerUp = new PowerUpHeal(null, player);
         powerUp.setPosition(0,0);
         assertTrue("Player can pickup a power up if it is touching it.", powerUp.overlapsPlayer());
@@ -134,7 +134,7 @@ public class PowerUpTest {
     // Test 4.8
     public void powerUpImmunityStopsThePlayerTakingDamage() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
         PowerUpImmunity immunity = new PowerUpImmunity(null, player);
         immunity.activate();
         double originalHealth = player.getHealth();
@@ -149,7 +149,7 @@ public class PowerUpTest {
     // Test 4.9
     public void powerUpImmunityDeactivatesAfter5s() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
         PowerUpImmunity immunity = new PowerUpImmunity(null, player);
         double originalHealth = player.getHealth();
         immunity.activate();
@@ -166,7 +166,7 @@ public class PowerUpTest {
     // Test 4.10
     public void powerUpImmunityDeactivateMethodCancelsImmunity() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
         PowerUpImmunity immunity = new PowerUpImmunity(null, player);
         double originalHealth = player.getHealth();
         immunity.activate();
