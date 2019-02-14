@@ -49,7 +49,7 @@ public class Level implements Screen {
     private World world;
     private int teleportCounter;
     private boolean dupe;
-    private Label progressLabel, healthLabel, powerUpLabel;
+    private Label progressLabel, healthLabel, powerUpLabel, abilityLabel;
     static Texture blank;
 
     public Level(Zepr zepr, LevelConfig config) {
@@ -70,6 +70,7 @@ public class Level implements Screen {
         progressLabel = new Label("", skin);
         healthLabel = new Label("", skin);
         powerUpLabel = new Label("", skin);
+        abilityLabel = new Label("", skin);
 
         // Set up data for first wave of zombies
         this.zombiesRemaining = config.waves[0];
@@ -139,13 +140,13 @@ public class Level implements Screen {
     private void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints, boolean boss1, boolean boss2) {
         if (numberToSpawn == 1) {
             if (boss2) {
-                Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
+                Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightningBoss.png")),
                         spawnPoints.get(0), world,15, 5,2);
                 aliveZombies.add(zombie);
                 config.isTeleporting = true;
             }
             else if (boss1) {
-                Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
+                Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightningBoss.png")),
                         spawnPoints.get(0), world,20, 5,1);
                 aliveZombies.add(zombie);
             }
@@ -263,6 +264,8 @@ public class Level implements Screen {
         table.add(healthLabel).pad(10).left();
         table.row();
         table.add(powerUpLabel);
+        table.row();
+        table.add(abilityLabel).pad(10).left();
     }
 
     /**
@@ -428,7 +431,7 @@ public class Level implements Screen {
         	Zombie originalBoss = aliveZombies.get(0);
         	int currentHealth = originalBoss.getHealth();
         	if (currentHealth < 250 && !dupe) {
-        		Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
+        		Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightningBoss.png")),
                         spawnPoint, world,15,  2, 2);
                 aliveZombies.add(zombie);
                 dupe = true;
@@ -443,9 +446,19 @@ public class Level implements Screen {
         
         String progressString = ("Wave " + currentWave + ", " + zombiesRemaining + " zombies remaining.");
         String healthString = ("Health: " + player.health + "HP");
+        String abilityString;
+        
+        if(player.ability) {
+        	abilityString = ("Press E to trigger special ability");
+        }
+        else {
+        	abilityString = ("Special ability used");
+        }
 
         progressLabel.setText(progressString);
         healthLabel.setText(healthString);
+        abilityLabel.setText(abilityString);
+        
     }
 
     /**

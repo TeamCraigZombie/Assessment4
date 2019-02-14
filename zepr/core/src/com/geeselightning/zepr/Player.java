@@ -36,6 +36,10 @@ public class Player extends Character {
     public long attackCooldown;
     public int attackTime;
     public boolean isAttacking;
+    public boolean ability = true;
+    public boolean abilityUsed = false;
+    public long timer;
+    public long abilityCooldown;
     
 
     public Player(Sprite sprite, Vector2 playerSpawn, World world) {
@@ -85,6 +89,8 @@ public class Player extends Character {
         attackDamage = (int)(Constant.PLAYERDMG * dmgMult);
         boostDamage = 1;
         speed = Constant.PLAYERSPEED * speedMult;
+        
+        abilityUsed = false;
     }
     
 
@@ -105,6 +111,38 @@ public class Player extends Character {
             hitRefresh += delta;
         }
     
+    
+    /**
+     * Manages the abilities when special ability is triggered by E
+     */
+    public void triggerAbility() {
+    	
+		if(Gdx.input.isKeyPressed(Keys.E)) {
+			ability = false;
+			abilityUsed = true;
+			abilityCooldown = this.timer();
+	    	if(playertype == "sporty") {
+	    		speed += 0.05;
+	    	}
+	    	else if(playertype == "nerdy") {
+	    		isImmune = true;
+	    	}
+	    	else {
+	    		attackDamage *= 2;
+	    	}
+		}
+    }
+		
+    
+    /**
+     * @return
+     * 
+     * Returns the value of time since beginning of stage
+     */
+    public long timer() {	
+		timer = System.nanoTime()/1000000000;		
+		return timer;
+	}
 
     /**
      * Respawn the player, resetting the health attribute
@@ -135,11 +173,16 @@ public class Player extends Character {
         super.update(delta);
         
         control();
-
         
+        if(ability) {
+        	triggerAbility();
+        }
+        else if(this.timer()>abilityCooldown+2 && abilityUsed) {
+        	this.refreshAttributes();
+        }
+       
         attackTime++;
-        
-
+       
         // Gives the player the attack texture for 0.1s after an attack.
         //if (hitRefresh <= 0.1 && getTexture() != attackTexture) {
         if (attack && attackTime < 30) {
