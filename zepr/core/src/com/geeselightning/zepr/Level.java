@@ -39,6 +39,7 @@ public class Level implements Screen {
     private boolean isPaused;
     private Stage stage;
     private Table table;
+    private Table tutorialTable = null;
     private Skin skin;
     private Wave currentWave;
     private int currentWaveNumber;
@@ -50,7 +51,7 @@ public class Level implements Screen {
     private World world;
     private int teleportCounter;
     private boolean dupe;
-    private Label progressLabel, healthLabel, powerUpLabel, abilityLabel;
+    private Label progressLabel, healthLabel, powerUpLabel, abilityLabel, tutorialLabel;
     static Texture blank;
     private String powerupString;
 
@@ -58,11 +59,11 @@ public class Level implements Screen {
 
         //Initialise Box2D physics engine
     	this.world =  new World(new Vector2(0, 0), true);
-
+    	
     	parent = zepr;
     	this.config = config;
         blank = new Texture("blank.png");
-
+        
         player = new Player(new Texture("player01.png"), new Vector2(300, 300), world);
         
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
@@ -73,7 +74,7 @@ public class Level implements Screen {
         healthLabel = new Label("", skin);
         powerUpLabel = new Label("", skin);
         abilityLabel = new Label("", skin);
-
+         
         // Set up data for first wave of zombies
         this.zombiesRemaining = config.waves[0].numberToSpawn;
         this.zombiesToSpawn = zombiesRemaining;
@@ -85,6 +86,20 @@ public class Level implements Screen {
         this.table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+        
+        if(config.location == Zepr.Location.TOWN) {
+        	tutorialTable = new Table();
+        	tutorialTable.setFillParent(true);
+        	stage.addActor(tutorialTable);
+        	
+        	tutorialLabel = new Label("", skin);
+        	
+        	tutorialTable.top();
+        	tutorialTable.row().pad(140);
+        	tutorialTable.add(tutorialLabel).top();
+        
+        }
+        
         
         // Loads the testmap.tmx file as map.
         TmxMapLoader loader = new TmxMapLoader();
@@ -177,7 +192,9 @@ public class Level implements Screen {
 
         TextButton resume = new TextButton("Resume", skin);
         TextButton exit = new TextButton("Exit", skin);
-
+        
+        tutorialTable.clear();
+        
         table.clear();
         table.center();
         table.add(resume).pad(10);
@@ -235,6 +252,12 @@ public class Level implements Screen {
         table.add(powerUpLabel).pad(10).left();
         table.row();
         table.add(abilityLabel).pad(10).left();
+        
+        if(tutorialTable != null && currentWaveNumber == 1) {
+        	tutorialTable.top();
+        	tutorialTable.row().pad(140);
+        	tutorialTable.add(tutorialLabel).top();
+        }
     }
 
     /**
@@ -300,9 +323,13 @@ public class Level implements Screen {
      */
     public void update(float delta) {
     	world.step(1/60f, 6, 2);
-
+    	
     	player.update(delta);
     	player.look(getMouseWorldCoordinates());
+    
+    	if(tutorialTable != null && currentWaveNumber > 1) {
+    		tutorialTable.clear();
+    	}
     	
     	// When you die, end the level.
         if (player.health <= 0)
@@ -444,6 +471,10 @@ public class Level implements Screen {
         powerUpLabel.setText(powerupString);
         abilityLabel.setText(abilityString);
         
+        if(tutorialTable != null && currentWaveNumber == 1) {
+        	tutorialLabel.setText("TUTORIAL WAVE \n\n Up: W \n Left: A \n Down: S \n Right: D \n Attack: Left Click \n Look: Mouse \n Special Ability: E");
+        }
+          
     }
 
     /**
