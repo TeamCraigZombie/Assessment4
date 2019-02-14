@@ -32,7 +32,7 @@ public class Player extends Character {
     int attackTime;
     private boolean isAttacking;
     boolean ability = true;
-    private boolean abilityUsed = false;
+    public boolean abilityUsed = false;
     private long timer;
     private long abilityCooldown;
     public String abilityString;
