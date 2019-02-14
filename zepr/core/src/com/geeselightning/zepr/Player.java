@@ -21,29 +21,31 @@ public class Player extends Character {
      * @param world the Box2D world to spawn the player in
      */
 
-    public int attackDamage = Constant.PLAYERDMG;
-    int hitRange = Constant.PLAYERRANGE;
-    final float hitCooldown =  Constant.PLAYERHITCOOLDOWN;
-    Texture mainTexture;
-    Texture attackTexture;
-    public boolean attack = false;
-    public float HPMult;
-    float dmgMult;
-    float speedMult;
+    private int attackDamage = Constant.PLAYERDMG;
+    private Texture mainTexture;
+    private Texture attackTexture;
+    private boolean attack = false;
+    private float HPMult;
     static String playertype;
-    public boolean isImmune;
-    public boolean canBeSeen = true;
-    public long attackCooldown;
-    public int attackTime;
-    public boolean isAttacking;
-    public boolean ability = true;
-    public boolean abilityUsed = false;
-    public long timer;
-    public long abilityCooldown;
+    private boolean isImmune;
+    private boolean canBeSeen = true;
+    int attackTime;
+    private boolean isAttacking;
+    boolean ability = true;
+    private boolean abilityUsed = false;
+    private long timer;
+    private long abilityCooldown;
     
 
-    public Player(Sprite sprite, Vector2 playerSpawn, World world) {
-        super(sprite, playerSpawn, world);
+    public Player(Texture texture, Vector2 playerSpawn, World world) {
+        super(world);
+
+        set(new Sprite(texture));
+
+        GenerateBodyFromSprite();
+        body.setFixedRotation(true);
+        body.setLinearDamping(50.f);
+
         setCharacterPosition(playerSpawn);
         refreshAttributes();
     }
@@ -68,7 +70,8 @@ public class Player extends Character {
             speedMult = Constant.NERDYSPEEDMULT;
             mainTexture = new Texture("player01.png");
             attackTexture = new Texture("player01_attack.png");
-        } else if (playertype == "sporty") {
+        }
+        else if (playertype == "sporty") {
             dmgMult = Constant.SPORTYDMGMULT;
             HPMult = Constant.SPORTYHPMULT;
             speedMult = Constant.SPORTYSPEEDMULT;
@@ -115,7 +118,7 @@ public class Player extends Character {
     /**
      * Manages the abilities when special ability is triggered by E
      */
-    public void triggerAbility() {
+    private void triggerAbility() {
     	
 		if(Gdx.input.isKeyPressed(Keys.E)) {
 			ability = false;
@@ -139,7 +142,7 @@ public class Player extends Character {
      * 
      * Returns the value of time since beginning of stage
      */
-    public long timer() {	
+    private long timer() {
 		timer = System.nanoTime()/1000000000;		
 		return timer;
 	}

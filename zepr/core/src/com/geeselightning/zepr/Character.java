@@ -18,7 +18,7 @@ import static java.lang.Math.abs;
 
 public class Character extends Sprite implements Steerable<Vector2> {
 
-    protected float speed;
+    float speed;
     int health;
     int maxhealth;
     // direction is a bearing in radians
@@ -44,25 +44,17 @@ public class Character extends Sprite implements Steerable<Vector2> {
 
     /**
      * Constructor for the character
-     * @param sprite - the character sprite
-     * @param spawnPosition - the position to spawn the character in
      * @param world - the Box2D world to spawn the character in
      */
-    public Character(Sprite sprite, Vector2 spawnPosition, World world) {
-        super(sprite);
+    public Character(World world) {
         this.world = world;
-        GenerateBodyFromSprite();
-        body.setFixedRotation(true);
-        body.setLinearDamping(50.f);
-        setCharacterPosition(spawnPosition);
-        health = maxhealth = 100;
         currentMode = SteeringState.WANDER;
     }
 
     /**
      * Set the character Box2D body to a rectangle sized around sprite dimensions
      */
-    private void GenerateBodyFromSprite() {
+    void GenerateBodyFromSprite() {
 
     	body = world.createBody(characterBodyDef);
     	
@@ -139,7 +131,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
     }
 
     // hitRange has to be passed by the subclass from the canHit method.
-    protected boolean canHitGlobal(Character character, int hitRange) {
+    boolean canHitGlobal(Character character, int hitRange) {
         double directionToCharacter = this.getDirectionTo(character.getCenter());
         double angle = abs(directionToCharacter - direction);
         double distance = this.getCenter().sub(character.getCenter()).len();
@@ -186,14 +178,14 @@ public class Character extends Sprite implements Steerable<Vector2> {
      * Gets the position in Box2D physics coordinates
      * @return the position as Vector2
      */
-    public Vector2 getPhysicsPosition() {
+    Vector2 getPhysicsPosition() {
         return body.getPosition().scl(Constant.PHYSICSDENSITY);
     }
 
     /**
      * Update the sprite position so that it is aligned with the Box2D body
      */
-    public void updatePosition() {
+    void updatePosition() {
         Vector2 position = getPhysicsPosition();
         setPosition(position.x-getWidth()/2, position.y-getHeight()/2);
     }

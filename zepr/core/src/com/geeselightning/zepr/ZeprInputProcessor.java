@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class ZeprInputProcessor implements InputProcessor {
 
-    protected Vector2 mousePosition = new Vector2(0, 0);
+    private Vector2 mousePosition = new Vector2(0, 0);
    
     @Override
     public boolean keyDown(int keycode) {

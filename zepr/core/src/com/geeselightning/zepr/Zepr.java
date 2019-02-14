@@ -37,15 +37,15 @@ public class Zepr extends Game {
 		switch(screen) {
 			case MENU:
 				if (menuScreen == null) menuScreen = new MenuScreen(this);
-				this.setScreen(menuScreen);
+				    setScreen(menuScreen);
 				break;
             case STORY:
 				StoryScreen storyScreen = new StoryScreen(this);
-                this.setScreen(storyScreen);
+                setScreen(storyScreen);
                 break;
 			case SELECT:
 				SelectLevelScreen selectLevelScreen = new SelectLevelScreen(this);
-				this.setScreen(selectLevelScreen);
+				setScreen(selectLevelScreen);
 				break;
 			case TOWN:
 				config = new LevelConfig() {{
@@ -55,15 +55,14 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<>(
 				            Arrays.asList(new Vector2(200,200), new Vector2(700,700),
 				                    new Vector2(200,700), new Vector2(700,200)));
-					waves = new int[]{5, 10, 15, 1};
+					waves = new Wave[]{ new Wave(5, Zombie.Type.ZOMBIE1),
+                                        new Wave(10, Zombie.Type.ZOMBIE1),
+                                        new Wave(15, Zombie.Type.ZOMBIE1),
+                                        new Wave(20, Zombie.Type.ZOMBIE2)};
 					location = screen;
-					
-					boss1 = false;
-					boss2 = true;
-					isTeleporting = false;
 				}};
 				level = new Level(this, config);
-				this.setScreen(level);
+				setScreen(level);
 				break;
 			case HALIFAX:
 				config = new LevelConfig() {{
@@ -73,14 +72,14 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<>(
 							Arrays.asList(new Vector2(600,100), new Vector2(100,200),
 				                    new Vector2(600,500), new Vector2(100,600)));
-					waves = new int[]{10, 15, 20};
+                    waves = new Wave[]{ new Wave(10, Zombie.Type.ZOMBIE1),
+                                        new Wave(15, Zombie.Type.ZOMBIE1),
+                                        new Wave(20, Zombie.Type.ZOMBIE2),
+                                        new Wave(20, Zombie.Type.ZOMBIE2)};
 					location = screen;
-					boss1 = false;
-					boss2 = false;
-					isTeleporting = false;
 				}};						 
 				level = new Level(this, config);
-				this.setScreen(level);
+				setScreen(level);
 				break;
 			case COURTYARD:
 				config = new LevelConfig() {{
@@ -90,15 +89,13 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
-					waves = new int[]{13, 17, 1};
+                    waves = new Wave[]{ new Wave(13, Zombie.Type.ZOMBIE2),
+                                        new Wave(17, Zombie.Type.ZOMBIE2),
+                                        new Wave(1, Zombie.Type.BOSS1)};
 					location = screen;
-					boss1 = true;
-					boss2 = false;
-					isTeleporting = false;
-					
 				}};						 
 				level = new Level(this, config);
-				this.setScreen(level);
+				setScreen(level);
 				break;
 			case CENTRALHALL:
 				config = new LevelConfig() {{
@@ -108,14 +105,14 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
-					waves = new int[]{13, 17, 1};
+                    waves = new Wave[]{ new Wave(12, Zombie.Type.ZOMBIE2),
+                                        new Wave(12, Zombie.Type.ZOMBIE2),
+                                        new Wave(12, Zombie.Type.ZOMBIE3),
+                                        new Wave(16, Zombie.Type.ZOMBIE3)};
 					location = screen;
-					boss1 = true;
-					boss2 = false;
-					isTeleporting = false;
 				}};						 
 				level = new Level(this, config);
-				this.setScreen(level);
+				setScreen(level);
 				break;
 			case GLASSHOUSE:
 				config = new LevelConfig() {{
@@ -125,14 +122,14 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
-					waves = new int[]{13, 17, 1};
+                    waves = new Wave[]{ new Wave(12, Zombie.Type.ZOMBIE3),
+                                        new Wave(12, Zombie.Type.ZOMBIE3),
+                                        new Wave(15, Zombie.Type.ZOMBIE3),
+                                        new Wave(40, Zombie.Type.ZOMBIE3)};
 					location = screen;
-					boss1 = true;
-					boss2 = false;
-					isTeleporting = false;
 				}};
 				level = new Level(this, config);
-				this.setScreen(level);
+				setScreen(level);
 				break;
 			case CONSTANTINE:
 				config = new LevelConfig() {{
@@ -142,18 +139,18 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
-					waves = new int[]{13, 17, 1};
+                    waves = new Wave[]{ new Wave(60, Zombie.Type.ZOMBIE1),
+                                        new Wave(20, Zombie.Type.ZOMBIE2),
+                                        new Wave(15, Zombie.Type.ZOMBIE3),
+                                        new Wave(1, Zombie.Type.BOSS2)};
 					location = screen;
-					boss1 = true;
-					boss2 = false;
-					isTeleporting = false;
 				}};	
 				level = new Level(this, config);
-				this.setScreen(level);
+				setScreen(level);
 				break;
 			case MINIGAME:
 				MiniGame minigame = new MiniGame(this);
-				this.setScreen(minigame);
+				setScreen(minigame);
 				break;
 		}
 	}

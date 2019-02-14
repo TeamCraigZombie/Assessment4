@@ -40,7 +40,8 @@ public class Level implements Screen {
     private Stage stage;
     private Table table;
     private Skin skin;
-    private int currentWave = 0;
+    private Wave currentWave;
+    private int currentWaveNumber;
     private int zombiesRemaining; // the number of zombies left to kill to complete the wave
     private int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
     private PowerUp currentPowerUp;
@@ -61,7 +62,7 @@ public class Level implements Screen {
     	this.config = config;
         blank = new Texture("blank.png");
 
-        player = new Player(new Sprite(new Texture("player01.png")), new Vector2(300, 300), world);
+        player = new Player(new Texture("player01.png"), new Vector2(300, 300), world);
         
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
         aliveZombies = new ArrayList<>();
@@ -73,7 +74,7 @@ public class Level implements Screen {
         abilityLabel = new Label("", skin);
 
         // Set up data for first wave of zombies
-        this.zombiesRemaining = config.waves[0];
+        this.zombiesRemaining = config.waves[0].numberToSpawn;
         this.zombiesToSpawn = zombiesRemaining;
 
         // Creating a new libgdx stage to contain the pause menu and in game UI
@@ -107,6 +108,9 @@ public class Level implements Screen {
 
         teleportCounter = 0;
         dupe = false;
+        currentWaveNumber = 0;
+        currentWave = config.waves[0];
+
 
         resumeGame();
     }
@@ -137,47 +141,11 @@ public class Level implements Screen {
      * @param spawnPoints locations where zombies should be spawned on this stage
      * @param numberToSpawn number of zombies to spawn
      */
-    private void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints, boolean boss1, boolean boss2) {
-        if (numberToSpawn == 1) {
-            if (boss2) {
-                Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightningBoss.png")),
-                        spawnPoints.get(0), world,15, 5,2);
-                aliveZombies.add(zombie);
-                config.isTeleporting = true;
+    private void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints) {
+
+            for (int i = 0; i < numberToSpawn; i++) {
+                aliveZombies.add(new Zombie(spawnPoints.get(i % spawnPoints.size()), world, currentWave.zombieType));
             }
-            else if (boss1) {
-                Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightningBoss.png")),
-                        spawnPoints.get(0), world,20, 5,1);
-                aliveZombies.add(zombie);
-            }
-        }
-    	else {
-            for (int i = 0; i < numberToSpawn/3; i++) {
-                Zombie zombie;
-
-                switch(i%3) {
-                    case 0:
-                        zombie = new Zombie(new Sprite(new Texture("zombie01.png")),
-                                spawnPoints.get(i % spawnPoints.size()), world, 1, 1, 2);
-                        break;
-
-                    case 1:
-                        zombie = new Zombie(new Sprite(new Texture("player01.png")),
-                                spawnPoints.get(i % spawnPoints.size()), world, 1.5f, 1, 1);
-                        break;
-
-                    case 2:
-                        zombie = new Zombie(new Sprite(new Texture("player02.png")),
-                                spawnPoints.get(i % spawnPoints.size()), world, 1, 2, 1);
-                        break;
-
-                    default:
-                        zombie = null;
-                }
-
-                aliveZombies.add(zombie);
-            }
-    	}
    }
 
     /**
@@ -378,15 +346,15 @@ public class Level implements Screen {
             }
 
        	 	// Spawn all zombies in the stage
-            spawnZombies(zombiesToSpawn, config.zombieSpawnPoints,config.boss1, config.boss2);
+            spawnZombies(zombiesToSpawn, config.zombieSpawnPoints);
             
             
             
         
         
             // Wave complete, increment wave number
-            currentWave++;
-            if (currentWave > config.waves.length) {
+            currentWaveNumber++;
+            if (currentWaveNumber > config.waves.length) {
                 // Level completed, back to select screen and complete stage.
                 // If stage is being replayed complete() will stop progress being incremented.
                 isPaused = true;
@@ -403,9 +371,9 @@ public class Level implements Screen {
             } else {
             	
             	// Update zombiesRemaining with the number of zombies of the new wave
-                if (currentWave < config.waves.length)
+                if (currentWaveNumber < config.waves.length)
                 	{
-                		zombiesRemaining = config.waves[currentWave];
+                		zombiesRemaining = config.waves[currentWaveNumber].numberToSpawn;
                 	}
                 else
                 {
@@ -425,14 +393,13 @@ public class Level implements Screen {
             zombie.attack(player, delta);          
         } 
         teleportCounter ++;
-        if (config.isTeleporting && teleportCounter > 100) {
+        if (currentWave.zombieType == Zombie.Type.BOSS1 && teleportCounter > 100) {
         	teleportCounter = 0;
         	Vector2 spawnPoint = new Vector2(200,200);
         	Zombie originalBoss = aliveZombies.get(0);
         	int currentHealth = originalBoss.getHealth();
         	if (currentHealth < 250 && !dupe) {
-        		Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightningBoss.png")),
-                        spawnPoint, world,15,  2, 2);
+        		Zombie zombie = new Zombie(spawnPoint, world, Zombie.Type.BOSS1);
                 aliveZombies.add(zombie);
                 dupe = true;
         	}
@@ -444,7 +411,7 @@ public class Level implements Screen {
         	}
         }
         
-        String progressString = ("Wave " + currentWave + ", " + zombiesRemaining + " zombies remaining.");
+        String progressString = ("Wave " + currentWaveNumber + ", " + zombiesRemaining + " zombies remaining.");
         String healthString = ("Health: " + player.health + "HP");
         String abilityString;
         

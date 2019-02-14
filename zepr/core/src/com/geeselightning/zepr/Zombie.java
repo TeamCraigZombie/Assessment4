@@ -1,5 +1,6 @@
 package com.geeselightning.zepr;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -8,22 +9,60 @@ public class Zombie extends Character {
 
     private int attackDamage;
     private int hitRange;
+    public static enum Type { ZOMBIE1, ZOMBIE2, ZOMBIE3, BOSS1, BOSS2 }
 
     /**
      * Constructor for the Zombie class
-     * @param sprite sprite to use for the zombie
-     * @param zombieSpawn the coordinates to spawn thw zombie at
+     * @param zombieSpawn the coordinates to spawn the zombie at
      * @param world the Box2D world to add the zombie to
-     * @param speed speed attribute of the zombie
-     * @param health health attribute of the zombie
-     * @param damage attack damage of the zombie
      */
-    public Zombie(Sprite sprite, Vector2 zombieSpawn, World world, float speed, int health, int damage) {
-        super(sprite, zombieSpawn, world);
-        this.speed = speed*Constant.ZOMBIESPEED;
-        this.attackDamage = damage*Constant.ZOMBIEDMG;
+    public Zombie(Vector2 zombieSpawn, World world, Type type) {
+        super(world);
+
         hitRange = Constant.ZOMBIERANGE;
-        maxhealth = this.health = health*Constant.ZOMBIEMAXHP;
+
+        speed = Constant.ZOMBIESPEED;
+        attackDamage = Constant.ZOMBIEDMG;
+        maxhealth = Constant.ZOMBIEMAXHP;
+
+        switch(type) {
+            case ZOMBIE1:
+                speed *= 1;
+                attackDamage *= 1;
+                maxhealth *= 1;
+                set(new Sprite(new Texture("zombie01.png")));
+                break;
+            case ZOMBIE2:
+                speed *= 1;
+                attackDamage *= 2;
+                maxhealth *= 1;
+                set(new Sprite(new Texture("player01.png")));
+                break;
+            case ZOMBIE3:
+                speed *= 1.5;
+                attackDamage *= 2;
+                maxhealth *= 1;
+                set(new Sprite(new Texture("player02.png")));
+                break;
+            case BOSS1:
+                speed *= 20;
+                attackDamage *= 1;
+                maxhealth *= 5;
+                set(new Sprite(new Texture("GeeseLightingBoss.png")));
+                break;
+            case BOSS2:
+                speed *= 15;
+                attackDamage *= 2;
+                maxhealth *= 5;
+                set(new Sprite(new Texture("GeeseLightingBoss.png")));
+                break;
+        }
+
+        health = maxhealth;
+
+        GenerateBodyFromSprite();
+        body.setFixedRotation(true);
+        body.setLinearDamping(50.f);
         setCharacterPosition(zombieSpawn);
     }
 
