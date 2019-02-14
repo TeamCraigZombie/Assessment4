@@ -123,8 +123,7 @@ public class MiniGame implements Screen {
 		}
 	}
 	
-	// Awkwardly resorts the queue
-	
+
 	@Override
 	public void show() {
 		

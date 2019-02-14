@@ -18,7 +18,9 @@ public class Zepr extends Game {
 
 	private MenuScreen menuScreen;
 	
-	public enum Location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, COMPLETE, MINIGAME, TEST }
+	public enum Location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, CENTRALHALL, 
+		GLASSHOUSE, CONSTANTINE, COMPLETE, MINIGAME, TEST }
+	
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
 	public static Location progress;
@@ -46,7 +48,7 @@ public class Zepr extends Game {
 			case TOWN:
 				config = new LevelConfig() {{
 					mapLocation = "maps/townmap.tmx";
-					playerSpawn = new Vector2(530, 430);
+					playerSpawn = new Vector2(530, 600);
 					powerSpawn = new Vector2(300, 300);
 					zombieSpawnPoints = new ArrayList<>(
 				            Arrays.asList(new Vector2(200,200), new Vector2(700,700),
@@ -80,7 +82,7 @@ public class Zepr extends Game {
 				break;
 			case COURTYARD:
 				config = new LevelConfig() {{
-					mapLocation = "maps/courtyard.tmx";
+					mapLocation = "maps/courtyardmap.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(250, 250);
 					zombieSpawnPoints = new ArrayList<>(
@@ -93,6 +95,54 @@ public class Zepr extends Game {
 					isTeleporting = false;
 					
 				}};						 
+				level = new Level(this, config);
+				this.setScreen(level);
+				break;
+			case CENTRALHALL:
+				config = new LevelConfig() {{
+					mapLocation = "maps/centralhallmap.tmx";
+					playerSpawn = new Vector2(50, 900);
+					powerSpawn = new Vector2(250, 250);
+					zombieSpawnPoints = new ArrayList<Vector2>(
+							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
+					                   new Vector2(630,100), new Vector2(120,500)));
+					waves = new int[]{13, 17, 1};
+					location = screen;
+					boss1 = true;
+					boss2 = false;
+					isTeleporting = false;
+				}};						 
+				level = new Level(this, config);
+				this.setScreen(level);
+				break;
+			case GLASSHOUSE:
+				config = new LevelConfig() {{
+					mapLocation = "maps/glasshousemap.tmx";
+					playerSpawn = new Vector2(400, 70);
+					powerSpawn = new Vector2(250, 250);
+					zombieSpawnPoints = new ArrayList<Vector2>(
+							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
+					                   new Vector2(630,100), new Vector2(120,500)));
+					waves = new int[]{13, 17, 1};
+					location = screen;
+					boss1 = true;
+					boss2 = false;
+					isTeleporting = false;
+				}};
+			case CONSTANTINE:
+				config = new LevelConfig() {{
+					mapLocation = "maps/constantinemap.tmx";
+					playerSpawn = new Vector2(300, 300);
+					powerSpawn = new Vector2(250, 250);
+					zombieSpawnPoints = new ArrayList<Vector2>(
+							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
+					                   new Vector2(630,100), new Vector2(120,500)));
+					waves = new int[]{13, 17, 1};
+					location = screen;
+					boss1 = true;
+					boss2 = false;
+					isTeleporting = false;
+				}};	
 				level = new Level(this, config);
 				this.setScreen(level);
 				break;

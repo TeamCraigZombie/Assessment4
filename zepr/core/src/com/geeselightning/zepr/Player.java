@@ -9,14 +9,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Player extends Character {
 
-    private int attackDamage;
-    private Texture mainTexture;
-    private Texture attackTexture;
-    private boolean attack = false;
-    private float HPMult;
-    private static String playerType;
-    private boolean isImmune;
-    private boolean canBeSeen = true;
+
+    
     private int boostDamage;
 
     /**
@@ -25,6 +19,24 @@ public class Player extends Character {
      * @param playerSpawn coordinates to spawn the player at
      * @param world the Box2D world to spawn the player in
      */
+
+    public int attackDamage = Constant.PLAYERDMG;
+    int hitRange = Constant.PLAYERRANGE;
+    final float hitCooldown =  Constant.PLAYERHITCOOLDOWN;
+    Texture mainTexture;
+    Texture attackTexture;
+    public boolean attack = false;
+    public float HPMult;
+    float dmgMult;
+    float speedMult;
+    static String playertype;
+    public boolean isImmune;
+    public boolean canBeSeen = true;
+    public long attackCooldown;
+    public int attackTime;
+    public boolean isAttacking;
+    
+
     public Player(Sprite sprite, Vector2 playerSpawn, World world) {
         super(sprite, playerSpawn, world);
         setCharacterPosition(playerSpawn);
@@ -36,7 +48,7 @@ public class Player extends Character {
      * @param playerType the new player type value
      */
     public static void setType(String playerType){
-        Player.playerType = playerType;
+        Player.playertype = playerType;
     }
 
     /**
@@ -45,13 +57,13 @@ public class Player extends Character {
      */
     public void refreshAttributes() {
         float dmgMult, speedMult;
-        if (playerType == "nerdy") {
+        if (playertype == "nerdy") {
             dmgMult = Constant.NERDYDMGMULT;
             HPMult = Constant.NERDYHPMULT;
             speedMult = Constant.NERDYSPEEDMULT;
             mainTexture = new Texture("player01.png");
             attackTexture = new Texture("player01_attack.png");
-        } else if (playerType == "sporty") {
+        } else if (playertype == "sporty") {
             dmgMult = Constant.SPORTYDMGMULT;
             HPMult = Constant.SPORTYHPMULT;
             speedMult = Constant.SPORTYSPEEDMULT;
@@ -73,6 +85,7 @@ public class Player extends Character {
         boostDamage = 1;
         speed = Constant.PLAYERSPEED * speedMult;
     }
+    
 
     /**
      * Routine to perform an attack move, damaging nearby enemies
@@ -80,12 +93,15 @@ public class Player extends Character {
      * @param delta the time between the start of the previous call and now
      */
     public void attack(Zombie zombie, float delta) {
-        if (canHitGlobal(zombie, Constant.PLAYERRANGE) && hitRefresh > Constant.PLAYERHITCOOLDOWN) {
+
+        if (canHitGlobal(zombie, Constant.PLAYERRANGE) && hitRefresh > Constant.PLAYERHITCOOLDOWN 
+        		&& isAttacking) {
             zombie.takeDamage(attackDamage*boostDamage);
             hitRefresh = 0;
         } else
             hitRefresh += delta;
-    }
+        }
+    
 
     /**
      * Respawn the player, resetting the health attribute
@@ -116,15 +132,23 @@ public class Player extends Character {
         super.update(delta);
         
         control();
-       
+
+        
+        attackTime++;
+        
+
         // Gives the player the attack texture for 0.1s after an attack.
         //if (hitRefresh <= 0.1 && getTexture() != attackTexture) {
-        if (attack)
+        if (attack && attackTime < 30) {
             setTexture(attackTexture);
-        else 
+        	isAttacking = true;
+        }
+        else {
         // Changes the texture back to the main one after 0.1s.
         //if (hitRefresh > 0.1 && getTexture() == attackTexture) {
             setTexture(mainTexture);
+        	isAttacking = false;
+        }
     }
 
     /**

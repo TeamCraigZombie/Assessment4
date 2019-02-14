@@ -47,6 +47,9 @@ public class SelectLevelScreen implements Screen {
         TextButton town      = new TextButton("Town", skin);
         TextButton halifax   = new TextButton("Halifax", skin);
         TextButton courtyard = new TextButton("Courtyard", skin);
+        TextButton centralhall = new TextButton("Central Hall", skin);
+        TextButton glasshouse = new TextButton ("Glasshouse", skin);
+        TextButton constantine = new TextButton("Constantine", skin);
         
         // Creating character buttons.
         TextButton nerdy  = new TextButton("Nerdy",skin);
@@ -63,6 +66,9 @@ public class SelectLevelScreen implements Screen {
         final String townDescription      = "You wake up hungover in town to discover there is a zombie apocalypse.";
         final String halifaxDescription   = "You need to get your laptop with the work on it from your accomodation.";
         final String courtyardDescription = "You should go to Courtyard and get some breakfast.";
+        final String centralhallDescription = "You have no choice but to pass through Central Hall on your way home";
+        final String glasshouseDescription = "Perhaps a small tipple in Glasshouse before the final leg?";
+        final String constantineDescription = "You've made it home, but are you safe yet...?";
         final String defaultDescription   = "Select a stage from the buttons above.";
         stageDescription = new Label(defaultDescription, skin);
         stageDescription.setWrap(true);
@@ -104,6 +110,12 @@ public class SelectLevelScreen implements Screen {
         stageSelect.add(town).pad(10);
         stageSelect.add(halifax).pad(10);
         stageSelect.add(courtyard).pad(10);
+        
+        stageSelect.row();
+        
+        stageSelect.add(centralhall).pad(10);
+        stageSelect.add(glasshouse).pad(10);
+        stageSelect.add(constantine).pad(10);
    
         stageSelect.row();
         stageSelect.add(stageDescription).width(1000f).colspan(3);
@@ -170,6 +182,48 @@ public class SelectLevelScreen implements Screen {
                 public void changed(ChangeEvent event, Actor actor) {
                     stageDescription.setText(courtyardDescription);
                     stageLink = Location.COURTYARD;
+                }
+            });
+        }
+        
+        if (Zepr.progress.ordinal() <= Location.COURTYARD.ordinal()) {
+            centralhall.setColor(Color.DARK_GRAY);
+            centralhall.getLabel().setColor(Color.DARK_GRAY);
+        } else {
+            // Defining actions for the centralhall button.
+        	centralhall.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    stageDescription.setText(centralhallDescription);
+                    stageLink = Location.CENTRALHALL;
+                }
+            });
+        }
+        
+        if (Zepr.progress.ordinal() <= Location.CENTRALHALL.ordinal()) {
+            glasshouse.setColor(Color.DARK_GRAY);
+            glasshouse.getLabel().setColor(Color.DARK_GRAY);
+        } else {
+            // Defining actions for the glasshouse button.
+        	glasshouse.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    stageDescription.setText(glasshouseDescription);
+                    stageLink = Location.GLASSHOUSE;
+                }
+            });
+        }
+        
+        if (Zepr.progress.ordinal() <= Location.GLASSHOUSE.ordinal()) {
+            constantine.setColor(Color.DARK_GRAY);
+            constantine.getLabel().setColor(Color.DARK_GRAY);
+        } else {
+            // Defining actions for the constantine button.
+        	constantine.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    stageDescription.setText(constantineDescription);
+                    stageLink = Location.CONSTANTINE;
                 }
             });
         }

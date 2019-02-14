@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 public class ZeprInputProcessor implements InputProcessor {
 
     protected Vector2 mousePosition = new Vector2(0, 0);
-
+   
     @Override
     public boolean keyDown(int keycode) {
         return true;
@@ -36,6 +36,7 @@ public class ZeprInputProcessor implements InputProcessor {
         return true;
     }
 
+
     /**
      * Run when a touch or mouse button is released
      * @param screenX mouse x coordinate
@@ -47,8 +48,10 @@ public class ZeprInputProcessor implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
     	Level.getPlayer().setAttack(false);
-        return true;
+    	Level.getPlayer().attackTime = 0;
+    	return true;
     }
+
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
