@@ -13,7 +13,7 @@ public class PowerUpHeal extends PowerUp {
      * @param player player to monitor for pick up event and to apply the effect to
      */
     public PowerUpHeal(Level currentLevel, Player player) {
-        super(new Texture("heal.png"), currentLevel, player, 0);
+        super(new Texture("heal.png"), currentLevel, player, 0, "Health PowerUp Collected");
     }
 
     /**

@@ -13,7 +13,7 @@ public class PowerUpInstaKill extends PowerUp {
      * @param player player to monitor for pick up event and to apply the effect to
      */
     public PowerUpInstaKill(Level currentLevel, Player player) {
-        super(new Texture("instakill.png"), currentLevel, player, Constant.INSTAKILLTIME);
+        super(new Texture("instakill.png"), currentLevel, player, Constant.INSTAKILLTIME, "InstaKill PowerUp Collected");
     }
 
     /**

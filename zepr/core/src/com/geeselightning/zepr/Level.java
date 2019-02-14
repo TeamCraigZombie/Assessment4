@@ -43,7 +43,7 @@ public class Level implements Screen {
     private int currentWaveNumber;
     private int zombiesRemaining; // the number of zombies left to kill to complete the wave
     private int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
-    private PowerUp currentPowerUp;
+    public PowerUp currentPowerUp;
     private Box2DDebugRenderer debugRenderer;
     private LevelConfig config;
     private World world;
@@ -51,7 +51,6 @@ public class Level implements Screen {
     private boolean dupe;
     private Label progressLabel, healthLabel, powerUpLabel, abilityLabel, tutorialLabel;
     static Texture blank;
-    private String powerupString;
 
     public Level(Zepr zepr, LevelConfig config) {
 
@@ -381,24 +380,19 @@ public class Level implements Screen {
                 int random = (int)(Math.random() * 5 + 1);
                 switch(random) {
 	                case 1:
-	                	currentPowerUp = new PowerUpHeal(this, player);
-	                	powerupString = "Health PowerUp Collected";
+	                	currentPowerUp = new PowerUpHeal(this, player);           
 	                	break;
 	                case 2:
-	                	currentPowerUp = new PowerUpSpeed(this, player);
-	                	powerupString = "Speed PowerUp Collected";
+	                	currentPowerUp = new PowerUpSpeed(this, player);	       
 	                	break;
 	                case 3:
-	                	currentPowerUp = new PowerUpImmunity(this, player);
-	                	powerupString = "Immunity PowerUp Collected";
+	                	currentPowerUp = new PowerUpImmunity(this, player);     
 	                	break;
 	                case 4:
 	                	currentPowerUp = new PowerUpInstaKill(this, player);
-	                	powerupString = "InstaKill PowerUp Collected";
 	                	break;
 	                case 5:
 	                	currentPowerUp = new PowerUpInvisibility(this, player);
-	                	powerupString = "Invisibility PowerUp Collected";
 	                	break;
                 }
             }
@@ -433,19 +427,18 @@ public class Level implements Screen {
         String progressString = ("Wave " + currentWaveNumber + ", " + zombiesRemaining + " zombies remaining.");
         String healthString = ("Health: " + player.health + "HP");
         String abilityString;
-        String powerupString;
-
-        if(player.ability)
-            abilityString = ("Press E to trigger special ability");
-        else
-            abilityString = ("Special ability used");
-
-        if(PowerUp.active == true)
-            powerupString = this.powerupString;
-        else
-            powerupString = ("No PowerUp Collected");
-
-
+        String powerUpString = PowerUp.activePowerUp;
+        
+        if(player.ability) {
+        	abilityString = ("Press E to trigger special ability");
+        }
+        else if(player.abilityUsed) {
+        	abilityString = player.abilityString;
+        }
+        else {
+        	abilityString = ("Special ability used");
+        }
+       
         progressLabel.setText(progressString);
         powerUpLabel.setText(powerupString);
         healthLabel.setText(healthString);

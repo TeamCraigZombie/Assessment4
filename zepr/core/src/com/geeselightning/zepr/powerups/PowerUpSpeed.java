@@ -13,7 +13,7 @@ public class PowerUpSpeed extends PowerUp {
      * @param player player to monitor for pick up event and to apply the effect to
      */
     public PowerUpSpeed(Level currentLevel, Player player) {
-        super(new Texture("speed.png"), currentLevel, player, Constant.SPEEDUPTIME);
+        super(new Texture("speed.png"), currentLevel, player, Constant.SPEEDUPTIME, "Speed PowerUp Collected");
     }
 
     /**

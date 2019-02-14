@@ -13,6 +13,8 @@ public class PowerUp extends Sprite {
     private float timeRemaining;
     private float effectDuration;
     protected Player player;
+    public String powerUpString;
+    public static String activePowerUp;
 
     /**
      * Constructor for the generic power up class
@@ -20,7 +22,7 @@ public class PowerUp extends Sprite {
      * @param currentLevel the instance of Level to spawn the power up in
      * @param player player instance to pick up and apply the power up to
      */
-    PowerUp(Texture texture, Level currentLevel, Player player, float effectDuration) {
+    PowerUp(Texture texture, Level currentLevel, Player player, float effectDuration, String powerUpString) {
         super(new Sprite(texture));
         this.currentLevel = currentLevel;
         this.effectDuration = effectDuration;
@@ -28,6 +30,10 @@ public class PowerUp extends Sprite {
         if (currentLevel != null)
             setPosition(currentLevel.getConfig().powerSpawn.x, currentLevel.getConfig().powerSpawn.y);
         this.player = player;
+        activePowerUp = "No PowerUp Collected";
+        
+        this.powerUpString = powerUpString;
+        
     }
 
     /**
@@ -37,12 +43,14 @@ public class PowerUp extends Sprite {
         timeRemaining = effectDuration;
         active = true;
         this.getTexture().dispose();
+        activePowerUp = powerUpString;
     }
 
     /**
      * Remove the power up effect from the player
      */
     public void deactivate(){
+    	activePowerUp = "No PowerUp Collected";
         active = false;
         if (currentLevel != null)
             // Tests pass a null currentLevel

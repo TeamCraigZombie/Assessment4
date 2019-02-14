@@ -13,7 +13,7 @@ public class PowerUpInvisibility extends PowerUp {
      * @param player player to monitor for pick up event and to apply the effect to
      */
     public PowerUpInvisibility(Level currentLevel, Player player) {
-        super(new Texture("invisibility.png"), currentLevel, player, Constant.INVISIBILITYTIME);
+        super(new Texture("invisibility.png"), currentLevel, player, Constant.INVISIBILITYTIME, "Invisibility PowerUp Collected");
     }
 
     /**
