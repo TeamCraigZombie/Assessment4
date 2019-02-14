@@ -5,7 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -41,7 +40,6 @@ public class Level implements Screen {
     private Table table;
     private Table tutorialTable = null;
     private Skin skin;
-    private Wave currentWave;
     private int currentWaveNumber;
     private int zombiesRemaining; // the number of zombies left to kill to complete the wave
     private int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
@@ -125,8 +123,6 @@ public class Level implements Screen {
         teleportCounter = 0;
         dupe = false;
         currentWaveNumber = 0;
-        currentWave = config.waves[0];
-
 
         resumeGame();
     }
@@ -160,7 +156,7 @@ public class Level implements Screen {
     private void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints) {
 
             for (int i = 0; i < numberToSpawn; i++) {
-                aliveZombies.add(new Zombie(spawnPoints.get(i % spawnPoints.size()), world, currentWave.zombieType));
+                aliveZombies.add(new Zombie(spawnPoints.get(i % spawnPoints.size()), world, config.waves[currentWaveNumber].zombieType));
             }
    }
 
@@ -333,7 +329,7 @@ public class Level implements Screen {
     	
     	// When you die, end the level.
         if (player.health <= 0)
-           gameOver();
+            gameOver();
 
     	for(int i = 0; i < aliveZombies.size(); i++) {
             Zombie zomb = aliveZombies.get(i);
@@ -347,6 +343,35 @@ public class Level implements Screen {
         }
 
         zombiesRemaining = aliveZombies.size();
+
+        // Resolve all possible attacks
+        for (Zombie zombie : aliveZombies) {
+            // Zombies will only attack if they are in range, the attack has cooled down, and they are
+            // facing a player.
+            // Player will only attack in the reverse situation but player.attack must also be true. This is
+            //controlled by the ZeprInputProcessor. So the player will only attack when the user clicks.
+            if (player.isAttacking())
+                player.attack(zombie, delta);
+            zombie.attack(player, delta);
+        }
+        teleportCounter ++;
+        if (currentWaveNumber < config.waves.length && config.waves[currentWaveNumber].zombieType == Zombie.Type.BOSS1 && teleportCounter > 100) {
+            teleportCounter = 0;
+            Vector2 spawnPoint = new Vector2(200,200);
+            Zombie originalBoss = aliveZombies.get(0);
+            int currentHealth = originalBoss.getHealth();
+            if (currentHealth < 250 && !dupe) {
+                Zombie zombie = new Zombie(spawnPoint, world, Zombie.Type.BOSS1);
+                aliveZombies.add(zombie);
+                dupe = true;
+            }
+            for (Zombie boss : aliveZombies) {
+                Vector2 start = boss.getPhysicsPosition();
+                Vector2 end =  player.getPhysicsPosition();
+                Vector2 position = new Vector2((start.x + end.x)/2, (start.y + end.y)/2);
+                boss.setCharacterPosition(position);
+            }
+        }
 
         if (zombiesRemaining == 0) {
 
@@ -380,11 +405,7 @@ public class Level implements Screen {
 
        	 	// Spawn all zombies in the stage
             spawnZombies(zombiesToSpawn, config.zombieSpawnPoints);
-            
-            
-            
-        
-        
+
             // Wave complete, increment wave number
             currentWaveNumber++;
             if (currentWaveNumber > config.waves.length) {
@@ -401,74 +422,33 @@ public class Level implements Screen {
                         saveGame();
                     }
                 }
-            } else {
-            	
-            	// Update zombiesRemaining with the number of zombies of the new wave
-                if (currentWaveNumber < config.waves.length)
-                	{
-                		zombiesRemaining = config.waves[currentWaveNumber].numberToSpawn;
-                	}
+            } else if (currentWaveNumber < config.waves.length)
+                    // Update zombiesRemaining with the number of zombies of the new wave
+                    zombiesRemaining = config.waves[currentWaveNumber].numberToSpawn;
                 else
-                {
-                	zombiesRemaining =0;
-                }
-                zombiesToSpawn = zombiesRemaining;           }
+                    zombiesRemaining = 0;
+                zombiesToSpawn = zombiesRemaining;
         }
-    	
-    	 // Resolve all possible attacks
-        for (Zombie zombie : aliveZombies) {
-            // Zombies will only attack if they are in range, the attack has cooled down, and they are
-            // facing a player.
-            // Player will only attack in the reverse situation but player.attack must also be true. This is
-            //controlled by the ZeprInputProcessor. So the player will only attack when the user clicks.
-            if (player.isAttacking())
-                player.attack(zombie, delta);
-            zombie.attack(player, delta);          
-        } 
-        teleportCounter ++;
-        if (currentWave.zombieType == Zombie.Type.BOSS1 && teleportCounter > 100) {
-        	teleportCounter = 0;
-        	Vector2 spawnPoint = new Vector2(200,200);
-        	Zombie originalBoss = aliveZombies.get(0);
-        	int currentHealth = originalBoss.getHealth();
-        	if (currentHealth < 250 && !dupe) {
-        		Zombie zombie = new Zombie(spawnPoint, world, Zombie.Type.BOSS1);
-                aliveZombies.add(zombie);
-                dupe = true;
-        	}
-        	for (Zombie boss : aliveZombies) {
-        	    Vector2 start = boss.getPhysicsPosition();
-        	    Vector2 end =  player.getPhysicsPosition();
-	            Vector2 position = new Vector2((start.x + end.x)/2, (start.y + end.y)/2);
-	        	boss.setCharacterPosition(position);
-        	}
-        }
-        
+
         String progressString = ("Wave " + currentWaveNumber + ", " + zombiesRemaining + " zombies remaining.");
         String healthString = ("Health: " + player.health + "HP");
         String abilityString;
         String powerupString;
-        
-        if(player.ability) {
-        	abilityString = ("Press E to trigger special ability");
-        }
-        else if(player.abilityUsed) {
-        	abilityString = player.abilityString;
-        }
-        else {
-        	abilityString = ("Special ability used");
-        }
-        
-        if(PowerUp.active == true) {
-        	powerupString = this.powerupString;
-        }
-        else {
-        	powerupString = ("No PowerUp Collected");
-        }
+
+        if(player.ability)
+            abilityString = ("Press E to trigger special ability");
+        else
+            abilityString = ("Special ability used");
+
+        if(PowerUp.active == true)
+            powerupString = this.powerupString;
+        else
+            powerupString = ("No PowerUp Collected");
+
 
         progressLabel.setText(progressString);
-        healthLabel.setText(healthString);
         powerUpLabel.setText(powerupString);
+        healthLabel.setText(healthString);
         abilityLabel.setText(abilityString);
         
         if(tutorialTable != null && currentWaveNumber == 1) {
