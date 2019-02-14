@@ -139,13 +139,13 @@ public class Level implements Screen {
     private void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints, boolean boss1, boolean boss2) {
         if (numberToSpawn == 1) {
             if (boss2) {
-                Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
+                Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightningBoss.png")),
                         spawnPoints.get(0), world,15, 5,2);
                 aliveZombies.add(zombie);
                 config.isTeleporting = true;
             }
             else if (boss1) {
-                Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
+                Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightningBoss.png")),
                         spawnPoints.get(0), world,20, 5,1);
                 aliveZombies.add(zombie);
             }
@@ -428,7 +428,7 @@ public class Level implements Screen {
         	Zombie originalBoss = aliveZombies.get(0);
         	int currentHealth = originalBoss.getHealth();
         	if (currentHealth < 250 && !dupe) {
-        		Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightingBoss.png")),
+        		Zombie zombie = new Zombie(new Sprite(new Texture("GeeseLightningBoss.png")),
                         spawnPoint, world,15,  2, 2);
                 aliveZombies.add(zombie);
                 dupe = true;
