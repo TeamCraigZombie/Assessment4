@@ -27,16 +27,18 @@ public class MiniZombie {
 	private int spawnX;
 	private int mouseX;
 	private int mouseY;
+	private float initialHeight;
 	private float initialWidth;
 	private BitmapFont font;
 	private int distance = 30;
 	private double rand;
 	
-	public MiniZombie(String texture) {
+	MiniZombie(String texture) {
 		
 	
 		zombie = new Sprite(new Texture(texture));
 		font = new BitmapFont();
+		initialHeight = zombie.getHeight();
 		initialWidth = zombie.getWidth();
 		this.spawn();		
 	}
@@ -48,7 +50,7 @@ public class MiniZombie {
 	 * If collision is detected, zombie moves in opposite direction for 1.5 seconds
 	 * Zombie size is constantly increased as distance decreases
 	 */
-	public Sprite move() {
+	private Sprite move() {
 		
 		zombieX = zombie.getX();
 		zombieY = zombie.getY();
@@ -99,7 +101,7 @@ public class MiniZombie {
 	 * 
 	 * Detects collisions between zombies and the edge of the window
 	 */
-	public boolean collision() {
+	private boolean collision() {
 	
 		if(zombieX <= 150 || zombieX+(zombieWidth) >= width-150) {	
 			collisionTimer = timer;
@@ -114,7 +116,7 @@ public class MiniZombie {
 	 * 
 	 * Sets the width of the zombie sprite: called in MiniGame
 	 */
-	public void setVisibleWidth(float width) {
+	void setVisibleWidth(float width) {
 		this.zombieWidth = width;
 	}
 	
@@ -123,7 +125,7 @@ public class MiniZombie {
 	 * 
 	 * Sets the x value of the zombie sprite: called in MiniGame
 	 */
-	public void setVisibleX(float x) {
+	void setVisibleX(float x) {
 		this.zombieX = x;
 	}
 	
@@ -132,18 +134,14 @@ public class MiniZombie {
 	 * 
 	 * Returns true if zombie has been successfully hit.
 	 */
-	public boolean getDamage() {
+	boolean getDamage() {
 		
 		mouseX = Gdx.input.getX();
 		mouseY = -(Gdx.input.getY()-720);
 	
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 			MiniGame.trigger = MiniGame.timer;
-			if(aimingAt()) {
-				return true;
-			} else { 
-				return false;
-			}
+			return aimingAt();
 		} else {
 			return false;
 		}		
@@ -155,8 +153,6 @@ public class MiniZombie {
 	public void spawn() {
 		
 		rand = Math.random();
-		
-		System.out.println(rand);
 		
 		if(rand < 0.3){
 			spawnX = 230;
@@ -170,16 +166,15 @@ public class MiniZombie {
 		
 		last = timer+1;
 		zombie.setPosition(spawnX, y);	
-		zombie.setSize(initialWidth, initialWidth);		
+		zombie.setSize(initialWidth, initialHeight);
 	}
 	
 	/**
-	 * @param spriteBatch
-	 * @param zCount
+	 * @param spriteBatch spriteBatch to draw
 	 * 
 	 * Calls move method and draws zombie on stage alongside distance to player
 	 */
-	public void render(SpriteBatch spriteBatch, int zCount) {
+	public void render(SpriteBatch spriteBatch) {
 		
         this.move().draw(spriteBatch);
         font.draw(spriteBatch, Integer.toString(distance) + " meters", zombieX, zombieY+zombieHeight);
@@ -191,15 +186,9 @@ public class MiniZombie {
 	 * 
 	 * Determines whether the player is aiming at zombie sprite with mouse
 	 */
-	public boolean aimingAt() {
-		
-		if(mouseX >= zombieX && mouseX <= zombieX+(zombieWidth) && 
-				mouseY <= y+(zombieHeight) && mouseY >= zombieY) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	private boolean aimingAt() {
+		return (mouseX >= zombieX && mouseX <= zombieX+(zombieWidth) &&
+                mouseY <= y+(zombieHeight) && mouseY >= zombieY);
 	}
 	
 	
@@ -208,7 +197,7 @@ public class MiniZombie {
 	 * 
 	 * returns timer value from start of game
 	 */
-	public static long timer() {	
+	static long timer() {
 		timer = System.nanoTime()/1000000000;		
 		return timer;
 	}

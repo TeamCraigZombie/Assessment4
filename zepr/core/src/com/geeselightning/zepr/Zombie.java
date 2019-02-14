@@ -9,12 +9,13 @@ public class Zombie extends Character {
 
     private int attackDamage;
     private int hitRange;
-    public static enum Type { ZOMBIE1, ZOMBIE2, ZOMBIE3, BOSS1, BOSS2 }
+    public enum Type { ZOMBIE1, ZOMBIE2, ZOMBIE3, BOSS1, BOSS2 }
 
     /**
      * Constructor for the Zombie class
      * @param zombieSpawn the coordinates to spawn the zombie at
      * @param world the Box2D world to add the zombie to
+     * @param type the type of zombie to spawn
      */
     public Zombie(Vector2 zombieSpawn, World world, Type type) {
         super(world);
@@ -62,7 +63,7 @@ public class Zombie extends Character {
 
         GenerateBodyFromSprite();
         body.setFixedRotation(true);
-        body.setLinearDamping(50.f);
+        body.setLinearDamping(50f);
         setCharacterPosition(zombieSpawn);
     }
 

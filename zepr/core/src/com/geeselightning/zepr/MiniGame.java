@@ -31,7 +31,7 @@ public class MiniGame implements Screen {
 	private Stage stage;
 	private Stage pause;
 	private Table table;
-	protected boolean isPaused;
+	private boolean isPaused;
 	private boolean pauseButton = false;
 	private Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
 	private SpriteBatch spriteBatch;
@@ -48,12 +48,12 @@ public class MiniGame implements Screen {
 	private boolean reloaded = false;
 	private int kills = 0;
 	private float rand = 0;
-	Pixmap pm = new Pixmap(Gdx.files.internal("blank.png"));
+	private Pixmap pm = new Pixmap(Gdx.files.internal("blank.png"));
 	
 	private static boolean death = false;
 
 	
-	public MiniGame(Zepr zepr) {
+	MiniGame(Zepr zepr) {
 		
 		Gdx.graphics.setWindowedMode(1280, 720);
 		
@@ -84,7 +84,7 @@ public class MiniGame implements Screen {
 	 * a random number (x) of zombies is "generated" at random increments of time (t)
 	 * such that 0 < x < 10 and 0 < t < 5
 	 */
-	public void generateZombie() {
+    private void generateZombie() {
 		
 		timer = MiniZombie.timer();
 		
@@ -104,7 +104,7 @@ public class MiniGame implements Screen {
 	 * When gun is "fired", trigger is set to value of timer at firing.
 	 * Gun has cooled down when timer exceeds trigger+0.75
 	 */
-	public void gunStatus() {
+    private void gunStatus() {
 		
 		if(timer>trigger+0.75) {
 			gunStatus = "Reloaded";
@@ -119,19 +119,19 @@ public class MiniGame implements Screen {
 	/**
 	 * @param deathCond set by zombie when distance to player = 0
 	 */
-	public static void playerDeath(boolean deathCond) {
+	static void playerDeath(boolean deathCond) {
 		death = deathCond;
 	}
 	
 	/**
-	 * @param zombie1
+	 * @param zombie1 zombie that is either visible or not
 	 * @param minIndex
 	 * 
 	 * Determines whether the zombie is visible or occluded by other zombies.
 	 * If partially occluded, method changes visible with of zombie so that occluded
 	 * areas cannot be fired at.
 	 */
-	public void isVisible(MiniZombie zombie1, int minIndex) {
+    private void isVisible(MiniZombie zombie1, int minIndex) {
 		
 		Sprite zombie1_s = zombie1.zombie;
 		float zombie1X = zombie1_s.getX();
@@ -256,7 +256,7 @@ public class MiniGame implements Screen {
             		ZombieQueue.removeIndex(i);
             	}
             	else {  		
-            		tempZombie.render(spriteBatch, i);
+            		tempZombie.render(spriteBatch);
             	}      	
             }	
             

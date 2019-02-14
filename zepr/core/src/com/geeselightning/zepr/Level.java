@@ -43,7 +43,7 @@ public class Level implements Screen {
     private int currentWaveNumber;
     private int zombiesRemaining; // the number of zombies left to kill to complete the wave
     private int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
-    public PowerUp currentPowerUp;
+    private PowerUp currentPowerUp;
     private Box2DDebugRenderer debugRenderer;
     private LevelConfig config;
     private World world;
@@ -98,7 +98,7 @@ public class Level implements Screen {
         }
         
         
-        // Loads the testmap.tmx file as map.
+        // Loads the .tmx file as map for the specified location.
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load(config.mapLocation);
 
@@ -226,7 +226,7 @@ public class Level implements Screen {
             byte[] lvl = (Integer.toString(Zepr.progress.ordinal())).getBytes();
             edit.write(lvl);
             edit.close();
-            System.out.println("Saved!");
+            Gdx.app.log("Save status", "Saved!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -354,8 +354,8 @@ public class Level implements Screen {
                 player.attack(zombie, delta);
             zombie.attack(player, delta);
         }
-        teleportCounter ++;
-        if (currentWaveNumber < config.waves.length && config.waves[currentWaveNumber].zombieType == Zombie.Type.BOSS1 && teleportCounter > 100) {
+        teleportCounter++;
+        if (currentWaveNumber == config.waves.length && config.waves[currentWaveNumber-1].zombieType == Zombie.Type.BOSS1 && teleportCounter > 100) {
             teleportCounter = 0;
             Vector2 spawnPoint = new Vector2(200,200);
             Zombie originalBoss = aliveZombies.get(0);
@@ -372,7 +372,6 @@ public class Level implements Screen {
                 boss.setCharacterPosition(position);
             }
         }
-
         if (zombiesRemaining == 0) {
 
             // Spawn a power up and the end of a wave, if there isn't already a powerUp on the level

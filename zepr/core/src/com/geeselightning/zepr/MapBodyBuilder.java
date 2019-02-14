@@ -22,16 +22,16 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 //SOURCE: https://gamedev.stackexchange.com/questions/66924/how-can-i-convert-a-tilemap-to-a-box2d-world
-public class MapBodyBuilder {
+class MapBodyBuilder {
 
 	// The pixels per tile. If your tiles are 16x16, this is set to 16f
 	private static float ppt = 0;
 
-	public static Array<Body> buildShapes(Map map, float pixels, World world) {
+	static Array<Body> buildShapes(Map map, float pixels, World world) {
 		ppt = pixels;
 		MapObjects objects = map.getLayers().get("collisionLayer").getObjects();
 
-		Array<Body> bodies = new Array<Body>();
+		Array<Body> bodies = new Array<>();
 
 		for (MapObject object : objects) {
 
@@ -65,7 +65,7 @@ public class MapBodyBuilder {
 		return bodies;
 	}
 
-	public static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
+	private static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
 		Rectangle rectangle = rectangleObject.getRectangle();
 		PolygonShape polygon = new PolygonShape();
 		Vector2 size = new Vector2((rectangle.x + rectangle.width * 0.5f) / ppt,
@@ -89,7 +89,6 @@ public class MapBodyBuilder {
 		float[] worldVertices = new float[vertices.length];
 
 		for (int i = 0; i < vertices.length; ++i) {
-			System.out.println(vertices[i]);
 			worldVertices[i] = vertices[i] / ppt;
 		}
 

@@ -159,7 +159,7 @@ public class SelectLevelScreen implements Screen {
                     byte[] lvl = (Integer.toString(Zepr.progress.ordinal())).getBytes();
                     edit.write(lvl);
                     edit.close();
-                    System.out.println("Saved!");
+                    Gdx.app.log("Save status", "Saved!");
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -176,10 +176,10 @@ public class SelectLevelScreen implements Screen {
                 BufferedReader br;
                 try {
                     br = new BufferedReader(new FileReader(f));
-                    String st;
-                    while ((st = br.readLine()) != null) {
-                        System.out.println("Player is on stage:" + st);
-                        Zepr.progress = Zepr.Location.values()[Integer.parseInt(st)];
+                    String stage;
+                    while ((stage = br.readLine()) != null) {
+                        Gdx.app.log("Player stage progress", "Player is on stage " + stage);
+                        Zepr.progress = Zepr.Location.values()[Integer.parseInt(stage)];
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

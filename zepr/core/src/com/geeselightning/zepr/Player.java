@@ -13,32 +13,29 @@ public class Player extends Character {
 
     
     private int boostDamage;
-
-    /**
-     * Constructor for the player class
-     * @param sprite the sprite to use for the player
-     * @param playerSpawn coordinates to spawn the player at
-     * @param world the Box2D world to spawn the player in
-     */
-
     private int attackDamage = Constant.PLAYERDMG;
     private Texture mainTexture;
     private Texture attackTexture;
     private boolean attack = false;
     private float HPMult;
-    static PlayerType playertype;
+    private static PlayerType playertype;
     private boolean isImmune;
     private boolean canBeSeen = true;
     int attackTime;
     private boolean isAttacking;
     boolean ability = true;
-    public boolean abilityUsed = false;
+    boolean abilityUsed = false;
     private long timer;
     private long abilityCooldown;
-    public String abilityString;
+    String abilityString;
     public enum PlayerType { SPORTY, NERDY, ARTSY }
-    
 
+    /**
+     * Constructor for the player class
+     * @param texture the texture to use for the player
+     * @param playerSpawn coordinates to spawn the player at
+     * @param world the Box2D world to spawn the player in
+     */
     public Player(Texture texture, Vector2 playerSpawn, World world) {
         super(world);
 

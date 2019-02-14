@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
@@ -19,10 +20,10 @@ import com.geeselightning.zepr.screens.StoryScreen;
 public class Zepr extends Game {
 
 	private MenuScreen menuScreen;
-	public static AssetManager manager = new AssetManager();
+	static AssetManager manager = new AssetManager();
 
 	
-	public enum Location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, CENTRALHALL, 
+	public enum Location { MENU, STORY, SELECT, TOWN, HALIFAX, CENTRALHALL, COURTYARD,
 		GLASSHOUSE, CONSTANTINE, COMPLETE, MINIGAME }	
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
@@ -57,8 +58,7 @@ public class Zepr extends Game {
 				                    new Vector2(200,700), new Vector2(700,200)));
 					waves = new Wave[]{ new Wave(5, Zombie.Type.ZOMBIE1),
                                         new Wave(10, Zombie.Type.ZOMBIE1),
-                                        new Wave(15, Zombie.Type.ZOMBIE1),
-                                        new Wave(20, Zombie.Type.ZOMBIE2)};
+                                        new Wave(20, Zombie.Type.ZOMBIE1)};
 					location = screen;
 				}};
 				level = new Level(this, config);
@@ -74,24 +74,7 @@ public class Zepr extends Game {
 				                    new Vector2(600,500), new Vector2(100,600)));
                     waves = new Wave[]{ new Wave(10, Zombie.Type.ZOMBIE1),
                                         new Wave(15, Zombie.Type.ZOMBIE1),
-                                        new Wave(20, Zombie.Type.ZOMBIE2),
                                         new Wave(20, Zombie.Type.ZOMBIE2)};
-					location = screen;
-				}};						 
-				level = new Level(this, config);
-				setScreen(level);
-				break;
-			case COURTYARD:
-				config = new LevelConfig() {{
-					mapLocation = "maps/courtyard.tmx";
-					playerSpawn = new Vector2(300, 300);
-					powerSpawn = new Vector2(250, 250);
-					zombieSpawnPoints = new ArrayList<>(
-							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
-					                   new Vector2(630,100), new Vector2(120,500)));
-                    waves = new Wave[]{ new Wave(13, Zombie.Type.ZOMBIE2),
-                                        new Wave(17, Zombie.Type.ZOMBIE2),
-                                        new Wave(1, Zombie.Type.BOSS1)};
 					location = screen;
 				}};						 
 				level = new Level(this, config);
@@ -105,12 +88,28 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
-                    waves = new Wave[]{ new Wave(12, Zombie.Type.ZOMBIE2),
-                                        new Wave(12, Zombie.Type.ZOMBIE2),
-                                        new Wave(12, Zombie.Type.ZOMBIE3),
-                                        new Wave(16, Zombie.Type.ZOMBIE3)};
+                    waves = new Wave[]{ new Wave(13, Zombie.Type.ZOMBIE1),
+                                        new Wave(17, Zombie.Type.ZOMBIE2),
+                                        new Wave(25, Zombie.Type.ZOMBIE3),
+										new Wave(1, Zombie.Type.BOSS1)};
 					location = screen;
 				}};						 
+				level = new Level(this, config);
+				setScreen(level);
+				break;
+			case COURTYARD:
+				config = new LevelConfig() {{
+					mapLocation = "maps/courtyard.tmx";
+					playerSpawn = new Vector2(300, 300);
+					powerSpawn = new Vector2(150, 150);
+					zombieSpawnPoints = new ArrayList<>(
+							Arrays.asList(new Vector2(120,100), new Vector2(630,600),
+									new Vector2(630,100), new Vector2(120,500)));
+					waves = new Wave[]{ new Wave(12, Zombie.Type.ZOMBIE2),
+										new Wave(16, Zombie.Type.ZOMBIE3),
+										new Wave(20, Zombie.Type.ZOMBIE3)};
+					location = screen;
+				}};
 				level = new Level(this, config);
 				setScreen(level);
 				break;
@@ -120,12 +119,11 @@ public class Zepr extends Game {
 					playerSpawn = new Vector2(400, 70);
 					powerSpawn = new Vector2(250, 250);
 					zombieSpawnPoints = new ArrayList<>(
-							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
+							 Arrays.asList(new Vector2(120,200), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
                     waves = new Wave[]{ new Wave(12, Zombie.Type.ZOMBIE3),
-                                        new Wave(12, Zombie.Type.ZOMBIE3),
-                                        new Wave(15, Zombie.Type.ZOMBIE3),
-                                        new Wave(40, Zombie.Type.ZOMBIE3)};
+                                        new Wave(20, Zombie.Type.ZOMBIE3),
+                                        new Wave(30, Zombie.Type.ZOMBIE3)};
 					location = screen;
 				}};
 				level = new Level(this, config);
@@ -139,9 +137,9 @@ public class Zepr extends Game {
 					zombieSpawnPoints = new ArrayList<>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
-                    waves = new Wave[]{ new Wave(60, Zombie.Type.ZOMBIE1),
-                                        new Wave(20, Zombie.Type.ZOMBIE2),
-                                        new Wave(15, Zombie.Type.ZOMBIE3),
+                    waves = new Wave[]{ new Wave(40, Zombie.Type.ZOMBIE1),
+                                        new Wave(30, Zombie.Type.ZOMBIE2),
+                                        new Wave(20, Zombie.Type.ZOMBIE3),
                                         new Wave(1, Zombie.Type.BOSS2)};
 					location = screen;
 				}};	
@@ -156,7 +154,8 @@ public class Zepr extends Game {
 	}
 
 	/**
-	 * Create event run when the class is constructed, loading save data if it exists
+	 * Create event run when the class is constructed, loading save data if it exists.
+	 * Sounds are also created for player attacking and zombie damage.
 	 */
 	@Override
 	public void create() {
@@ -171,24 +170,24 @@ public class Zepr extends Game {
 		//Attempt to load save data file
 		File f = new File("saveData.txt");
 		if(f.isFile()) {
-			System.out.println(f.getName() + " exists.");
+			Gdx.app.log("Check file exists", f.getName() + "exists");
 			BufferedReader br;
 			try {
 				br = new BufferedReader(new FileReader(f));
 				String st;
 				  while ((st = br.readLine()) != null) {
-				    System.out.println("Player has saved progress on stage: " + st);
+				    Gdx.app.log("Player has saved progress on stage", ""+st);
 				    progress = Location.TOWN;
 				  }
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
-			System.out.println(f.getName() + " does not exist. Creating now...");
+			Gdx.app.log("Creating file", ""+f.getName());
 			//Create a new save data file if one cannot be found
 			try {
 				boolean b = f.createNewFile();
-				System.out.println(f.getName() + " has been created? ... " + b);
+				Gdx.app.log("File creation check", f.getName() + " has been created? ... " + b);
 				FileOutputStream edit = new FileOutputStream(f);
 				byte[] lvl = ("3").getBytes();
 				edit.write(lvl);
