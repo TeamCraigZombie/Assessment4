@@ -162,7 +162,7 @@ public class Zepr extends Game {
 	public void create() {
 
 		manager.load("Quack.wav", Sound.class);
-		manager.load("zombie_take_dmg", Sound.class);
+		manager.load("zombie_take_dmg.wav", Sound.class);
 		manager.finishLoading();
 		
 		LoadingScreen loadingScreen = new LoadingScreen(this);
