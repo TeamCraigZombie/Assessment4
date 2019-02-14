@@ -26,7 +26,7 @@ public class Player extends Character {
     private Texture attackTexture;
     private boolean attack = false;
     private float HPMult;
-    static String playertype;
+    static PlayerType playertype;
     private boolean isImmune;
     private boolean canBeSeen = true;
     int attackTime;
@@ -36,6 +36,7 @@ public class Player extends Character {
     private long timer;
     private long abilityCooldown;
     public String abilityString;
+    public enum PlayerType { SPORTY, NERDY, ARTSY }
     
 
     public Player(Texture texture, Vector2 playerSpawn, World world) {
@@ -55,7 +56,7 @@ public class Player extends Character {
      * Set the player type attribute
      * @param playerType the new player type value
      */
-    public static void setType(String playerType){
+    public static void setType(PlayerType playerType){
         Player.playertype = playerType;
     }
 
@@ -65,14 +66,14 @@ public class Player extends Character {
      */
     public void refreshAttributes() {
         float dmgMult, speedMult;
-        if (playertype == "nerdy") {
+        if (playertype == PlayerType.NERDY) {
             dmgMult = Constant.NERDYDMGMULT;
             HPMult = Constant.NERDYHPMULT;
             speedMult = Constant.NERDYSPEEDMULT;
             mainTexture = new Texture("player01.png");
             attackTexture = new Texture("player01_attack.png");
         }
-        else if (playertype == "sporty") {
+        else if (playertype == PlayerType.SPORTY) {
             dmgMult = Constant.SPORTYDMGMULT;
             HPMult = Constant.SPORTYHPMULT;
             speedMult = Constant.SPORTYSPEEDMULT;
@@ -80,6 +81,7 @@ public class Player extends Character {
             attackTexture = new Texture("player02_attack.png");
         }
         else {
+            //ARTSY player
             dmgMult = Constant.ARTSYDMGMULT;
             HPMult = Constant.ARTSYHPMULT;
             speedMult = Constant.ARTSYSPEEDMULT;
@@ -129,15 +131,16 @@ public class Player extends Character {
 			ability = false;
 			abilityUsed = true;
 			abilityCooldown = this.timer();
-	    	if(playertype == "sporty") {
+	    	if(playertype == PlayerType.SPORTY) {
 	    		speed += 0.05;
 	    		abilityString = "Worked Out: Temporary Speed Boost";
 	    	}
-	    	else if(playertype == "nerdy") {
+	    	else if(playertype == PlayerType.NERDY) {
 	    		isImmune = true;
 	    		abilityString = " Mech Suit: Temporary Immunity";
 	    	}
 	    	else {
+	    	    //ARTSY type
 	    		attackDamage *= 2;
 	    		abilityString = "Creative Juices: Temporary Damage Boost";
 	    	}
