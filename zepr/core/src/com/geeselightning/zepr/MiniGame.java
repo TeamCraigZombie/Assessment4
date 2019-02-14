@@ -18,6 +18,10 @@ import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.geeselightning.zepr.screens.TextScreen;
 
+/**
+ * @author grayh
+ *
+ */
 public class MiniGame implements Screen {
 	
 	private Zepr parent;
@@ -69,6 +73,11 @@ public class MiniGame implements Screen {
         death = false;
 	}
 	
+	/**
+	 * adds a zombie to ZombieQueue 
+	 * a random number (x) of zombies is "generated" at random increments of time (t)
+	 * such that 0 < x < 10 and 0 < t < 5
+	 */
 	public void generateZombie() {
 		
 		timer = MiniZombie.timer();
@@ -84,6 +93,11 @@ public class MiniGame implements Screen {
 		}
 	}
 	
+	/**
+	 * Manages the gun cooldown.
+	 * When gun is "fired", trigger is set to value of timer at firing.
+	 * Gun has cooled down when timer exceeds trigger+0.75
+	 */
 	public void gunStatus() {
 		
 		if(timer>trigger+0.75) {
@@ -96,10 +110,21 @@ public class MiniGame implements Screen {
 		}
 	}
 	
+	/**
+	 * @param deathCond set by zombie when distance to player = 0
+	 */
 	public static void playerDeath(boolean deathCond) {
 		death = deathCond;
 	}
 	
+	/**
+	 * @param zombie1
+	 * @param minIndex
+	 * 
+	 * Determines whether the zombie is visible or occluded by other zombies.
+	 * If partially occluded, method changes visible with of zombie so that occluded
+	 * areas cannot be fired at.
+	 */
 	public void isVisible(MiniZombie zombie1, int minIndex) {
 		
 		Sprite zombie1_s = zombie1.zombie;

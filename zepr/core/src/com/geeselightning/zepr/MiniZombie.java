@@ -41,6 +41,13 @@ public class MiniZombie {
 		this.spawn();		
 	}
 		
+	/**
+	 * @return
+	 * 
+	 * At 1 second increments, zombie direction is randomised.
+	 * If collision is detected, zombie moves in opposite direction for 1.5 seconds
+	 * Zombie size is constantly increased as distance decreases
+	 */
 	public Sprite move() {
 		
 		zombieX = zombie.getX();
@@ -87,9 +94,13 @@ public class MiniZombie {
 	}
 	
 	
+	/**
+	 * @return
+	 * 
+	 * Detects collisions between zombies and the edge of the window
+	 */
 	public boolean collision() {
-		
-
+	
 		if(zombieX <= 150 || zombieX+(zombieWidth) >= width-150) {	
 			collisionTimer = timer;
 			this.collision = true;
@@ -98,14 +109,29 @@ public class MiniZombie {
 	}
 	
 	
+	/**
+	 * @param width
+	 * 
+	 * Sets the width of the zombie sprite: called in MiniGame
+	 */
 	public void setVisibleWidth(float width) {
 		this.zombieWidth = width;
 	}
 	
+	/**
+	 * @param x
+	 * 
+	 * Sets the x value of the zombie sprite: called in MiniGame
+	 */
 	public void setVisibleX(float x) {
 		this.zombieX = x;
 	}
 	
+	/**
+	 * @return
+	 * 
+	 * Returns true if zombie has been successfully hit.
+	 */
 	public boolean getDamage() {
 		
 		mouseX = Gdx.input.getX();
@@ -123,6 +149,9 @@ public class MiniZombie {
 		}		
 	}
 	
+	/**
+	 * Randomises the spawn location of the zombie to one of three gates in the stage
+	 */
 	public void spawn() {
 		
 		rand = Math.random();
@@ -144,6 +173,12 @@ public class MiniZombie {
 		zombie.setSize(initialWidth, initialWidth);		
 	}
 	
+	/**
+	 * @param spriteBatch
+	 * @param zCount
+	 * 
+	 * Calls move method and draws zombie on stage alongside distance to player
+	 */
 	public void render(SpriteBatch spriteBatch, int zCount) {
 		
         this.move().draw(spriteBatch);
@@ -151,6 +186,11 @@ public class MiniZombie {
        
 	}
 	
+	/**
+	 * @return
+	 * 
+	 * Determines whether the player is aiming at zombie sprite with mouse
+	 */
 	public boolean aimingAt() {
 		
 		if(mouseX >= zombieX && mouseX <= zombieX+(zombieWidth) && 
@@ -163,7 +203,11 @@ public class MiniZombie {
 	}
 	
 	
-	
+	/**
+	 * @return
+	 * 
+	 * returns timer value from start of game
+	 */
 	public static long timer() {	
 		timer = System.nanoTime()/1000000000;		
 		return timer;
