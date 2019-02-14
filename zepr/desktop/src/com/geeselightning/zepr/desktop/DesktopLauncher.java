@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		config.resizable = true;
 		config.width = 1920;
 		config.height = 1080;
-		config.title = "Geese Lightning";
+		config.title = "ZEPR";
 		new LwjglApplication(new Zepr(), config);
 	}
 }

@@ -75,7 +75,7 @@ public class MiniGame implements Screen {
         spriteBatch = new SpriteBatch();
         font = new BitmapFont();
        
-		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0)); 
+		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
         death = false;
 	}
 	
@@ -260,7 +260,7 @@ public class MiniGame implements Screen {
             	}      	
             }	
             
-            crosshair.setPosition(Gdx.input.getX(), -(Gdx.input.getY()-720));
+            crosshair.setPosition((float)(Gdx.input.getX()-(0.5*crosshair.getWidth())), -(float) ((Gdx.input.getY()+0.5*crosshair.getHeight())-720));
             crosshair.draw(spriteBatch);
             spriteBatch.end();
         }
