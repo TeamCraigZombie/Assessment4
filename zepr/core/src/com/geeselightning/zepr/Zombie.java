@@ -59,7 +59,6 @@ public class Zombie extends Character {
 
         health = maxhealth;
 
-        GenerateBodyFromSprite();
         body.setFixedRotation(true);
         body.setLinearDamping(50f);
         setCharacterPosition(zombieSpawn);

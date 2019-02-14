@@ -41,7 +41,6 @@ public class Player extends Character {
 
         set(new Sprite(texture));
 
-        GenerateBodyFromSprite();
         body.setFixedRotation(true);
         body.setLinearDamping(50.f);
 

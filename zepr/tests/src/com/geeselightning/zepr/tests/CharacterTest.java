@@ -18,7 +18,8 @@ public class CharacterTest {
     // Test 1.1
     public void charactersWithSamePositionShouldCollide() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0,0), world);
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
         assertTrue("A Character should collide with itself.", character.collidesWith(character));
         character.dispose();
         world.dispose();
@@ -28,8 +29,10 @@ public class CharacterTest {
     // Test 1.2
     public void touchingCharactersShouldCollide() {
         World world = new World(new Vector2(0, 0), true);
-        Character anotherCharacter = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0,10), world);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0,0), world);
+        Character anotherCharacter = new Character(world);
+        anotherCharacter.set(new Sprite(new Texture(charTexturePath)));
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
         assertTrue("Characters that touch should collide.", character.collidesWith(anotherCharacter));
         anotherCharacter.dispose();
         character.dispose();
@@ -40,8 +43,11 @@ public class CharacterTest {
     // Test 1.3
     public void nonTouchingCharactersShouldNotCollide() {
         World world = new World(new Vector2(0, 0), true);
-        Character anotherCharacter = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(200,200), world);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0,0), world);
+        Character anotherCharacter = new Character(world);
+        anotherCharacter.set(new Sprite(new Texture(charTexturePath)));
+        anotherCharacter.setCharacterPosition(new Vector2(200,200));
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
         assertFalse("Characters that don't touch should not collide.", character.collidesWith(anotherCharacter));
         anotherCharacter.dispose();
         character.dispose();
@@ -53,7 +59,9 @@ public class CharacterTest {
     // Test 1.4
     public void getCenterOnCharacterWithPositivePosition() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(50,20), world);
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
+        character.setCharacterPosition(new Vector2(50,20));
         assertEquals("Testing center calculation with positive position.", new Vector2(50, 20),
                 character.getCenter());
         character.dispose();
@@ -64,7 +72,9 @@ public class CharacterTest {
     // Test 1.5
     public void getCenterOnCharacterWithNegativePosition() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-50,-20), world);
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
+        character.setCharacterPosition(new Vector2(-50,-20));
         assertEquals("Testing center calculation with negative position.", new Vector2(-50, -20),
                 character.getCenter());
         character.dispose();
@@ -77,7 +87,9 @@ public class CharacterTest {
         World world = new World(new Vector2(0, 0), true);
         Vector2 center1 = new Vector2(-16,-16);
         Vector2 center2 = new Vector2(1,1);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), center1, world);
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
+        character.setCharacterPosition(center1);
 
         double angle = Math.atan2(center1.y-center2.y, center1.x-center2.x)+Math.PI*2;
 
@@ -92,7 +104,9 @@ public class CharacterTest {
         World world = new World(new Vector2(0, 0), true);
         Vector2 center1 = new Vector2(-16,-16);
         Vector2 center2 = new Vector2(1,-1);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), center1, world);
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
+        character.setCharacterPosition(center1);
 
         double angle = Math.atan2(center1.y-center2.y, center1.x-center2.x)+Math.PI*2;
 
@@ -107,7 +121,9 @@ public class CharacterTest {
         World world = new World(new Vector2(0, 0), true);
         Vector2 center1 = new Vector2(-16,-16);
         Vector2 center2 = new Vector2(-1,-1);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), center1, world);
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
+        character.setCharacterPosition(center1);
 
         double angle = Math.atan2(center1.y-center2.y, center1.x-center2.x)+Math.PI*2;
 
@@ -122,7 +138,9 @@ public class CharacterTest {
         World world = new World(new Vector2(0, 0), true);
         Vector2 center1 = new Vector2(-16,-16);
         Vector2 center2 = new Vector2(-1,1);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), center1, world);
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
+        character.setCharacterPosition(center1);
 
         double angle = Math.atan2(center1.y-center2.y, center1.x-center2.x)+Math.PI*2;
 
@@ -135,7 +153,8 @@ public class CharacterTest {
     // Test 1.10
     public void charactersTakeSpecifiedDamage() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(0, 0), world);
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
         double originalHealth = character.getHealth();
         character.takeDamage(50);
         assertEquals("Character's health should be reduced by 50 when takeDamage(50).", originalHealth - 50,
@@ -148,7 +167,10 @@ public class CharacterTest {
     // Test 1.11
     public void getDirNormVectorToNegativePosition() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(-16,-16), world);
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
+        character.setCharacterPosition(new Vector2(-16,-16));
+
         Vector2 position = new Vector2(-10, -30);
 
         Vector2 normalizedDirection = character.getDirNormVector(position);
@@ -168,7 +190,10 @@ public class CharacterTest {
     // Test 1.12
     public void getDirNormVectorToPositivePosition() {
         World world = new World(new Vector2(0, 0), true);
-        Character character = new Character(new Sprite(new Texture(charTexturePath)), new Vector2(16,16), world);
+        Character character = new Character(world);
+        character.set(new Sprite(new Texture(charTexturePath)));
+        character.setCharacterPosition(new Vector2(16,16));
+
         Vector2 position = new Vector2(30, 20);
 
         Vector2 normalizedDirection = character.getDirNormVector(position);

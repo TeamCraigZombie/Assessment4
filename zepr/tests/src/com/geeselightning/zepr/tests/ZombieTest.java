@@ -1,7 +1,6 @@
 package com.geeselightning.zepr.tests;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.geeselightning.zepr.Constant;
@@ -20,9 +19,9 @@ public class ZombieTest {
     // Test 3.1
     public void zombieDoesNoDamageToPlayerWhenAtMaxRange() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
+        Player player = new Player(new Texture("player01.png"), Constant.ORIGIN, world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE), world, 1, 10, 1);
+        Zombie zombie = new Zombie(new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE), world, Zombie.Type.ZOMBIE1);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
 
@@ -36,9 +35,9 @@ public class ZombieTest {
     // Test 3.2
     public void zombieDoesDamageToPlayerWhenInRange() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
+        Player player = new Player(new Texture("player01.png"), Constant.ORIGIN, world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE + 5), world, 1, 1, 10);
+        Zombie zombie = new Zombie(new Vector2(player.getCenter().x, player.getCenter().y - Constant.ZOMBIERANGE + 5), world, Zombie.Type.ZOMBIE1);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
 
@@ -53,9 +52,9 @@ public class ZombieTest {
     // Test 3.3
     public void zombieDoesNoDamageToPlayerOutOfRange() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
+        Player player = new Player(new Texture("player01.png"), Constant.ORIGIN, world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y - 100), world,1, 10, 1);
+        Zombie zombie = new Zombie(new Vector2(player.getCenter().x, player.getCenter().y - 100), world, Zombie.Type.ZOMBIE1);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
 
@@ -69,9 +68,9 @@ public class ZombieTest {
     // Test 3.4
     public void zombieCannotAttackBeforeCooldownComplete() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
+        Player player = new Player(new Texture("player01.png"), Constant.ORIGIN, world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y ), world,1, 10, 1);
+        Zombie zombie = new Zombie(new Vector2(player.getCenter().x, player.getCenter().y ), world, Zombie.Type.ZOMBIE1);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
         zombie.attack(player, 0);
@@ -86,9 +85,9 @@ public class ZombieTest {
     // Test 3.5
     public void zombieCanAttackAfterCooldownComplete() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), Constant.ORIGIN, world);
+        Player player = new Player(new Texture("player01.png"), Constant.ORIGIN, world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y ), world,1, 10, 1);
+        Zombie zombie = new Zombie(new Vector2(player.getCenter().x, player.getCenter().y ), world, Zombie.Type.ZOMBIE1);
         double originalHealth = player.getHealth();
         zombie.attack(player, 0);
         // zombie will not attack this go so has to be called a third time

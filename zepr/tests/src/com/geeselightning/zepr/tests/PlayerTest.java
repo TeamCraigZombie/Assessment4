@@ -47,9 +47,9 @@ public class PlayerTest {
     // Test 2.3
     public void playerDoesDamageToZombieWhenInRange() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(0, Constant.PLAYERRANGE - 10), world,1, 10, 1);
+        Zombie zombie = new Zombie(new Vector2(0, Constant.PLAYERRANGE/4), world, Zombie.Type.ZOMBIE1);
         double originalHealth = zombie.getHealth();
         player.attack(zombie, 0);
 
@@ -63,9 +63,9 @@ public class PlayerTest {
     //Test 2.4
     public void playerDoesNoDamageToZombieOutOfRange() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Sprite(new Texture("zombie01.png")), new Vector2(player.getCenter().x, player.getCenter().y +100), world,1, 10, 1);
+        Zombie zombie = new Zombie(new Vector2(player.getCenter().x, player.getCenter().y +100), world, Zombie.Type.ZOMBIE1);
         double originalHealth = zombie.getHealth();
         player.attack(zombie, 0);
 
@@ -80,13 +80,13 @@ public class PlayerTest {
     public void playerTypesHaveDifferentHealth() {
         World world = new World(new Vector2(0, 0), true);
 
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
-        Player.setType("nerdy");
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
+        Player.setType(Player.PlayerType.NERDY);
         player.refreshAttributes();
         player.respawn(Constant.ORIGIN);
         double nerdyHealth = player.getHealth();
 
-        Player.setType("sporty");
+        Player.setType(Player.PlayerType.SPORTY);
         player.refreshAttributes();
         player.respawn(Constant.ORIGIN);
         assertNotEquals("Sporty and nerdy students should have a different number of hit points.",
@@ -99,11 +99,11 @@ public class PlayerTest {
     // Test 2.6
     public void playerTypesHaveDifferentSpeed() {
         World world = new World(new Vector2(0, 0), true);
-        Player player = new Player(new Sprite(new Texture("player01.png")), new Vector2(0, 0), world);
-        Player.setType("nerdy");
+        Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
+        Player.setType(Player.PlayerType.NERDY);
         player.respawn(Constant.ORIGIN);
         double nerdySpeed = player.getSpeed();
-        Player.setType("sporty");
+        Player.setType(Player.PlayerType.SPORTY);
         player.respawn(Constant.ORIGIN);
         assertNotEquals("Sporty and nerdy students should have a different amount of hit points.",
                 nerdySpeed, player.getSpeed());

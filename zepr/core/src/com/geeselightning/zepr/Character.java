@@ -113,6 +113,13 @@ public class Character extends Sprite implements Steerable<Vector2> {
         updatePosition();
     }
 
+
+    @Override
+    public void set(Sprite sprite) {
+        super.set(sprite);
+        GenerateBodyFromSprite();
+    }
+
     /**
      * Draw the character to the screen
      * @param batch - the SpriteBatch instance to draw to
