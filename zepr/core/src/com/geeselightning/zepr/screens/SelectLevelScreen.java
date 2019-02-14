@@ -85,7 +85,7 @@ public class SelectLevelScreen implements Screen {
         // Creating character descriptions.
         final String nerdyDescription  = "Construct a mech suit for yourself so you can take more hits.";
         final String sportyDescription = "Work out so you run faster.";
-        final String ArtsyDescription  = "Has extra Damage.";
+        final String ArtsyDescription  = "\"Creative Juices\" for extra Damage.";
         final String defaultCharacterDescription = "Select a type of student from the buttons above.";
         characterDescription = new Label(defaultCharacterDescription,skin);
         characterDescription.setWrap(true);

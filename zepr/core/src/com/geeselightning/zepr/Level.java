@@ -52,6 +52,7 @@ public class Level implements Screen {
     private boolean dupe;
     private Label progressLabel, healthLabel, powerUpLabel, abilityLabel;
     static Texture blank;
+    private String powerupString;
 
     public Level(Zepr zepr, LevelConfig config) {
 
@@ -227,11 +228,11 @@ public class Level implements Screen {
         isPaused = false;
         table.clear();
         table.top().left();
-        table.add(progressLabel).pad(10);
+        table.add(progressLabel).pad(10).left();
         table.row().pad(10);
         table.add(healthLabel).pad(10).left();
         table.row();
-        table.add(powerUpLabel);
+        table.add(powerUpLabel).pad(10).left();
         table.row();
         table.add(abilityLabel).pad(10).left();
     }
@@ -329,18 +330,23 @@ public class Level implements Screen {
                 switch(random) {
 	                case 1:
 	                	currentPowerUp = new PowerUpHeal(this, player);
+	                	powerupString = "Health PowerUp Collected";
 	                	break;
 	                case 2:
 	                	currentPowerUp = new PowerUpSpeed(this, player);
+	                	powerupString = "Speed PowerUp Collected";
 	                	break;
 	                case 3:
 	                	currentPowerUp = new PowerUpImmunity(this, player);
+	                	powerupString = "Immunity PowerUp Collected";
 	                	break;
 	                case 4:
 	                	currentPowerUp = new PowerUpInstaKill(this, player);
+	                	powerupString = "InstaKill PowerUp Collected";
 	                	break;
 	                case 5:
 	                	currentPowerUp = new PowerUpInvisibility(this, player);
+	                	powerupString = "Invisibility PowerUp Collected";
 	                	break;
                 }
             }
@@ -414,16 +420,28 @@ public class Level implements Screen {
         String progressString = ("Wave " + currentWaveNumber + ", " + zombiesRemaining + " zombies remaining.");
         String healthString = ("Health: " + player.health + "HP");
         String abilityString;
+        String powerupString;
         
         if(player.ability) {
         	abilityString = ("Press E to trigger special ability");
         }
+        else if(player.abilityUsed) {
+        	abilityString = player.abilityString;
+        }
         else {
         	abilityString = ("Special ability used");
+        }
+        
+        if(PowerUp.active == true) {
+        	powerupString = this.powerupString;
+        }
+        else {
+        	powerupString = ("No PowerUp Collected");
         }
 
         progressLabel.setText(progressString);
         healthLabel.setText(healthString);
+        powerUpLabel.setText(powerupString);
         abilityLabel.setText(abilityString);
         
     }

@@ -35,6 +35,7 @@ public class Player extends Character {
     private boolean abilityUsed = false;
     private long timer;
     private long abilityCooldown;
+    public String abilityString;
     
 
     public Player(Texture texture, Vector2 playerSpawn, World world) {
@@ -87,12 +88,16 @@ public class Player extends Character {
         }
 
         setTexture(mainTexture);
-
-        health = maxhealth = (int) (HPMult * 100);
+        
+        if(ability) {
+        	health = maxhealth = (int) (HPMult * 100);
+        }
+        
         attackDamage = (int)(Constant.PLAYERDMG * dmgMult);
         boostDamage = 1;
         speed = Constant.PLAYERSPEED * speedMult;
         
+        isImmune = false;
         abilityUsed = false;
     }
     
@@ -126,12 +131,15 @@ public class Player extends Character {
 			abilityCooldown = this.timer();
 	    	if(playertype == "sporty") {
 	    		speed += 0.05;
+	    		abilityString = "Worked Out: Temporary Speed Boost";
 	    	}
 	    	else if(playertype == "nerdy") {
 	    		isImmune = true;
+	    		abilityString = " Mech Suit: Temporary Immunity";
 	    	}
 	    	else {
 	    		attackDamage *= 2;
+	    		abilityString = "Creative Juices: Temporary Damage Boost";
 	    	}
 		}
     }
