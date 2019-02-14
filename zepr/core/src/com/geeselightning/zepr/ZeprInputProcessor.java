@@ -1,6 +1,7 @@
 package com.geeselightning.zepr;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
 public class ZeprInputProcessor implements InputProcessor {
@@ -33,6 +34,8 @@ public class ZeprInputProcessor implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
     	Level.getPlayer().setAttack(true);
+    	Sound sound = Zepr.manager.get("Quack.wav", Sound.class);
+        sound.play();
         return true;
     }
 

@@ -2,6 +2,7 @@ package com.geeselightning.zepr;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -97,6 +98,8 @@ public class Player extends Character {
         if (canHitGlobal(zombie, Constant.PLAYERRANGE) && hitRefresh > Constant.PLAYERHITCOOLDOWN 
         		&& isAttacking) {
             zombie.takeDamage(attackDamage*boostDamage);
+            Sound sound = Zepr.manager.get("zombie_take_dmg.wav", Sound.class);
+            sound.play();
             hitRefresh = 0;
         } else
             hitRefresh += delta;

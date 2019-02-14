@@ -8,6 +8,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.geeselightning.zepr.screens.LoadingScreen;
 import com.geeselightning.zepr.screens.MenuScreen;
@@ -17,14 +19,14 @@ import com.geeselightning.zepr.screens.StoryScreen;
 public class Zepr extends Game {
 
 	private MenuScreen menuScreen;
+	public static AssetManager manager = new AssetManager();
+
 	
 	public enum Location { MENU, STORY, SELECT, TOWN, HALIFAX, COURTYARD, CENTRALHALL, 
-		GLASSHOUSE, CONSTANTINE, COMPLETE, MINIGAME }
-	
+		GLASSHOUSE, CONSTANTINE, COMPLETE, MINIGAME }	
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
 	public static Location progress;
-
 	/**
 	 * Method to change the currently active screen
 	 * @param screen the Location to set as active
@@ -162,6 +164,10 @@ public class Zepr extends Game {
 	@Override
 	public void create() {
 
+		manager.load("Quack.wav", Sound.class);
+		manager.load("zombie_take_dmg", Sound.class);
+		manager.finishLoading();
+		
 		LoadingScreen loadingScreen = new LoadingScreen(this);
 		setScreen(loadingScreen);
 
