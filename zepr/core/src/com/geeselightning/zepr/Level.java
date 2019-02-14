@@ -440,7 +440,7 @@ public class Level implements Screen {
         }
        
         progressLabel.setText(progressString);
-        powerUpLabel.setText(powerupString);
+        powerUpLabel.setText(powerUpString);
         healthLabel.setText(healthString);
         abilityLabel.setText(abilityString);
         
