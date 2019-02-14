@@ -82,7 +82,7 @@ public class Zepr extends Game {
 				break;
 			case COURTYARD:
 				config = new LevelConfig() {{
-					mapLocation = "maps/courtyardmap.tmx";
+					mapLocation = "maps/courtyard.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(250, 250);
 					zombieSpawnPoints = new ArrayList<>(
