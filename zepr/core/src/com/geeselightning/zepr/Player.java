@@ -109,7 +109,7 @@ public class Player extends Character {
         		&& attacking) {
             zombie.takeDamage(attackDamage*boostDamage);
             Sound sound = Zepr.manager.get("zombie_take_dmg.wav", Sound.class);
-            sound.play();
+            sound.play(0.2f);
             hitRefresh = 0;
         } else
             hitRefresh += delta;

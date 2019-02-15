@@ -165,7 +165,7 @@ public class MiniGame implements Screen {
 		
 		if(death) {
 			parent.setScreen(new TextScreen(parent, "Kills: "+kills+"\nMINIGAME OVER"));
-			Gdx.graphics.setWindowedMode(1920, 1080);
+			Gdx.graphics.setWindowedMode(1366, 768);
 			Gdx.graphics.setSystemCursor(SystemCursor.Arrow);
 			ZombieQueue.clear();
 		}
@@ -216,7 +216,7 @@ public class MiniGame implements Screen {
             exit.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                	Gdx.graphics.setWindowedMode(1920, 1080);
+                	Gdx.graphics.setWindowedMode(1366, 768);
                     parent.changeScreen(Zepr.Location.SELECT);
                 }
             });
