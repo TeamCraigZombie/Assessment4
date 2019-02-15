@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Zombie extends Character {
 
-    private int attackDamage;
     private int hitRange;
     public enum Type { ZOMBIE1, ZOMBIE2, ZOMBIE3, BOSS1, BOSS2 }
 
@@ -32,14 +31,14 @@ public class Zombie extends Character {
                 set(new Sprite(new Texture("zombie01.png")));
                 break;
             case ZOMBIE2:
-                speed *= 1;
+                speed *= 1.2f;
                 attackDamage *= 2;
-                maxhealth *= 1;
+                maxhealth *= 2;
                 set(new Sprite(new Texture("player01.png")));
                 break;
             case ZOMBIE3:
-                speed *= 1.5;
-                attackDamage *= 2;
+                speed *= 2;
+                attackDamage *= 3;
                 maxhealth *= 1;
                 set(new Sprite(new Texture("player02.png")));
                 break;

@@ -24,6 +24,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
     // direction is a bearing in radians
     double direction = 0;
     private World world;
+    protected int attackDamage;
     // All characters start ready to hit.
     float hitRefresh = 2;
     Body body;
@@ -272,6 +273,10 @@ public class Character extends Sprite implements Steerable<Vector2> {
                 body.setAngularVelocity(maxAngVelocity);
             }
         }
+    }
+
+    public int getAttackDamage() {
+        return attackDamage;
     }
 
     @Override

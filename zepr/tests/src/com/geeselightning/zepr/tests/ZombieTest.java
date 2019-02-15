@@ -100,4 +100,64 @@ public class ZombieTest {
         world.dispose();
     }
 
+    @Test
+    public void differentZombieTypesHaveDifferentHealthStats() {
+        World world = new World(new Vector2(0, 0), true);
+
+        Zombie zombie1 = new Zombie(Constant.ORIGIN, world, Zombie.Type.ZOMBIE1);
+        Zombie zombie2 = new Zombie(Constant.ORIGIN, world, Zombie.Type.ZOMBIE2);
+        Zombie zombie3 = new Zombie(Constant.ORIGIN, world, Zombie.Type.ZOMBIE3);
+
+        assertNotEquals("Zombie1 and Zombie2 types should have different health stats",
+                zombie1.getHealth(), zombie2.getHealth());
+        assertNotEquals("Zombie2 and Zombie3 types should have different health stats",
+                zombie2.getHealth(), zombie3.getHealth());
+
+        zombie1.dispose();
+        zombie2.dispose();
+        zombie3.dispose();
+        world.dispose();
+    }
+
+    @Test
+    public void differentZombieTypesHaveDifferentSpeedStats() {
+        World world = new World(new Vector2(0, 0), true);
+
+        Zombie zombie1 = new Zombie(Constant.ORIGIN, world, Zombie.Type.ZOMBIE1);
+        Zombie zombie2 = new Zombie(Constant.ORIGIN, world, Zombie.Type.ZOMBIE2);
+        Zombie zombie3 = new Zombie(Constant.ORIGIN, world, Zombie.Type.ZOMBIE3);
+
+        assertNotEquals("Zombie1 and Zombie2 types should have different speed stats",
+                zombie1.getSpeed(), zombie2.getSpeed());
+        assertNotEquals("Zombie2 and Zombie3 types should have different speed stats",
+                zombie2.getSpeed(), zombie3.getSpeed());
+        assertNotEquals("Zombie3 and Zombie1 types should have different speed stats",
+                zombie3.getSpeed(), zombie1.getSpeed());
+
+        zombie1.dispose();
+        zombie2.dispose();
+        zombie3.dispose();
+        world.dispose();
+    }
+
+    @Test
+    public void differentZombieTypesHaveDifferentAttackStats() {
+        World world = new World(new Vector2(0, 0), true);
+
+        Zombie zombie1 = new Zombie(Constant.ORIGIN, world, Zombie.Type.ZOMBIE1);
+        Zombie zombie2 = new Zombie(Constant.ORIGIN, world, Zombie.Type.ZOMBIE2);
+        Zombie zombie3 = new Zombie(Constant.ORIGIN, world, Zombie.Type.ZOMBIE3);
+
+        assertNotEquals("Zombie1 and Zombie2 types should have different attack stats",
+                zombie1.getAttackDamage(), zombie2.getAttackDamage());
+        assertNotEquals("Zombie2 and Zombie3 types should have different attack stats",
+                zombie2.getAttackDamage(), zombie3.getAttackDamage());
+        assertNotEquals("Zombie3 and Zombie1 types should have different attack stats",
+                zombie3.getAttackDamage(), zombie1.getAttackDamage());
+
+        zombie1.dispose();
+        zombie2.dispose();
+        zombie3.dispose();
+        world.dispose();
+    }
 }

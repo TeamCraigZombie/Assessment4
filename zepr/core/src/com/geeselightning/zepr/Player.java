@@ -13,7 +13,6 @@ public class Player extends Character {
 
     
     private int boostDamage;
-    private int attackDamage = Constant.PLAYERDMG;
     private Texture mainTexture;
     private Texture attackTexture;
     private boolean attackReady = false;
