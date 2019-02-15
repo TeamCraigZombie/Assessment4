@@ -386,10 +386,9 @@ public class Level implements Screen {
 
             if (currentWaveNumber > config.waves.length) {
                 // Level completed, back to select screen and complete stage.
-                // If stage is being replayed complete() will stop progress being incremented.
                 isPaused = true;
 
-                if (Zepr.progress == Zepr.Location.COMPLETE)
+                if (config.location == Zepr.Location.CONSTANTINE)
                     parent.setScreen(new TextScreen(parent, "Game completed."));
                 else {
                     parent.setScreen(new TextScreen(parent, "Level completed."));
