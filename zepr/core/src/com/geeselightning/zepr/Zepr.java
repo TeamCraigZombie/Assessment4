@@ -198,4 +198,9 @@ public class Zepr extends Game {
 			}
 		}
 	}
+
+	@Override
+	public void dispose() {
+		manager.dispose();
+	}
 }

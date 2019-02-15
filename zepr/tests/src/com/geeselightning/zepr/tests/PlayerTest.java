@@ -35,7 +35,7 @@ public class PlayerTest {
 
         Zombie zombie = new Zombie(new Vector2(0, Constant.PLAYERRANGE), world, Zombie.Type.ZOMBIE1);
         double originalHealth = zombie.getHealth();
-        player.attack(zombie, 0);
+        player.attack(zombie);
 
         assertEquals("Zombie on the edge of range should not take damage when the player attacks.",
                 zombie.getHealth(), originalHealth, 0.1);
@@ -49,9 +49,9 @@ public class PlayerTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Vector2(0, Constant.PLAYERRANGE/4), world, Zombie.Type.ZOMBIE1);
+        Zombie zombie = new Zombie(new Vector2(0, Constant.PLAYERRANGE/2), world, Zombie.Type.ZOMBIE1);
         double originalHealth = zombie.getHealth();
-        player.attack(zombie, 0);
+        player.attack(zombie);
 
         assertNotEquals("Zombie within range should take damage when the player attacks.",
                 zombie.getHealth(), originalHealth, 0.1);
@@ -67,7 +67,7 @@ public class PlayerTest {
 
         Zombie zombie = new Zombie(new Vector2(player.getCenter().x, player.getCenter().y +100), world, Zombie.Type.ZOMBIE1);
         double originalHealth = zombie.getHealth();
-        player.attack(zombie, 0);
+        player.attack(zombie);
 
         assertEquals("Zombie outside of range should not take damage when the player attacks.",
                 zombie.getHealth(), originalHealth, 0.1);

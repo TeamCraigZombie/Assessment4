@@ -24,8 +24,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
     // direction is a bearing in radians
     double direction = 0;
     private World world;
-    // All characters start ready to hit.
-    float hitRefresh = 2;
+    float hitRefresh;
     Body body;
     private static BodyDef characterBodyDef = new BodyDef() {{ type = BodyDef.BodyType.DynamicBody; }};
     // Implementation of Steerable<Vector2> Interface

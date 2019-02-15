@@ -20,6 +20,8 @@ public class Zombie extends Character {
     public Zombie(Vector2 zombieSpawn, World world, Type type) {
         super(world);
 
+        hitRefresh = Constant.ZOMBIEHITCOOLDOWN;
+
         speed = Constant.ZOMBIESPEED;
         attackDamage = Constant.ZOMBIEDMG;
         maxhealth = Constant.ZOMBIEMAXHP;
@@ -72,7 +74,7 @@ public class Zombie extends Character {
      * @param delta the time between the start of the previous call and now
      */
     public void attack(Player player, float delta) {
-        if (canHitGlobal(player, hitRange) && hitRefresh > Constant.ZOMBIEHITCOOLDOWN) {
+        if (canHitGlobal(player, hitRange) && hitRefresh >= Constant.ZOMBIEHITCOOLDOWN) {
             player.takeDamage(attackDamage);
             hitRefresh = 0;
         } else
