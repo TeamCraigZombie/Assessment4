@@ -353,7 +353,7 @@ public class Level implements Screen {
             // facing a player.
             // Player will only attack in the reverse situation but player.attack must also be true. This is
             //controlled by the ZeprInputProcessor. So the player will only attack when the user clicks.
-            if (player.isAttacking())
+            if (player.isAttackReady())
                 player.attack(zombie, delta);
             zombie.attack(player, delta);
         }

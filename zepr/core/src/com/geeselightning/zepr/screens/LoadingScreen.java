@@ -2,6 +2,8 @@ package com.geeselightning.zepr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.geeselightning.zepr.Zepr;
 
 public class LoadingScreen implements Screen {
@@ -9,11 +11,23 @@ public class LoadingScreen implements Screen {
     private Zepr parent;
 
     /**
-     * Constructor for the loading screen
+     * Constructor for the loading screen.
      * @param zepr an instance of the main class of the game
      */
     public LoadingScreen(Zepr zepr) {
         parent = zepr;
+
+        loadSounds();
+    }
+
+    /**
+     * Sounds for the game are loaded here.
+     */
+    public static void loadSounds() {
+        Zepr.manager = new AssetManager();
+        Zepr.manager.load("Quack.wav", Sound.class);
+        Zepr.manager.load("zombie_take_dmg.wav", Sound.class);
+        Zepr.manager.finishLoading();
     }
 
     @Override

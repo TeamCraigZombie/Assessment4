@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.geeselightning.zepr.Constant;
 import com.geeselightning.zepr.Player;
 import com.geeselightning.zepr.Zombie;
+import com.geeselightning.zepr.screens.LoadingScreen;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -49,8 +50,12 @@ public class PlayerTest {
         World world = new World(new Vector2(0, 0), true);
         Player player = new Player(new Texture("player01.png"), new Vector2(0, 0), world);
 
-        Zombie zombie = new Zombie(new Vector2(0, Constant.PLAYERRANGE/4), world, Zombie.Type.ZOMBIE1);
+        //Load sounds played during attack
+        LoadingScreen.loadSounds();
+
+        Zombie zombie = new Zombie(new Vector2(0, Constant.PLAYERRANGE-1), world, Zombie.Type.ZOMBIE1);
         double originalHealth = zombie.getHealth();
+        player.setAttacking(true);
         player.attack(zombie, 0);
 
         assertNotEquals("Zombie within range should take damage when the player attacks.",

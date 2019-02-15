@@ -16,16 +16,15 @@ public class Player extends Character {
     private int attackDamage = Constant.PLAYERDMG;
     private Texture mainTexture;
     private Texture attackTexture;
-    private boolean attack = false;
+    private boolean attackReady = false;
     private float HPMult;
     private static PlayerType playertype;
     private boolean isImmune;
     private boolean canBeSeen = true;
     int attackTime;
-    private boolean isAttacking;
+    private boolean attacking;
     boolean ability = true;
     boolean abilityUsed = false;
-    private long timer;
     private long abilityCooldown;
     String abilityString;
     public enum PlayerType { SPORTY, NERDY, ARTSY }
@@ -108,7 +107,7 @@ public class Player extends Character {
     public void attack(Zombie zombie, float delta) {
 
         if (canHitGlobal(zombie, Constant.PLAYERRANGE) && hitRefresh > Constant.PLAYERHITCOOLDOWN 
-        		&& isAttacking) {
+        		&& attacking) {
             zombie.takeDamage(attackDamage*boostDamage);
             Sound sound = Zepr.manager.get("zombie_take_dmg.wav", Sound.class);
             sound.play();
@@ -145,13 +144,11 @@ public class Player extends Character {
 		
     
     /**
-     * @return
-     * 
      * Returns the value of time since beginning of stage
+     * @return the value of time since beginning of stage
      */
     private long timer() {
-		timer = System.nanoTime()/1000000000;		
-		return timer;
+		return System.nanoTime()/1000000000;
 	}
 
     /**
@@ -195,15 +192,15 @@ public class Player extends Character {
        
         // Gives the player the attack texture for 0.1s after an attack.
         //if (hitRefresh <= 0.1 && getTexture() != attackTexture) {
-        if (attack && attackTime < 30) {
+        if (attackReady && attackTime < 30) {
             setTexture(attackTexture);
-        	isAttacking = true;
+        	attacking = true;
         }
         else {
         // Changes the texture back to the main one after 0.1s.
         //if (hitRefresh > 0.1 && getTexture() == attackTexture) {
             setTexture(mainTexture);
-        	isAttacking = false;
+        	attacking = false;
         }
     }
 
@@ -257,11 +254,15 @@ public class Player extends Character {
         this.boostDamage = boostDamage;
     }
 
-    void setAttack(boolean attack) {
-        this.attack = attack;
+    public void setAttackReady(boolean attackReady) {
+        this.attackReady = attackReady;
     }
 
-    boolean isAttacking() {
-        return attack;
+    boolean isAttackReady(){
+        return attackReady;
+    }
+
+    public void setAttacking(boolean attacking) {
+        this.attacking = attacking;
     }
 }

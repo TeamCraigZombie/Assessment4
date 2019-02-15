@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.geeselightning.zepr.screens.LoadingScreen;
 import com.geeselightning.zepr.screens.MenuScreen;
@@ -20,7 +19,7 @@ import com.geeselightning.zepr.screens.StoryScreen;
 public class Zepr extends Game {
 
 	private MenuScreen menuScreen;
-	static AssetManager manager = new AssetManager();
+	public static AssetManager manager;
 
 	
 	public enum Location { MENU, STORY, SELECT, TOWN, HALIFAX, CENTRALHALL, COURTYARD,
@@ -155,14 +154,9 @@ public class Zepr extends Game {
 
 	/**
 	 * Create event run when the class is constructed, loading save data if it exists.
-	 * Sounds are also created for player attacking and zombie damage.
 	 */
 	@Override
 	public void create() {
-
-		manager.load("Quack.wav", Sound.class);
-		manager.load("zombie_take_dmg.wav", Sound.class);
-		manager.finishLoading();
 		
 		LoadingScreen loadingScreen = new LoadingScreen(this);
 		setScreen(loadingScreen);
@@ -197,5 +191,10 @@ public class Zepr extends Game {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void dispose() {
+		manager.dispose();
 	}
 }

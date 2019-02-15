@@ -33,7 +33,7 @@ public class ZeprInputProcessor implements InputProcessor {
      */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-    	Level.getPlayer().setAttack(true);
+    	Level.getPlayer().setAttackReady(true);
     	Sound sound = Zepr.manager.get("Quack.wav", Sound.class);
         sound.play();
         return true;
@@ -50,7 +50,7 @@ public class ZeprInputProcessor implements InputProcessor {
      */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-    	Level.getPlayer().setAttack(false);
+    	Level.getPlayer().setAttackReady(false);
     	Level.getPlayer().attackTime = 0;
     	return true;
     }
