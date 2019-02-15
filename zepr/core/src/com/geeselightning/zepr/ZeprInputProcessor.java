@@ -51,6 +51,7 @@ public class ZeprInputProcessor implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
     	Level.getPlayer().setAttack(false);
+    	Level.getPlayer().attackTime = 0;
     	return true;
     }
 

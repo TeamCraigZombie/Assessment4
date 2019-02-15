@@ -21,6 +21,8 @@ public class Player extends Character {
     private static PlayerType playertype;
     private boolean isImmune;
     private boolean canBeSeen = true;
+    int attackTime;
+    private boolean isAttacking;
     boolean ability = true;
     boolean abilityUsed = false;
     private long timer;
@@ -36,8 +38,6 @@ public class Player extends Character {
      */
     public Player(Texture texture, Vector2 playerSpawn, World world) {
         super(world);
-
-        hitRefresh = Constant.PLAYERHITCOOLDOWN;
 
         set(new Sprite(texture));
 
@@ -103,15 +103,19 @@ public class Player extends Character {
     /**
      * Routine to perform an attack move, damaging nearby enemies
      * @param zombie the zombie to test for promiximity and to damage
+     * @param delta the time between the start of the previous call and now
      */
-    public void attack(Zombie zombie) {
+    public void attack(Zombie zombie, float delta) {
 
-        if (canHitGlobal(zombie, Constant.PLAYERRANGE) && hitRefresh < 0.01) {
+        if (canHitGlobal(zombie, Constant.PLAYERRANGE) && hitRefresh > Constant.PLAYERHITCOOLDOWN 
+        		&& isAttacking) {
             zombie.takeDamage(attackDamage*boostDamage);
             Sound sound = Zepr.manager.get("zombie_take_dmg.wav", Sound.class);
             sound.play();
+            hitRefresh = 0;
+        } else
+            hitRefresh += delta;
         }
-    }
     
     
     /**
@@ -180,16 +184,26 @@ public class Player extends Character {
         
         control();
         
-        if(ability)
+        if(ability) {
         	triggerAbility();
-        else if(this.timer()>abilityCooldown+2 && abilityUsed)
+        }
+        else if(this.timer()>abilityCooldown+2 && abilityUsed) {
         	this.refreshAttributes();
-
-        if(hitRefresh <= Constant.PLAYERHITCOOLDOWN) {
-            hitRefresh += 0.01;
-            //Change sprite back after a period of time
-            if(hitRefresh > Constant.PLAYERHITCOOLDOWN/2 && getTexture() == attackTexture)
-                setTexture(mainTexture);
+        }
+       
+        attackTime++;
+       
+        // Gives the player the attack texture for 0.1s after an attack.
+        //if (hitRefresh <= 0.1 && getTexture() != attackTexture) {
+        if (attack && attackTime < 30) {
+            setTexture(attackTexture);
+        	isAttacking = true;
+        }
+        else {
+        // Changes the texture back to the main one after 0.1s.
+        //if (hitRefresh > 0.1 && getTexture() == attackTexture) {
+            setTexture(mainTexture);
+        	isAttacking = false;
         }
     }
 
@@ -245,15 +259,6 @@ public class Player extends Character {
 
     void setAttack(boolean attack) {
         this.attack = attack;
-
-        // Give the player the attack texture for a short period after an attack.
-        if (attack) {
-            setTexture(attackTexture);
-            if(hitRefresh > Constant.PLAYERHITCOOLDOWN)
-                hitRefresh = 0;
-        }
-        else
-            setTexture(mainTexture);
     }
 
     boolean isAttacking() {

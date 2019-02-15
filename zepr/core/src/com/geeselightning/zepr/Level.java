@@ -44,7 +44,7 @@ public class Level implements Screen {
     private int zombiesRemaining; // the number of zombies left to kill to complete the wave
     private int zombiesToSpawn; // the number of zombies that are left to be spawned this wave
     private PowerUp currentPowerUp;
-    //private Box2DDebugRenderer debugRenderer;
+    private Box2DDebugRenderer debugRenderer;
     private LevelConfig config;
     private World world;
     private int teleportCounter;
@@ -106,7 +106,7 @@ public class Level implements Screen {
         // renderer renders the .tmx map as an orthogonal (top-down) map.
         renderer = new OrthogonalTiledMapRenderer(map, Constant.WORLDSCALE);
            
-        //debugRenderer = new Box2DDebugRenderer();
+        debugRenderer = new Box2DDebugRenderer();
         
         MapBodyBuilder.buildShapes(map, Constant.PHYSICSDENSITY / Constant.WORLDSCALE, world);
 
@@ -305,7 +305,7 @@ public class Level implements Screen {
 
                 batch.end();
 
-                //debugRenderer.render(world, camera.combined.scl(Constant.PHYSICSDENSITY));
+                debugRenderer.render(world, camera.combined.scl(Constant.PHYSICSDENSITY));
             }
         }
         
@@ -354,7 +354,7 @@ public class Level implements Screen {
             // Player will only attack in the reverse situation but player.attack must also be true. This is
             //controlled by the ZeprInputProcessor. So the player will only attack when the user clicks.
             if (player.isAttacking())
-                player.attack(zombie);
+                player.attack(zombie, delta);
             zombie.attack(player, delta);
         }
 
@@ -485,7 +485,7 @@ public class Level implements Screen {
         stage.dispose();
         map.dispose();
         renderer.dispose();
-       //debugRenderer.dispose();
+        debugRenderer.dispose();
         if (currentPowerUp != null)
             currentPowerUp.getTexture().dispose();
         for (Zombie zombie : aliveZombies)
