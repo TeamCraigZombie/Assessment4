@@ -101,6 +101,7 @@ public class ZombieTest {
     }
 
     @Test
+    // Test 3.6
     public void differentZombieTypesHaveDifferentHealthStats() {
         World world = new World(new Vector2(0, 0), true);
 
@@ -120,6 +121,7 @@ public class ZombieTest {
     }
 
     @Test
+    // Test 3.7
     public void differentZombieTypesHaveDifferentSpeedStats() {
         World world = new World(new Vector2(0, 0), true);
 
@@ -141,6 +143,7 @@ public class ZombieTest {
     }
 
     @Test
+    // Test 3.8
     public void differentZombieTypesHaveDifferentAttackStats() {
         World world = new World(new Vector2(0, 0), true);
 
