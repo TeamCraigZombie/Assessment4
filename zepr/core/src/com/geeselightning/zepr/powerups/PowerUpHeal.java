@@ -29,4 +29,6 @@ public class PowerUpHeal extends PowerUp {
         else
         	player.setHealth((int) (player.getHPMult() * Constant.PLAYERMAXHP));
     }
+
+    //#changed:   Moved update method to inherited class
 }

@@ -7,12 +7,19 @@ import com.badlogic.gdx.math.Vector2;
 public class ZeprInputProcessor implements InputProcessor {
 
     private Vector2 mousePosition = new Vector2(0, 0);
-   
+
+
+    /**
+     * #changed:  Moved player movement code from here to the Player class
+     */
     @Override
     public boolean keyDown(int keycode) {
         return true;
     }
 
+    /**
+     * #changed:  Moved player movement code from here to the Player class
+     */
 	@Override
 	public boolean keyUp(int keycode) {
 		return false;

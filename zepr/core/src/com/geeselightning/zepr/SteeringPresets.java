@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Presets for AI movement implementing wander, seek, and arrive functionality.
  * Look in gdx-AI steering behaviour documentation for more information.
+ * #changed:   Added this class to the game
  */
 public class SteeringPresets {
     /**

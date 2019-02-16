@@ -33,4 +33,6 @@ public class PowerUpInvisibility extends PowerUp {
         super.deactivate();
         player.setVisible(true);
     }
+
+    //#changed:   Moved update method to inherited class
 }

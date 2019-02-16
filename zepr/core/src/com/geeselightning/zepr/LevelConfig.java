@@ -3,6 +3,7 @@ package com.geeselightning.zepr;
 import java.util.ArrayList;
 import com.badlogic.gdx.math.Vector2;
 
+//#changed:   Added this class
 public class LevelConfig {
 	
 	String mapLocation;

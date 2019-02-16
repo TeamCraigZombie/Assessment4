@@ -27,6 +27,8 @@ public final class Constant {
     public static final float SPEEDUP = 0.1f;
     public static final float SPEEDUPTIME = 10;
     public static final float IMMUNITYTIME = 5;
+
+    //#changed:   Added the below values and modified the values of some others
     public static final float INSTAKILLTIME = 5;
     public static final float INVISIBILITYTIME = 5;
     public final static float WORLDSCALE = 1.f;

@@ -33,4 +33,6 @@ public class PowerUpSpeed extends PowerUp {
         super.deactivate();
         player.setSpeed(player.getSpeed() - Constant.SPEEDUP);
     }
+
+    //#changed:   Moved update method to inherited class
 }

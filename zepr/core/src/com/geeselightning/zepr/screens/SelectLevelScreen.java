@@ -34,6 +34,8 @@ public class SelectLevelScreen implements Screen {
     /**
      * Constructor for the select level screen
      * @param zepr an instance of the main class of the game
+     * #changed:   Moved most of the code to here from show(). Also added code to allow selection
+     *             of new levels and playable characters
      */
     public SelectLevelScreen(Zepr zepr) {
 

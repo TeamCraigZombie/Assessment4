@@ -15,6 +15,8 @@ public class Zombie extends Character {
      * @param zombieSpawn the coordinates to spawn the zombie at
      * @param world the Box2D world to add the zombie to
      * @param type the type of zombie to spawn
+     * #changed:  Added assignment of different values for different zombie types.
+     *            Hitrange now scales with sprite size. Box2D body code added.
      */
     public Zombie(Vector2 zombieSpawn, World world, Type type) {
         super(world);
@@ -81,6 +83,8 @@ public class Zombie extends Character {
     /**
      * Method to update positional and action behavior
      * @param delta the time between the start of the previous call and now
+     * #changed:  Code to remove from aliveZombies list when dead now moved to Level
+     *            Added LibGDX AI steering behaviour and wandering when player undetected.
      */
     @Override
     public void update(float delta) {

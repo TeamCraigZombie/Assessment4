@@ -62,6 +62,7 @@ public class TextScreen implements Screen {
 
     /**
      * Show method which is run when the screen enters focus
+     * #changed:   Moved most of the code from here to the constructor
      */
     @Override
     public void show() {

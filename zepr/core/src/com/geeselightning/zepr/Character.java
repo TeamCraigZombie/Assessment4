@@ -54,6 +54,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
 
     /**
      * Set the character Box2D body to a rectangle sized around sprite dimensions
+     * #changed:   Added this method
      */
     void GenerateBodyFromSprite() {
 
@@ -108,6 +109,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
     /**
      * Set the character position, moving the sprite and Box2D body
      * @param position - the position in pixel screen coordinates
+     * #changed:   Added this method
      */
     public void setCharacterPosition(Vector2 position) {
         body.setTransform(position.x / Constant.PHYSICSDENSITY, position.y / Constant.PHYSICSDENSITY, 0);
@@ -124,6 +126,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
     /**
      * Draw the character to the screen
      * @param batch - the SpriteBatch instance to draw to
+     * #changed:   Added this method, moving draw code from Level to here
      */
     @Override
     public void draw(Batch batch) {
@@ -156,6 +159,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
      *
      * @param coordinate 2d vector representing the position of the object
      * @return bearing   double in radians of the bearing from the character to the coordinate
+     * #changed:   Modified to use getCenter() to reduce code duplication
      */
     public double getDirectionTo(Vector2 coordinate) {
         Vector2 charCenter = getCenter();
@@ -174,6 +178,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
      *
      * @param coordinate Vector2 representing the position of the object
      * @return normalised Vector2 that from this will point towards given coordinate
+     * #changed:   Modified to use getCenter() to reduce code duplication
      */
     public Vector2 getDirNormVector(Vector2 coordinate) {
         Vector2 charCenter = getCenter();
@@ -192,6 +197,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
 
     /**
      * Update the sprite position so that it is aligned with the Box2D body
+     * #changed:   Added this method
      */
     void updatePosition() {
         Vector2 position = getPhysicsPosition();
@@ -200,6 +206,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
 
     /**
      * This method updates the character properties.
+     * #changed:   Removed most of the code from here due to the transition to using Box2D physics for collisions
      */
     public void update(float delta) {
         // Update x, y position of character.
@@ -275,6 +282,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
         }
     }
 
+    //#changed:   Added the below LibGDX AI methods
     public int getAttackDamage() {
         return attackDamage;
     }

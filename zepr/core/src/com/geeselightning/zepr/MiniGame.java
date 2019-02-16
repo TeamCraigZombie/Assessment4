@@ -22,7 +22,7 @@ import com.geeselightning.zepr.screens.TextScreen;
 
 /**
  * @author grayh
- *
+ * #changed:   Added this class
  */
 public class MiniGame implements Screen {
 	

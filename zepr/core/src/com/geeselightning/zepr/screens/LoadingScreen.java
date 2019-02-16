@@ -22,6 +22,7 @@ public class LoadingScreen implements Screen {
 
     /**
      * Sounds for the game are loaded here.
+     * #changed:   Added this method
      */
     public static void loadSounds() {
         Zepr.manager = new AssetManager();

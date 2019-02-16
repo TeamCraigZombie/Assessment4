@@ -21,7 +21,7 @@ public class Zepr extends Game {
 	private MenuScreen menuScreen;
 	public static AssetManager manager;
 
-	
+	//#changed:   Added this Location enum
 	public enum Location { MENU, STORY, SELECT, TOWN, HALIFAX, CENTRALHALL, COURTYARD,
 		GLASSHOUSE, CONSTANTINE, COMPLETE, MINIGAME }	
 
@@ -30,6 +30,7 @@ public class Zepr extends Game {
 	/**
 	 * Method to change the currently active screen
 	 * @param screen the Location to set as active
+	 * #changed:   Added more levels and new LevelConfig system to configure level values
 	 */
 	public void changeScreen(final Location screen) {
 		LevelConfig config;
@@ -154,6 +155,7 @@ public class Zepr extends Game {
 
 	/**
 	 * Create event run when the class is constructed, loading save data if it exists.
+	 * #changed:   Added code to load save data and to create it if not existent yet
 	 */
 	@Override
 	public void create() {
@@ -193,6 +195,10 @@ public class Zepr extends Game {
 		}
 	}
 
+
+	/**
+	 * #changed:   Added this method to dispose of the sound manager
+	 */
 	@Override
 	public void dispose() {
 		manager.dispose();

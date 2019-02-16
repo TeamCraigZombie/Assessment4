@@ -34,4 +34,6 @@ public class PowerUpInstaKill extends PowerUp {
         super.deactivate();
         player.setBoostDamage(1);
     }
+
+    //#changed:   Moved update method to inherited class
 }

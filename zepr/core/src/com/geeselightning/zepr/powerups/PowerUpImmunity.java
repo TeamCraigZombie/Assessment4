@@ -33,4 +33,6 @@ public class PowerUpImmunity extends PowerUp {
         super.deactivate();
         player.setImmune(false);
     }
+
+    //#changed:   Moved update method to inherited class
 }

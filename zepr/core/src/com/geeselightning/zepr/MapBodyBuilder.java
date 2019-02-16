@@ -22,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 //SOURCE: https://gamedev.stackexchange.com/questions/66924/how-can-i-convert-a-tilemap-to-a-box2d-world
+//#changed:   Added this class
 class MapBodyBuilder {
 
 	// The pixels per tile. If your tiles are 16x16, this is set to 16f

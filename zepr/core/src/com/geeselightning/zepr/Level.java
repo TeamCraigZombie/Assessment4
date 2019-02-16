@@ -52,6 +52,12 @@ public class Level implements Screen {
     static Texture blank;
     private Zombie originalBoss;
 
+    /**
+     * Constructor for the level
+     * @param zepr the instance of the Zepr class to use
+     * @param config level configuration to use
+     * #changed:   Moved most of the code from show() to here
+     */
     public Level(Zepr zepr, LevelConfig config) {
 
         //Initialise Box2D physics engine
@@ -262,6 +268,8 @@ public class Level implements Screen {
     /**
      * Render the level and its contents to the screen
      * @param delta the time between the start of the previous call and now
+     * #changed:   Moved most of the code from here to update(). Moved render code for
+     *             zombies and players into their own classes to increase encapsulation
      */
     @Override
     public void render(float delta) {
@@ -319,6 +327,8 @@ public class Level implements Screen {
     /**
      * Update everything in the level
      * @param delta the time between the start of the previous call and now
+     * #changed:   Added this method, most of the code here was in render().
+     *             Optimised a lot of the original code and increased encapsulation
      */
     public void update(float delta) {
         world.step(1/60f, 6, 2);
@@ -326,6 +336,7 @@ public class Level implements Screen {
         player.update(delta);
         player.look(getMouseWorldCoordinates());
 
+        //#changed:   Added tutorial text code
         if(tutorialTable != null && currentWaveNumber > 1) {
             tutorialTable.clear();
         }
@@ -334,6 +345,7 @@ public class Level implements Screen {
         if (player.health <= 0)
             gameOver();
 
+        //#changed:   Moved this zombie removal code here from the Zombie class
         for(int i = 0; i < aliveZombies.size(); i++) {
             Zombie zomb = aliveZombies.get(i);
             zomb.update(delta);
@@ -361,6 +373,7 @@ public class Level implements Screen {
         if (zombiesRemaining == 0) {
 
             // Spawn a power up and the end of a wave, if there isn't already a powerUp on the level
+            //#changed:   Added code for the new power ups here
             if (currentPowerUp == null) {
 
                 int random = (int)(Math.random() * 5 + 1);
@@ -477,6 +490,7 @@ public class Level implements Screen {
 
     /**
      * Dispose of the level, clearing the memory
+     * #changed:   Added code to dispose of Box2D elements
      */
     @Override
     public void dispose() {

@@ -22,6 +22,7 @@ public class StoryScreen implements Screen {
     /**
      * Constructor for the story screen
      * @param zepr an instance of the main class of the game
+     * #changed:   Added this class to the game
      */
     public StoryScreen(Zepr zepr) {
         // Constructor builds the gui of the menu screen.

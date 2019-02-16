@@ -10,8 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Player extends Character {
 
-
-    
+    //#changed:   Removed Player instance attribute from here
     private int boostDamage;
     private Texture mainTexture;
     private Texture attackTexture;
@@ -26,6 +25,8 @@ public class Player extends Character {
     boolean abilityUsed = false;
     private long abilityCooldown;
     String abilityString;
+
+    //#changed:   Added this enum
     public enum PlayerType { SPORTY, NERDY, ARTSY }
 
     /**
@@ -33,6 +34,7 @@ public class Player extends Character {
      * @param texture the texture to use for the player
      * @param playerSpawn coordinates to spawn the player at
      * @param world the Box2D world to spawn the player in
+     * #changed:   Added Box2D body code and texture attribute for player types
      */
     public Player(Texture texture, Vector2 playerSpawn, World world) {
         super(world);
@@ -57,6 +59,7 @@ public class Player extends Character {
     /**
      * Update the attributes based on the player type
      * Call this after changing the player type attribute
+     * #changed:   Added this method to assign attributes based on player type
      */
     public void refreshAttributes() {
         float dmgMult, speedMult;
@@ -102,6 +105,7 @@ public class Player extends Character {
      * Routine to perform an attack move, damaging nearby enemies
      * @param zombie the zombie to test for promiximity and to damage
      * @param delta the time between the start of the previous call and now
+     * #changed:   Implemented attack cooldown system so player can't hit continually, and sound
      */
     public void attack(Zombie zombie, float delta) {
 
@@ -118,6 +122,7 @@ public class Player extends Character {
     
     /**
      * Manages the abilities when special ability is triggered by E
+     * #changed:   Added this method
      */
     private void triggerAbility() {
     	
@@ -145,6 +150,7 @@ public class Player extends Character {
     /**
      * Returns the value of time since beginning of stage
      * @return the value of time since beginning of stage
+     * #changed:   Added this method
      */
     private long timer() {
 		return System.nanoTime()/1000000000;
@@ -153,6 +159,7 @@ public class Player extends Character {
     /**
      * Respawn the player, resetting the health attribute
      * @param playerSpawn the position to respawn in
+     * #changed:   Moved most of the code from this method to the constructor and refreshAttributes()
      */
     public void respawn(Vector2 playerSpawn){
 
@@ -164,6 +171,7 @@ public class Player extends Character {
     /**
      * Routine to set the sprite direction to look at the mouse
      * @param mouseCoordinates coordinates of the mouse
+     * #changed:   Added this method, moving code from Level
      */
     void look(Vector2 mouseCoordinates) {
      	// Update the direction the player is facing.
@@ -173,6 +181,7 @@ public class Player extends Character {
     /**
      * Update method to process control processing and attacking action
      * @param delta the time between the start of the previous call and now
+     * #changed:   Added ability system code
      */
     @Override
     public void update(float delta) {
@@ -205,6 +214,7 @@ public class Player extends Character {
 
     /**
      * Handle player keyboard controls
+     * #changed:   Added this method, moving code from ZeprInputProcessor
      */
     private void control() {
     	   	
