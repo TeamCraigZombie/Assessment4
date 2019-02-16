@@ -92,7 +92,7 @@ public class Level implements Screen {
         	tutorialLabel = new Label("", skin);
         	
         	tutorialTable.top();
-        	tutorialTable.row().pad(140);
+        	tutorialTable.row().pad(50);
         	tutorialTable.add(tutorialLabel).top();
         
         }
@@ -254,7 +254,7 @@ public class Level implements Screen {
         
         if(tutorialTable != null && currentWaveNumber == 1) {
         	tutorialTable.top();
-        	tutorialTable.row().pad(140);
+        	tutorialTable.row().pad(50);
         	tutorialTable.add(tutorialLabel).top();
         }
     }

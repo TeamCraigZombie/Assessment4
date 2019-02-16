@@ -34,13 +34,13 @@ public class Zombie extends Character {
                 speed *= 1.2f;
                 attackDamage *= 2;
                 maxhealth *= 2;
-                set(new Sprite(new Texture("player01.png")));
+                set(new Sprite(new Texture("zombie02.png")));
                 break;
             case ZOMBIE3:
                 speed *= 2;
                 attackDamage *= 3;
                 maxhealth *= 1;
-                set(new Sprite(new Texture("player02.png")));
+                set(new Sprite(new Texture("zombie03.png")));
                 break;
             case BOSS1:
                 speed *= 100;
@@ -52,7 +52,7 @@ public class Zombie extends Character {
                 speed *= 60;
                 attackDamage *= 1;
                 maxhealth *= 5;
-                set(new Sprite(new Texture("GeeseLightningBoss.png")));
+                set(new Sprite(new Texture("JJBossZombie.png")));
                 break;
         }
 
