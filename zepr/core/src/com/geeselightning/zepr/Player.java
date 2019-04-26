@@ -27,7 +27,7 @@ public class Player extends Character {
     String abilityString;
 
     //#changed:   Added this enum
-    public enum PlayerType { SPORTY, NERDY, ARTSY }
+    public enum PlayerType { SPORTY, NERDY, ARTSY, ZOMBIE}
 
     /**
      * Constructor for the player class
@@ -77,13 +77,22 @@ public class Player extends Character {
             mainTexture = new Texture("player02.png");
             attackTexture = new Texture("player02_attack.png");
         }
-        else {
+        else if (playertype == PlayerType.ARTSY) {
             //ARTSY player
             dmgMult = Constant.ARTSYDMGMULT;
             HPMult = Constant.ARTSYHPMULT;
             speedMult = Constant.ARTSYSPEEDMULT;
             mainTexture = new Texture("player03.png");
             attackTexture = new Texture("player03_attack.png");
+        }
+        //Team Craig
+        else {
+            //zombie player
+            dmgMult = Constant.ZOMBIEMULT;
+            HPMult = Constant.ZOMBIEMULT;
+            speedMult = Constant.ZOMBIEMULT;
+            mainTexture = new Texture("zombie01.png");
+            attackTexture = new Texture("zombie01.png");
         }
 
         setTexture(mainTexture);
@@ -107,7 +116,7 @@ public class Player extends Character {
      * @param delta the time between the start of the previous call and now
      * #changed:   Implemented attack cooldown system so player can't hit continually, and sound
      */
-    public void attack(Zombie zombie, float delta) {
+    public void attack(Character zombie, float delta) {
 
         if (canHitGlobal(zombie, Constant.PLAYERRANGE) && hitRefresh > Constant.PLAYERHITCOOLDOWN 
         		&& attacking) {
@@ -210,6 +219,7 @@ public class Player extends Character {
             setTexture(mainTexture);
         	attacking = false;
         }
+        //System.out.println((Math.PI*2) % (Math.PI + direction));
     }
 
     /**

@@ -17,7 +17,7 @@ public class SteeringPresets {
      * @return wander preset
      */
     public static Wander<Vector2> getWander(Character steeringEntity) {
-        Wander<Vector2> wander = new Wander<>(steeringEntity)
+        Wander<Vector2> wander = new Wander<Vector2>(steeringEntity)
                 .setFaceEnabled(false)
                 .setLimiter(new LinearAccelerationLimiter(1))
                 .setWanderOffset(3)
@@ -34,7 +34,7 @@ public class SteeringPresets {
      * @return seek preset
      */
     public static Seek<Vector2> getSeek(Character seeker, Character target) {
-        Seek<Vector2> seek = new Seek<>(seeker, target);
+        Seek<Vector2> seek = new Seek<Vector2>(seeker, target);
         return seek;
     }
 
@@ -45,10 +45,16 @@ public class SteeringPresets {
      * @return arrive preset
      */
     public static Arrive<Vector2> getArrive(Character runner, Character target) {
-        Arrive<Vector2> arrive = new Arrive<>(runner, target)
+        Arrive<Vector2> arrive = new Arrive<Vector2>(runner, target)
                 .setTimeToTarget(0.1f)
                 .setArrivalTolerance(7f)
                 .setDecelerationRadius(10f);
         return arrive;
+    }
+
+    //Team Craig:
+    public static Evade<Vector2> getEvade(Character evader, Character target) {
+        Evade<Vector2> evade = new Evade<Vector2>(evader,  target, 0.1f);
+        return evade;
     }
 }

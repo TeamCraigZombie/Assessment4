@@ -33,4 +33,9 @@ public final class Constant {
     public static final float INVISIBILITYTIME = 5;
     public final static float WORLDSCALE = 1.f;
     public final static float PHYSICSDENSITY = 100.f;
+
+    //Team Craig:
+    public static final int CURERADIUS = 200;
+    public static final float ZOMBIEMULT = 1;
+    public static final float HUMANSPEEDZMODE = 0.9f;
 }

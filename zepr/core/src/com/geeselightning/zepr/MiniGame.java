@@ -40,7 +40,7 @@ public class MiniGame implements Screen {
 	private Sprite crosshair;
 	static long timer = 0;
 	private long last = 0;
-	private  Queue<MiniZombie> ZombieQueue = new Queue<>();
+	private  Queue<MiniZombie> ZombieQueue = new Queue<MiniZombie>();
 	private MiniZombie tempZombie;
 	private BitmapFont font;
 	private static String gunStatus = "Reloaded";

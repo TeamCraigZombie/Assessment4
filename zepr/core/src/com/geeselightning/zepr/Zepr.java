@@ -27,6 +27,7 @@ public class Zepr extends Game {
 
 	// The progress is the integer representing the last level completed. i.e. 3 for Town
 	public static Location progress;
+	public static boolean zombieMode;
 	/**
 	 * Method to change the currently active screen
 	 * @param screen the Location to set as active
@@ -53,7 +54,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/townmap.tmx";
 					playerSpawn = new Vector2(530, 600);
 					powerSpawn = new Vector2(300, 300);
-					zombieSpawnPoints = new ArrayList<>(
+					zombieSpawnPoints = new ArrayList<Vector2>(
 				            Arrays.asList(new Vector2(200,200), new Vector2(700,700),
 				                    new Vector2(200,700), new Vector2(700,200)));
 					waves = new Wave[]{ new Wave(5, Zombie.Type.ZOMBIE1),
@@ -69,7 +70,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/halifaxmap.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(200, 200);
-					zombieSpawnPoints = new ArrayList<>(
+					zombieSpawnPoints = new ArrayList<Vector2>(
 							Arrays.asList(new Vector2(600,100), new Vector2(100,200),
 				                    new Vector2(600,500), new Vector2(100,600)));
                     waves = new Wave[]{ new Wave(10, Zombie.Type.ZOMBIE1),
@@ -85,7 +86,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/centralhallmap.tmx";
 					playerSpawn = new Vector2(50, 900);
 					powerSpawn = new Vector2(250, 250);
-					zombieSpawnPoints = new ArrayList<>(
+					zombieSpawnPoints = new ArrayList<Vector2>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
                     waves = new Wave[]{ new Wave(13, Zombie.Type.ZOMBIE2),
@@ -101,7 +102,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/courtyard.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(150, 150);
-					zombieSpawnPoints = new ArrayList<>(
+					zombieSpawnPoints = new ArrayList<Vector2>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
                     waves = new Wave[]{ new Wave(12, Zombie.Type.ZOMBIE2),
@@ -118,7 +119,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/glasshousemap.tmx";
 					playerSpawn = new Vector2(400, 70);
 					powerSpawn = new Vector2(250, 250);
-					zombieSpawnPoints = new ArrayList<>(
+					zombieSpawnPoints = new ArrayList<Vector2>(
 							 Arrays.asList(new Vector2(120,200), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
                     waves = new Wave[]{ new Wave(12, Zombie.Type.ZOMBIE3),
@@ -134,7 +135,7 @@ public class Zepr extends Game {
 					mapLocation = "maps/constantinemap.tmx";
 					playerSpawn = new Vector2(300, 300);
 					powerSpawn = new Vector2(250, 250);
-					zombieSpawnPoints = new ArrayList<>(
+					zombieSpawnPoints = new ArrayList<Vector2>(
 							 Arrays.asList(new Vector2(120,100), new Vector2(630,600),
 					                   new Vector2(630,100), new Vector2(120,500)));
                     waves = new Wave[]{ new Wave(40, Zombie.Type.ZOMBIE1),
@@ -162,6 +163,9 @@ public class Zepr extends Game {
 		
 		LoadingScreen loadingScreen = new LoadingScreen(this);
 		setScreen(loadingScreen);
+
+		//Team Craig
+		zombieMode = false;
 
 		//Attempt to load save data file
 		File f = new File("saveData.txt");

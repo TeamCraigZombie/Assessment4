@@ -9,6 +9,7 @@ public class Zombie extends Character {
 
     private int hitRange;
     public enum Type { ZOMBIE1, ZOMBIE2, ZOMBIE3, BOSS1, BOSS2 }
+    private Character target = Level.getPlayer();;
 
     /**
      * Constructor for the Zombie class
@@ -69,12 +70,13 @@ public class Zombie extends Character {
 
     /**
      * Attack and damage the player if in range and hit counter refreshed
-     * @param player instance of Player class to attack
+     * @param character instance of Character sub-class to attack
      * @param delta the time between the start of the previous call and now
+     * Team Craig changed: parameter from type Player to type Character so hits can be resolved against Humans types too.
      */
-    public void attack(Player player, float delta) {
-        if (canHitGlobal(player, hitRange) && hitRefresh > Constant.ZOMBIEHITCOOLDOWN) {
-            player.takeDamage(attackDamage);
+    public void attack(Character  character, float delta) {
+        if (canHitGlobal(character, hitRange) && hitRefresh > Constant.ZOMBIEHITCOOLDOWN) {
+            character.takeDamage(attackDamage);
             hitRefresh = 0;
         } else
             hitRefresh += delta;
@@ -93,10 +95,10 @@ public class Zombie extends Character {
 
         if (Level.getPlayer().isVisible()) {
             // seek out player using gdx-ai seek functionality
-            this.steeringBehavior = SteeringPresets.getSeek(this, Level.getPlayer());
+            this.steeringBehavior = SteeringPresets.getSeek(this, target);
             this.currentMode = SteeringState.SEEK;
             // update direction to face the player
-            direction = getDirectionTo(Level.getPlayer().getCenter());
+            direction = getDirectionTo(target.getCenter());
         } else { //player cannot be seen, so wander randomly
             this.steeringBehavior = SteeringPresets.getWander(this);
             this.currentMode = SteeringState.WANDER;
@@ -104,4 +106,6 @@ public class Zombie extends Character {
             direction = -(this.vectorToAngle(this.getLinearVelocity()));
         }
     }
+
+    public void setTarget(Character target) {this.target = target;}
 }

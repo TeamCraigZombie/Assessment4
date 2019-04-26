@@ -32,7 +32,7 @@ class MapBodyBuilder {
 		ppt = pixels;
 		MapObjects objects = map.getLayers().get("collisionLayer").getObjects();
 
-		Array<Body> bodies = new Array<>();
+		Array<Body> bodies = new Array<Body>();
 
 		for (MapObject object : objects) {
 

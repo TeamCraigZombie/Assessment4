@@ -30,7 +30,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
     Body body;
     private static BodyDef characterBodyDef = new BodyDef() {{ type = BodyDef.BodyType.DynamicBody; }};
     // Implementation of Steerable<Vector2> Interface
-    public enum SteeringState {WANDER, SEEK, ARRIVE, NONE}
+    public enum SteeringState {WANDER, SEEK, ARRIVE, NONE, EVADE}
     SteeringState currentMode;
     private float maxLinearSpeed = Constant.ZOMBIESPEED;
     private float maxLinearAcceleration = 2f;
@@ -38,7 +38,7 @@ public class Character extends Sprite implements Steerable<Vector2> {
     float maxAngularAcceleration = 2f;
     private float zeroThreshold = 0.01f;
     SteeringBehavior<Vector2> steeringBehavior;
-    private static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
+    private static final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<Vector2>(new Vector2());
     float boundingRadius = 100f;
     private boolean tagged = true;
     private boolean independentFacing = false;
@@ -171,6 +171,13 @@ public class Character extends Sprite implements Steerable<Vector2> {
 
         return(Math.atan2((coordinate.x - charCenter.x), (coordinate.y - charCenter.y)) + (2 * Math.PI))
                 % (2 * Math.PI);
+    }
+
+    //Team Craig:
+    public double getDistanceTo(Vector2 coordinate) {
+        Vector2 charCenter = getCenter();
+        double dist = Math.sqrt(Math.pow((coordinate.x - charCenter.x), 2) + Math.pow((coordinate.y - charCenter.y), 2));
+        return dist;
     }
 
     /**

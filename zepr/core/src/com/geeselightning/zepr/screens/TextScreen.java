@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.geeselightning.zepr.Player;
 import com.geeselightning.zepr.Zepr;
 
 public class TextScreen implements Screen {
@@ -25,7 +26,7 @@ public class TextScreen implements Screen {
      * @param zepr an instance of the main class of the game
      * @param text the text string to use as the subtitle
      */
-    public TextScreen(Zepr zepr, String text) {
+    public TextScreen(Zepr zepr, final String text) {
         // Constructor builds the gui of the menu screen.
         // parent allows the MenuScreen to reference the MyGdxGame class.
         parent = zepr;
@@ -54,7 +55,13 @@ public class TextScreen implements Screen {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Zepr.Location.SELECT);
+                if (text == "You died.") {
+                    Zepr.zombieMode = true;
+                    Player.setType(Player.PlayerType.ZOMBIE);
+                    parent.changeScreen(Zepr.progress);}
+                else {
+                    Zepr.zombieMode = false;
+                    parent.changeScreen(Zepr.Location.SELECT);}
                 dispose();
             }
         });

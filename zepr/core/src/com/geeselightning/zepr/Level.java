@@ -52,6 +52,9 @@ public class Level implements Screen {
     static Texture blank;
     private Zombie originalBoss;
 
+    //Team Craig:
+    private ArrayList<Human> aliveHumans;
+
     /**
      * Constructor for the level
      * @param zepr the instance of the Zepr class to use
@@ -70,8 +73,11 @@ public class Level implements Screen {
         player = new Player(new Texture("player01.png"), new Vector2(300, 300), world);
         
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
-        aliveZombies = new ArrayList<>();
+        aliveZombies = new ArrayList<Zombie>();
         inputProcessor = new ZeprInputProcessor();
+
+        //Team Craig:
+        aliveHumans = new ArrayList<Human>();
         
         progressLabel = new Label("", skin);
         healthLabel = new Label("", skin);
@@ -90,7 +96,7 @@ public class Level implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
         
-        if(config.location == Zepr.Location.TOWN) {
+        if(config.location == Zepr.Location.TOWN && !Zepr.zombieMode) {
         	tutorialTable = new Table();
         	tutorialTable.setFillParent(true);
         	stage.addActor(tutorialTable);
@@ -148,7 +154,11 @@ public class Level implements Screen {
      */
     private void gameOver() {
         isPaused = true;
-        parent.setScreen(new TextScreen(parent, "You died."));
+        if (!Zepr.zombieMode) {
+            parent.setScreen(new TextScreen(parent, "You died."));
+        }
+        else {
+            parent.setScreen(new TextScreen(parent, "Game Over")); }
     }
 
 
@@ -160,11 +170,16 @@ public class Level implements Screen {
     private void spawnZombies(int numberToSpawn, ArrayList<Vector2> spawnPoints) {
 
         for (int i = 0; i < numberToSpawn; i++) {
-            Zombie.Type type = config.waves[currentWaveNumber-1].zombieType;
-            Zombie zombie = new Zombie(spawnPoints.get(i % spawnPoints.size()), world, type);
-            aliveZombies.add(zombie);
-            if(type == Zombie.Type.BOSS2 && aliveZombies.size()==1)
-                originalBoss = zombie;
+            if (!Zepr.zombieMode) {
+                Zombie.Type type = config.waves[currentWaveNumber - 1].zombieType;
+                Zombie zombie = new Zombie(spawnPoints.get(i % spawnPoints.size()), world, type);
+                aliveZombies.add(zombie);
+                if (type == Zombie.Type.BOSS2 && aliveZombies.size() == 1) {originalBoss = zombie;}
+            }
+            else {
+                Human human = new Human(spawnPoints.get(i % spawnPoints.size()), world, this);
+                aliveHumans.add(human);
+            }
     }
 }
 
@@ -180,6 +195,46 @@ public class Level implements Screen {
         Vector3 worldCoords3 = camera.unproject(screenCoordinates);
 
         return new Vector2(worldCoords3.x, worldCoords3.y);
+    }
+
+    //Team Craig
+    public void cure(int radius) {
+        for(int i = aliveZombies.size() - 1; i >= 0; i--) {
+            if (player.getDistanceTo(aliveZombies.get(i).getCenter()) < radius) {
+                Vector2 position = aliveZombies.get(i).getCenter();
+                zombiesRemaining--;
+                aliveZombies.get(i).dispose();
+                aliveZombies.remove(i);
+
+                Human human = new Human(position, world, this);
+                aliveHumans.add(human);
+            }
+        }
+    }
+
+    //Team Craig
+    public Zombie getClosestZombie(Vector2 position) {
+        int closestZombie = -1;
+        for (int i = 0; i < aliveZombies.size(); i++) {
+            if (i == 0) {closestZombie = i;}
+            else if (aliveZombies.get(i).getDistanceTo(position) < aliveZombies.get(closestZombie).getDistanceTo(position)) {
+                closestZombie = i;
+            }
+        }
+        if (closestZombie == -1) {return null;}
+        else {return aliveZombies.get(closestZombie); }
+    }
+
+    //Team Craig
+    public Character getClosestTarget(Vector2 position) {
+        Character target = player;
+        if (aliveHumans.size() == 0) {return target;}
+        else{
+            for (int i = 0; i < aliveHumans.size(); i++) {
+                if (aliveHumans.get(i).getDistanceTo(position) < target.getDistanceTo(position)) {target = aliveHumans.get(i); }
+            }
+            return target;
+        }
     }
 
     @Override
@@ -258,7 +313,7 @@ public class Level implements Screen {
         table.row();
         table.add(abilityLabel).pad(10).left();
         
-        if(tutorialTable != null && currentWaveNumber == 1) {
+        if(tutorialTable != null && currentWaveNumber == 1 && !Zepr.zombieMode) {
         	tutorialTable.top();
         	tutorialTable.row().pad(50);
         	tutorialTable.add(tutorialLabel).top();
@@ -299,6 +354,9 @@ public class Level implements Screen {
                 // Draw zombies
                 for (Zombie zombie : aliveZombies)
                     zombie.draw(batch);
+
+                for (Human human : aliveHumans)
+                    human.draw(batch);
 
                 if (currentPowerUp != null) {
                     // Activate the powerup up if the player moves over it and it's not already active
@@ -345,19 +403,37 @@ public class Level implements Screen {
         if (player.health <= 0)
             gameOver();
 
-        //#changed:   Moved this zombie removal code here from the Zombie class
-        for(int i = 0; i < aliveZombies.size(); i++) {
-            Zombie zomb = aliveZombies.get(i);
-            zomb.update(delta);
+        if(!Zepr.zombieMode) {
+            //#changed:   Moved this zombie removal code here from the Zombie class
+            for (int i = 0; i < aliveZombies.size(); i++) {
+                Zombie zomb = aliveZombies.get(i);
+                zomb.update(delta);
 
-            if (zomb.getHealth() <= 0) {
-                zombiesRemaining--;
-                aliveZombies.remove(zomb);
-                zomb.dispose();
+                zomb.setTarget(getClosestTarget(zomb.getCenter()));
+
+                if (zomb.getHealth() <= 0) {
+                    zombiesRemaining--;
+                    aliveZombies.remove(zomb);
+                    zomb.dispose();
+                }
+            }
+            zombiesRemaining = aliveZombies.size();
+        }
+
+        //Team Craig ///////////////////////////////////////////////////////////////////
+        for(int i = 0; i < aliveHumans.size(); i++) {
+            Human human = aliveHumans.get(i);
+            human.update(delta);
+
+            if (human.getHealth() <= 0) {
+                aliveHumans.remove(human);
+                human.dispose();
+                if (Zepr.zombieMode) {zombiesRemaining--; }
             }
         }
 
-        zombiesRemaining = aliveZombies.size();
+        if (Zepr.zombieMode) {zombiesRemaining = aliveHumans.size(); }
+        ///////////////////////////////////////////////////////////////////////////////
 
         // Resolve all possible attacks
         for (Zombie zombie : aliveZombies) {
@@ -365,9 +441,22 @@ public class Level implements Screen {
             // facing a player.
             // Player will only attack in the reverse situation but player.attack must also be true. This is
             //controlled by the ZeprInputProcessor. So the player will only attack when the user clicks.
-            if (player.isAttackReady())
+            if (player.isAttackReady()) {
                 player.attack(zombie, delta);
-            zombie.attack(player, delta);
+                zombie.attack(player, delta);
+            }
+
+            //Team Craig:
+            for (Human human : aliveHumans) {
+                zombie.attack(human, delta);
+            }
+        }
+
+        //Team Craig:
+        if(Zepr.zombieMode){
+            for (Human human : aliveHumans){
+                if (player.isAttackReady()) {player.attack(human, delta); }
+            }
         }
 
         if (zombiesRemaining == 0) {
@@ -376,7 +465,7 @@ public class Level implements Screen {
             //#changed:   Added code for the new power ups here
             if (currentPowerUp == null) {
 
-                int random = (int)(Math.random() * 5 + 1);
+                int random = (int)(6);
                 switch(random) {
                     case 1:
                         currentPowerUp = new PowerUpHeal(this, player);
@@ -393,6 +482,8 @@ public class Level implements Screen {
                     case 5:
                         currentPowerUp = new PowerUpInvisibility(this, player);
                         break;
+                    case 6:
+                        currentPowerUp = new Cure(this, player);
                 }
             }
 
@@ -401,15 +492,19 @@ public class Level implements Screen {
                 // Level completed, back to select screen and complete stage.
                 isPaused = true;
 
-                if (config.location == Zepr.Location.CONSTANTINE)
-                    parent.setScreen(new TextScreen(parent, "Game completed."));
-                else {
-                    parent.setScreen(new TextScreen(parent, "Level completed."));
-                    if(Zepr.progress == config.location) {
-                        Zepr.progress = Zepr.Location.values()[Zepr.progress.ordinal() + 1];
-                        saveGame();
+                if (!Zepr.zombieMode) {
+                    if (config.location == Zepr.Location.CONSTANTINE)
+                        parent.setScreen(new TextScreen(parent, "Game completed."));
+                    else {
+                        parent.setScreen(new TextScreen(parent, "Level completed."));
+                        if (Zepr.progress == config.location) {
+                            Zepr.progress = Zepr.Location.values()[Zepr.progress.ordinal() + 1];
+                            saveGame();
+                        }
                     }
                 }
+                else { parent.setScreen(new TextScreen(parent, "Level completed.")); }
+                Zepr.zombieMode = false;
             } else {
                 if (currentWaveNumber < config.waves.length) {
                     // Update zombiesRemaining with the number of zombies of the new wave
@@ -430,14 +525,14 @@ public class Level implements Screen {
 
         //Teleporting and minon spawning behavior for boss2
         teleportCounter++;
-        if (currentWaveNumber <= config.waves.length && config.waves[currentWaveNumber-1].zombieType == Zombie.Type.BOSS2 && teleportCounter > 100) {
+        if (currentWaveNumber <= config.waves.length && config.waves[currentWaveNumber - 1].zombieType == Zombie.Type.BOSS2 && teleportCounter > 100) {
             teleportCounter = 0;
             if (originalBoss.getHealth() < 250 && Math.random() < 0.1)
-                aliveZombies.add(new Zombie(new Vector2(200,200), world, Zombie.Type.BOSS2));
+                aliveZombies.add(new Zombie(new Vector2(200, 200), world, Zombie.Type.BOSS2));
             for (Zombie boss : aliveZombies) {
                 Vector2 start = boss.getPhysicsPosition();
-                Vector2 end =  player.getPhysicsPosition();
-                Vector2 position = new Vector2((start.x + end.x)/2, (start.y + end.y)/2);
+                Vector2 end = player.getPhysicsPosition();
+                Vector2 position = new Vector2((start.x + end.x) / 2, (start.y + end.y) / 2);
                 boss.setCharacterPosition(position);
             }
         }
@@ -503,9 +598,11 @@ public class Level implements Screen {
             currentPowerUp.getTexture().dispose();
         for (Zombie zombie : aliveZombies)
             zombie.dispose();
+        for (Human human : aliveHumans)
+            human.dispose();
         player.dispose();
         
-        Array<Body> bodies = new Array<>();
+        Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
         for(Body body : bodies)
         	world.destroyBody(body);

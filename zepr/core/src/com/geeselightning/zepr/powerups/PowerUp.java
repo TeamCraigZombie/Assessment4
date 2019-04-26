@@ -8,7 +8,7 @@ import com.geeselightning.zepr.Player;
 
 public class PowerUp extends Sprite {
 
-    private Level currentLevel;
+    protected Level currentLevel;
     public static boolean active;
     private float timeRemaining;
     private float effectDuration;
